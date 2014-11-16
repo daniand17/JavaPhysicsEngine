@@ -5,9 +5,9 @@ public class Main {
 	public static void main(String[] args) {
 
 		// Declares and initializes a 2D vector with no values (0,0)
-		Vector2D unInitVec = new Vector2D();
+		Vector2 unInitVec = new Vector2();
 		// Initialize the vector with values (1,1)
-		Vector2D initVec = new Vector2D(3f, 4f);
+		Vector2 initVec = new Vector2(3f, 4f);
 
 		// Use of a static method in an abstract class
 		float dist = Vector.distance(unInitVec, initVec);
