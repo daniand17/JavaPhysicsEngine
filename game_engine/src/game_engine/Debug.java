@@ -78,7 +78,7 @@ public class Debug {
 	 * Closes the printwriter and flushes the buffer. Call this method if you
 	 * want your debug information saved to the file.
 	 */
-	public void closeLog() {
+	public void close() {
 		out.close();
 	}
 }
