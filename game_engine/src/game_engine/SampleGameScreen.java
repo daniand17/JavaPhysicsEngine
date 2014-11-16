@@ -19,7 +19,7 @@ public class SampleGameScreen extends Screen {
 
 	@Override
 	public void onUpdate() {
-		
+
 		if ( this.getScreenFactory().getGame().getKeyboardListener()
 				.isKeyPressed(KeyEvent.VK_A) )
 			x -= 2;
