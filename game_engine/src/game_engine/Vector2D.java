@@ -2,6 +2,7 @@ package game_engine;
 
 public class Vector2D extends Vector {
 
+	// Fields
 	public float x;
 	public float y;
 
@@ -28,5 +29,4 @@ public class Vector2D extends Vector {
 		x *= scalar;
 		y *= scalar;
 	}
-
 }
