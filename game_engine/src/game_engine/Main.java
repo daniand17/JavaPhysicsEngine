@@ -45,5 +45,8 @@ public class Main {
 
 		log3.LogF("" + meh);
 		log3.close();
+
+		//Brings up the GUI window. This is still a WIP
+		ProgramWindow newWindow = new ProgramWindow("Untitled Game Engine");
 	}
 }
