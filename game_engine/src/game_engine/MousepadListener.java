@@ -17,14 +17,12 @@ public class MousepadListener implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent event) {
-		// TODO Auto-generated method stub
-
+		// Unused
 	}
 
 	@Override
 	public void mouseExited(MouseEvent event) {
-		// TODO Auto-generated method stub
-
+		// Unused
 	}
 
 	@Override

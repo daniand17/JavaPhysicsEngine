@@ -19,6 +19,7 @@ public class SampleGameScreen extends Screen {
 
 	@Override
 	public void onUpdate() {
+		
 		if ( this.getScreenFactory().getGame().getKeyboardListener()
 				.isKeyPressed(KeyEvent.VK_A) )
 			x -= 2;
@@ -48,7 +49,5 @@ public class SampleGameScreen extends Screen {
 	public void onDraw(Graphics2D g2d) {
 		g2d.setColor(Color.black);
 		g2d.fillRect(x, y, 64, 64);
-
 	}
-
 }

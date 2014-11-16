@@ -20,6 +20,12 @@ public abstract class Screen {
 	 */
 	public abstract void onUpdate();
 
+	/**
+	 * Used to draw to the screen.
+	 * 
+	 * @param g2d
+	 *            the 2D graphics object
+	 */
 	public abstract void onDraw(Graphics2D g2d);
 
 	public ScreenFactory getScreenFactory() {

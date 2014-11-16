@@ -2,10 +2,10 @@ package game_engine;
 
 public class ScreenFactory {
 
-	private final Game game;
+	private final Engine game;
 	private Screen screen;
 
-	public ScreenFactory(Game game) {
+	public ScreenFactory(Engine game) {
 		this.game = game;
 	}
 
@@ -18,7 +18,7 @@ public class ScreenFactory {
 		return screen;
 	}
 
-	public Game getGame() {
+	public Engine getGame() {
 		return game;
 	}
 }

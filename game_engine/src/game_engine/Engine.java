@@ -1,16 +1,18 @@
 package game_engine;
 
+import java.awt.event.MouseListener;
+
 import javax.swing.JFrame;
 
-public class Game {
+public class Engine {
 
 	private final JFrame window;
 	private final ScreenFactory screenFactory;
 	private final GameThread gameThread;
 	private final KeyboardListener keyboardListener;
-	private final MousepadListener mousepadListener;
+	private final MouseListener mousepadListener;
 
-	public Game(int windowX, int windowY, String title) {
+	public Engine(int windowX, int windowY, String title) {
 		window = new JFrame();
 		screenFactory = new ScreenFactory(this);
 		keyboardListener = new KeyboardListener();
@@ -36,7 +38,7 @@ public class Game {
 
 	}
 
-	public MousepadListener getMouseListener() {
+	public MouseListener getMouseListener() {
 		return mousepadListener;
 	}
 

@@ -19,8 +19,7 @@ public class KeyboardListener implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent event) {
-		// TODO Auto-generated method stub
-
+		// Unused
 	}
 
 	public boolean isKeyPressed(int key) {
