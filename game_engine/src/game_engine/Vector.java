@@ -3,8 +3,9 @@ package game_engine;
 public abstract class Vector {
 
 	/**
-	 * Defines how each type of vector is multiplied by a scalar. Implementation is dependent on the
-	 * dimension of the vector-thus Vector2D and Vector3D implement this a bit differently.
+	 * Defines how each type of vector is multiplied by a scalar. Implementation
+	 * is dependent on the dimension of the vector-thus Vector2D and Vector3D
+	 * implement this a bit differently.
 	 * 
 	 * @param scalar
 	 */
@@ -17,7 +18,7 @@ public abstract class Vector {
 	 * @param second
 	 * @return
 	 */
-	public static float distance(Vector2D first, Vector2D second) {
+	public static float distance(Vector2 first, Vector2 second) {
 
 		float dist = (second.x - first.x) * (second.x - first.x)
 				+ (second.y - first.y) * (second.y - first.y);
@@ -32,7 +33,7 @@ public abstract class Vector {
 	 * @param second
 	 * @return
 	 */
-	public static float distance(Vector3D first, Vector3D second) {
+	public static float distance(Vector3 first, Vector3 second) {
 
 		float dist = (second.x - first.x) * (second.x - first.x)
 				+ (second.y - first.y) * (second.y - first.y)
@@ -47,7 +48,7 @@ public abstract class Vector {
 	 * @param vec
 	 * @return
 	 */
-	public static float magnitude(Vector2D vec) {
+	public static float magnitude(Vector2 vec) {
 		float mag = vec.x * vec.x + vec.y * vec.y;
 		return (float) Math.sqrt(mag);
 	}
@@ -58,8 +59,34 @@ public abstract class Vector {
 	 * @param vec
 	 * @return
 	 */
-	public static float magnitude(Vector3D vec) {
+	public static float magnitude(Vector3 vec) {
 		float mag = vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
 		return (float) Math.sqrt(mag);
+	}
+
+	/**
+	 * Finds the dot product of two Vector2s.
+	 * 
+	 * @param vec1
+	 *            the first vector
+	 * @param vec2
+	 *            the second vector
+	 * @return the dot product of vec1 and vec2
+	 */
+	public static float dot(Vector2 vec1, Vector2 vec2) {
+		return vec1.x * vec2.x + vec1.y * vec2.y;
+	}
+
+	/**
+	 * Finds the dot product of two Vector3s
+	 * 
+	 * @param vec1
+	 *            the first vector
+	 * @param vec2
+	 *            the second vector
+	 * @return the dot product of vec1 and vec2
+	 */
+	public static float dot(Vector3 vec1, Vector3 vec2) {
+		return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
 	}
 }
