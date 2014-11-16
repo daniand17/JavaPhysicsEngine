@@ -89,4 +89,28 @@ public abstract class Vector {
 	public static float dot(Vector3 vec1, Vector3 vec2) {
 		return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
 	}
+
+	public static Vector2 rotate(Vector2 vec, float theta) {
+
+		Vector2 temp = vec;
+		// Clockwise rotation
+		if ( theta > 0 ) {
+			temp.x = (float) Math.cos(theta) * vec.x - (float) Math.sin(theta)
+					* vec.y;
+
+			temp.y = (float) Math.sin(theta) * vec.x - (float) Math.cos(theta)
+					* vec.y;
+		}
+		// Counterclockwise rotation
+		else if ( theta < 0 ) {
+			theta *= -1;
+			temp.x = (float) Math.cos(theta) * vec.x + (float) Math.sin(theta)
+					* vec.y;
+
+			temp.y = (float) -Math.sin(theta) * vec.x + (float) Math.cos(theta)
+					* vec.y;
+
+		}
+		return temp;
+	}
 }
