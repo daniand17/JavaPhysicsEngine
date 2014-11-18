@@ -21,20 +21,20 @@ public class GameScreen extends ProgramWindow {
 		if ( KeyboardListener.isKeyPressed(KeyEvent.VK_0) ) {
 			int randX = rng.nextInt((int) Engine.getDisplayDimensions().x);
 			int randY = rng.nextInt((int) Engine.getDisplayDimensions().y);
-			ObjectManager.instantiate(new TestRectangle(), new Vector2(randX, randY));
+			ObjectManager.instantiate(new TestRectangle(), new Vector3(randX, randY, 0f));
 		}
 
 		if ( KeyboardListener.isKeyPressed(KeyEvent.VK_9) ) {
 			int randX = rng.nextInt((int) Engine.getDisplayDimensions().x);
 			int randY = rng.nextInt((int) Engine.getDisplayDimensions().y);
-			ObjectManager.instantiate(new TestCircle(), new Vector2(randX, randY));
+			ObjectManager.instantiate(new TestCircle(), new Vector3(randX, randY, 0f));
 		}
 
 		// Tests mouse input and motion
 		if ( Input.isMousePressed() ) {
 			float x = Input.getMouseCoordinates().x;
 			float y = Input.getMouseCoordinates().y;
-			ObjectManager.instantiate(new TestRectangle(), new Vector2(x - 32, y - 32));
+			ObjectManager.instantiate(new TestRectangle(), new Vector3(x - 32, y - 32, 0f));
 		}
 	}
 

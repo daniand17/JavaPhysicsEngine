@@ -3,10 +3,8 @@ package game_engine;
 import java.awt.Graphics2D;
 
 public interface IEntity {
-
-	public Vector2 getPosition();
-
-	public void setPosition(Vector2 vec);
+	
+	public Transform transform = null;
 
 	public void fixedUpdate();
 

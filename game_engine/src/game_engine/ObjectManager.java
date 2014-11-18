@@ -22,9 +22,9 @@ public class ObjectManager {
 	 *            the Vector2 location to instantate the object at
 	 * @return the instantiated object
 	 */
-	public static synchronized IEntity instantiate(IEntity newObj, Vector2 location) {
+	public static synchronized IEntity instantiate(GameEntity newObj, Vector3 location) {
 		if ( newObj != null ) {
-			newObj.setPosition(location);
+			newObj.transform.position = location;
 			objects.add(newObj);
 			numObjects++;
 		}
