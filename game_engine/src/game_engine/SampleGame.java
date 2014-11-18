@@ -6,8 +6,6 @@ public class SampleGame {
 
 	public SampleGame() {
 		game = new Engine(800, 600, "Untitled Game Engine");
-		game.getScreenFactory().showScreen(
-				new SampleGameScreen(game.getScreenFactory()));
 	}
 
 	public static void main(String[] args) {
