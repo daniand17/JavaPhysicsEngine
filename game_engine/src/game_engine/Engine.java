@@ -7,21 +7,17 @@ import javax.swing.JFrame;
 public class Engine {
 
 	private final JFrame window;
-	
+
 	private final GameThread gameThread;
-	private final KeyboardListener keyboardListener;
-	private final MouseListener mousepadListener;
+	private static Vector2 displayDims;
 
 	public Engine(int windowX, int windowY, String title) {
 		// Creates the window
 		window = new JFrame();
 
-	
-		keyboardListener = new KeyboardListener();
-		mousepadListener = new MousepadListener();
-
 		// Sets the parameters of the window
 		window.setSize(windowX, windowY);
+		displayDims = new Vector2(windowX, windowY);
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Allows us to listen for keyboard input on the window
@@ -32,8 +28,9 @@ public class Engine {
 		window.setVisible(true);
 
 		// Adds key and mouse listeners
-		window.addKeyListener(keyboardListener);
-		window.addMouseListener(mousepadListener);
+		window.addKeyListener(Input.getKeyboard());
+		window.addMouseListener(Input.getMouse());
+		window.addMouseMotionListener(Input.getMouse());
 
 		// Creates the game thread that will run the game loop and update logic
 		gameThread = new GameThread(this);
@@ -41,18 +38,14 @@ public class Engine {
 		window.add(gameThread);
 		// Starts the game thread
 		new Thread(gameThread).start();
-
-	}
-
-	public MouseListener getMouseListener() {
-		return mousepadListener;
-	}
-
-	public KeyboardListener getKeyboardListener() {
-		return keyboardListener;
 	}
 
 	public JFrame getWindow() {
 		return window;
+	}
+
+	public static Vector2 getDisplayDimensions() {
+		return displayDims;
+
 	}
 }

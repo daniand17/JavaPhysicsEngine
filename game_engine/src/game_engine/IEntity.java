@@ -8,7 +8,7 @@ public interface IEntity {
 
 	public void setPosition(Vector2 vec);
 
-	public void update();
+	public void fixedUpdate();
 
 	public void draw(Graphics2D g2d);
 

@@ -16,7 +16,7 @@ public class GameThread extends JPanel implements Runnable {
 
 	public GameThread(Engine game) {
 		this.game = game;
-		gameWindow = new GameScreen(game);
+		gameWindow = new GameScreen();
 		// Lets panel get input from the keyboard
 		setFocusable(true);
 	}
@@ -44,19 +44,21 @@ public class GameThread extends JPanel implements Runnable {
 				fixedUpdate();
 				lastUpdateTime += UPDATE_PERIOD;
 				updateCount++;
-
 			}
 
 			// Renders the game state
 			repaint(); // TODO implement interpolation
-
 		}
 	}
 
 	private void fixedUpdate() {
 		if ( gameWindow != null )
 			// Update the screen logic
-			gameWindow.fixedUpdate();
+			for (IEntity ent : ObjectManager.getObjects())
+				if ( ent != null )
+					ent.fixedUpdate();
+
+		gameWindow.fixedUpdate();
 	}
 
 	public void paint(Graphics g) {
@@ -66,6 +68,8 @@ public class GameThread extends JPanel implements Runnable {
 
 		// TODO Set this to draw all objects that are visible
 		if ( gameWindow != null )
-			gameWindow.onDraw(g2d);
+			for (IEntity ent : ObjectManager.getObjects())
+				if ( ent != null )
+					ent.draw(g2d);
 	}
 }

@@ -29,4 +29,6 @@ public class Vector2 extends Vector {
 		x *= scalar;
 		y *= scalar;
 	}
+	
+	
 }

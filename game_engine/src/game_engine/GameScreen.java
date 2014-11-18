@@ -1,43 +1,41 @@
 package game_engine;
 
+import gen_objs.TestCircle;
+import gen_objs.TestRectangle;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class GameScreen extends ProgramWindow {
 
 	private int x = 0, y = 0;
 
-	private Engine game;
-
-	public GameScreen(Engine game) {
-		this.game = game;
-	}
+	Random rng = new Random();
 
 	@Override
 	public void fixedUpdate() {
 
-		if ( game.getKeyboardListener().isKeyPressed(KeyEvent.VK_A) )
-			x -= 2;
+		// Tests keyboard listener and instantiating an object
+		if ( KeyboardListener.isKeyPressed(KeyEvent.VK_0) ) {
+			int randX = rng.nextInt((int) Engine.getDisplayDimensions().x);
+			int randY = rng.nextInt((int) Engine.getDisplayDimensions().y);
+			ObjectManager.instantiate(new TestRectangle(), new Vector2(randX, randY));
+		}
 
-		if ( game.getKeyboardListener().isKeyPressed(KeyEvent.VK_D) )
-			x += 2;
+		if ( KeyboardListener.isKeyPressed(KeyEvent.VK_9) ) {
+			int randX = rng.nextInt((int) Engine.getDisplayDimensions().x);
+			int randY = rng.nextInt((int) Engine.getDisplayDimensions().y);
+			ObjectManager.instantiate(new TestCircle(), new Vector2(randX, randY));
+		}
 
-		if ( game.getKeyboardListener().isKeyPressed(KeyEvent.VK_W) )
-			y -= 2;
-
-		if ( game.getKeyboardListener().isKeyPressed(KeyEvent.VK_S) )
-			y += 2;
-
-		if ( x > 800 + 64 )
-			x = -64;
-		else if ( x < -64 )
-			x = 864;
-
-		if ( y > 571 - 64 )
-			y = 571 - 64;
-		else if ( y < 0 )
-			y = 0;
+		// Tests mouse input and motion
+		if ( Input.isMousePressed() ) {
+			float x = Input.getMouseCoordinates().x;
+			float y = Input.getMouseCoordinates().y;
+			ObjectManager.instantiate(new TestRectangle(), new Vector2(x - 32, y - 32));
+		}
 	}
 
 	@Override
