@@ -19,7 +19,7 @@ public class Input {
 		return mouse;
 	}
 
-	public static boolean isKeyPressed(int key) {
+	public static boolean getKeyDown(int key) {
 		return KeyboardListener.isKeyPressed(key);
 	}
 

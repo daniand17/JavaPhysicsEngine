@@ -5,10 +5,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ObjectManager {
 
-	private static List<IEntity> objects = new CopyOnWriteArrayList<IEntity>();
+	private static List<GameEntity> objects = new CopyOnWriteArrayList<GameEntity>();
 	private static int numObjects = 0;
 
-	public static synchronized List<IEntity> getObjects() {
+	public static synchronized List<GameEntity> getObjects() {
 		return objects;
 	}
 

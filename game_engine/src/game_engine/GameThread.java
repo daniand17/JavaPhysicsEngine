@@ -9,13 +9,10 @@ import javax.swing.JPanel;
 public class GameThread extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	private final Engine game;
-
 	private Graphics2D g2d;
 	private GameScreen gameWindow;
 
 	public GameThread(Engine game) {
-		this.game = game;
 		gameWindow = new GameScreen();
 		// Lets panel get input from the keyboard
 		setFocusable(true);
@@ -25,25 +22,32 @@ public class GameThread extends JPanel implements Runnable {
 	public void run() {
 
 		g2d = (Graphics2D) this.getGraphics();
-		long lastUpdateTime = System.nanoTime();
-		final double GAME_HERTZ = 60.0;
-		final double TARGET_FPS = 60;
-		final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
-		final double UPDATE_PERIOD = 1000000000 / GAME_HERTZ;
-		final int MAX_UPDATES_BEFORE_RENDER = 3;
+		final double NANO_CONV = 1000000000;
 
-		// This is the main game loop, it is super simple and not good, but I
-		// will be improving it.
+		double t = 0;
+		double dt = 0.01;
+
+		double currentTime = System.nanoTime() / NANO_CONV;
+		double accumulator = 0.0;
+
 		while (true) {
 
-			double now = System.nanoTime();
-			int updateCount = 0;
+			double now = System.nanoTime() / NANO_CONV;
+			double frameTime = now - currentTime;
 
-			while (now - lastUpdateTime > UPDATE_PERIOD && updateCount < MAX_UPDATES_BEFORE_RENDER) {
+			if ( frameTime > 0.25 )
+				frameTime = 0.25;
+
+			currentTime = now;
+			accumulator += frameTime;
+
+			while (accumulator >= dt) {
 				// Fixed update logic
-				fixedUpdate();
-				lastUpdateTime += UPDATE_PERIOD;
-				updateCount++;
+
+				// Might need to do some sort of integrate(currentState, t, dt) here
+				fixedUpdate(dt);
+				t += dt;
+				accumulator -= dt;
 			}
 
 			// Renders the game state
@@ -51,12 +55,12 @@ public class GameThread extends JPanel implements Runnable {
 		}
 	}
 
-	private void fixedUpdate() {
+	private void fixedUpdate(double dt) {
 		if ( gameWindow != null )
 			// Update the screen logic
-			for (IEntity ent : ObjectManager.getObjects())
+			for (PhysicsEntity ent : ObjectManager.getObjects())
 				if ( ent != null )
-					ent.fixedUpdate();
+					ent.updatePhysics(dt);
 
 		gameWindow.fixedUpdate();
 	}
