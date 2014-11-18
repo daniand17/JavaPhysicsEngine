@@ -3,11 +3,8 @@ package game_engine;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.Random;
 
 public class TestPlayer extends GameEntity {
-
-	
 
 	private float speed = 100f;
 
@@ -32,8 +29,6 @@ public class TestPlayer extends GameEntity {
 	}
 
 	public void fixedUpdate() {
-
-		
 
 		float xV = 0f;
 		float yV = 0f;
