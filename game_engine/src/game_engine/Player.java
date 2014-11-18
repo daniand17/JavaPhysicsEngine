@@ -10,7 +10,7 @@ public class Player extends GameEntity {
 	}
 
 	@Override
-	public void update() {
+	public void fixedUpdate() {
 		// TODO Auto-generated method stub
 
 	}
