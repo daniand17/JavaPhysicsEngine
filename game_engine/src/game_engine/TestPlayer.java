@@ -3,13 +3,10 @@ package game_engine;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.Random;
 
 public class TestPlayer extends GameEntity {
 
-	
-
-	private float speed = 100f;
+	private float speed = 10f;
 
 	public TestPlayer() {
 		this(0, 0, 0);
@@ -33,8 +30,6 @@ public class TestPlayer extends GameEntity {
 
 	public void fixedUpdate() {
 
-		
-
 		float xV = 0f;
 		float yV = 0f;
 		float zV = 0f;
@@ -51,7 +46,21 @@ public class TestPlayer extends GameEntity {
 		if ( Input.getKeyDown(KeyEvent.VK_D) )
 			xV += speed;
 
-		rigidbody.velocity = new Vector3(xV, yV, zV);
+		rigidbody.velocity = new Vector3(rigidbody.velocity.x + xV, rigidbody.velocity.y + yV,
+				rigidbody.velocity.z + zV);
+
+		if ( transform.position.x < 0 )
+			transform.position = new Vector3(800, transform.position.y, transform.position.z);
+		else if ( transform.position.x > 800 )
+			transform.position = new Vector3(transform.position.x % 800, transform.position.y,
+					transform.position.z);
+
+		if ( transform.position.y < 0 )
+			transform.position = new Vector3(transform.position.x, 600, transform.position.z);
+
+		else if ( transform.position.y > 600 )
+			transform.position = new Vector3(transform.position.x, transform.position.y % 600,
+					transform.position.z);
 
 		// TODO do stuff here to describe behavior of a rectangle in the physics loop
 	}
