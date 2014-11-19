@@ -50,6 +50,10 @@ public class GameThread extends JPanel implements Runnable {
 				accumulator -= dt;
 			}
 
+			//Used for interpolation
+			double alpha = accumulator / dt;
+			
+			
 			// Renders the game state
 			repaint(); // TODO implement interpolation
 		}
@@ -58,7 +62,7 @@ public class GameThread extends JPanel implements Runnable {
 	private void fixedUpdate(double t, double dt) {
 		if ( gameWindow != null )
 			// Update the screen logic
-			for (PhysicsEntity ent : ObjectManager.getObjects())
+			for (PhysicsEntity ent : ObjectManager.getPhysicsObjects())
 				if ( ent != null )
 					ent.updatePhysics(t, dt);
 

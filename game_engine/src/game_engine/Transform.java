@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Transform {
+	
+	public Quaternion rotation;
 
 	public GameEntity gameEntity;
 	public Vector3 position;

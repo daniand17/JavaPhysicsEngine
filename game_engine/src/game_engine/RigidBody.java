@@ -1,6 +1,7 @@
 package game_engine;
 
 public class RigidBody {
+	public Quaternion rotation;
 
 	public Vector3 velocity;
 	public float mass;

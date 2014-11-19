@@ -14,11 +14,12 @@ public abstract class GameEntity implements IEntity, PhysicsEntity {
 	}
 
 	public void updatePhysics(double t, double dt) {
-		if ( rigidbody != null ) {
-
-			// Uses RK4 (runge-kutta) integration to determine veolcity.
-
-			Vector3[] a = evaluate((float) t, (float) dt, transform.position, rigidbody.velocity);
+		if (rigidbody != null) {
+			// Allows implementing class to do physics stuff
+			fixedUpdate();
+			// Uses RK4 (runge-kutta) integration to determine velocity.
+			Vector3[] a = evaluate((float) t, (float) dt, transform.position,
+					rigidbody.velocity);
 			Vector3[] b = evaluate((float) t, (float) dt * 0.5f, a[0], a[1]);
 			Vector3[] c = evaluate((float) t, (float) dt * 0.5f, b[0], b[1]);
 			Vector3[] d = evaluate((float) t, (float) dt, c[0], c[1]);
@@ -34,8 +35,6 @@ public abstract class GameEntity implements IEntity, PhysicsEntity {
 			transform.position = new Vector3(dxdt, dydt, dzdt);
 			rigidbody.velocity = new Vector3(dvxdt, dvydt, dvzdt);
 		}
-		// Call fixedUpdate so the implementing class can do stuff in the physics update
-		fixedUpdate();
 	}
 
 	public void fixedUpdate() {
