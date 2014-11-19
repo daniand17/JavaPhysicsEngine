@@ -45,7 +45,7 @@ public class GameThread extends JPanel implements Runnable {
 				// Fixed update logic
 
 				// Might need to do some sort of integrate(currentState, t, dt) here
-				fixedUpdate(dt);
+				fixedUpdate(t, dt);
 				t += dt;
 				accumulator -= dt;
 			}
@@ -55,12 +55,12 @@ public class GameThread extends JPanel implements Runnable {
 		}
 	}
 
-	private void fixedUpdate(double dt) {
+	private void fixedUpdate(double t, double dt) {
 		if ( gameWindow != null )
 			// Update the screen logic
 			for (PhysicsEntity ent : ObjectManager.getObjects())
 				if ( ent != null )
-					ent.updatePhysics(dt);
+					ent.updatePhysics(t, dt);
 
 		gameWindow.fixedUpdate();
 	}
