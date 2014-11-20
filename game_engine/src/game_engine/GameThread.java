@@ -77,8 +77,8 @@ public class GameThread extends JPanel implements Runnable {
 
 		// TODO Set this to draw all objects that are visible
 		if ( gameWindow != null )
-			for (IEntity ent : ObjectManager.getObjects())
-				if ( ent != null )
-					ent.render(g2d, alpha);
+			for (GameEntity ent : ObjectManager.getObjects())
+				if ( ent != null && ent.renderer != null )
+					ent.renderer.renderObject(g2d, alpha);
 	}
 }

@@ -23,12 +23,10 @@ public class Engine {
 		window.setLocationRelativeTo(null);
 		window.setTitle(title);
 		window.setVisible(true);
-
 		// Adds key and mouse listeners
 		window.addKeyListener(Input.getKeyboard());
 		window.addMouseListener(Input.getMouse());
 		window.addMouseMotionListener(Input.getMouse());
-
 		// Creates the game thread that will run the game loop and update logic
 		gameThread = new GameThread(this);
 		// Adds the thread to the window

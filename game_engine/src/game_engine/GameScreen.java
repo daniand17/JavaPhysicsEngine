@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class GameScreen extends ProgramWindow {
-	private int x = 0, y = 0;
 
 	Random rng = new Random();
 
@@ -17,11 +16,6 @@ public class GameScreen extends ProgramWindow {
 			int randY = rng.nextInt((int) Engine.getDisplayDimensions().y);
 			ObjectManager.instantiate(new TestRect(), new Vector3(randX, randY, 0f));
 		}
-		if ( KeyboardListener.isKeyPressed(KeyEvent.VK_9) ) {
-			int randX = rng.nextInt((int) Engine.getDisplayDimensions().x);
-			int randY = rng.nextInt((int) Engine.getDisplayDimensions().y);
-			ObjectManager.instantiate(new TestCircle(), new Vector3(randX, randY, 0f));
-		}
 		// Tests mouse input and motion
 		if ( Input.isMousePressed() && ObjectManager.getObjects().size() < 1 ) {
 			float x = Input.getMouseCoordinates().x;
@@ -31,12 +25,13 @@ public class GameScreen extends ProgramWindow {
 	}
 
 	@Override
-	public void onDraw(Graphics2D g2d) {
+	public void onCreate() {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onCreate() {
+	public void onDraw(Graphics2D g2d) {
 		// TODO Auto-generated method stub
 
 	}
