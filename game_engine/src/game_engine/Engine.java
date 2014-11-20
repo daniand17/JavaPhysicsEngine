@@ -7,7 +7,7 @@ public class Engine {
 	private final JFrame window;
 
 	private final GameThread gameThread;
-	private static Vector2 displayDims;
+	public static Vector2 displayDims;
 
 	public Engine(int windowX, int windowY, String title) {
 		// Creates the window

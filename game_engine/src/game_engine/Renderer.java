@@ -18,9 +18,11 @@ public abstract class Renderer implements RenderableEntity {
 					* alpha);
 			Vector3 pRenderPos = new Vector3(previous.x * (1 - alpha), previous.y * (1 - alpha),
 					previous.z * (1 - alpha));
-			Vector3 renderPos = cRenderPos.add(pRenderPos);
+			Vector3 interpPos = cRenderPos.add(pRenderPos);
 			// Call the implementing class' render function
-			render(g2d, renderPos);
+
+			render(g2d, interpPos);
+
 		}
 	}
 

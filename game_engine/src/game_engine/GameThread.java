@@ -10,11 +10,11 @@ public class GameThread extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private Graphics2D g2d;
-	private GameScreen gameWindow;
+
 	private double alpha = 0;
 
 	public GameThread(Engine game) {
-		gameWindow = new GameScreen();
+
 		// Lets panel get input from the keyboard
 		setFocusable(true);
 	}
@@ -42,6 +42,8 @@ public class GameThread extends JPanel implements Runnable {
 			currentTime = now;
 			accumulator += frameTime;
 
+			ObjectManager.initializeStartObjects();
+
 			while (accumulator >= dt) {
 
 				// Might need to do some sort of integrate(currentState, t, dt) here
@@ -49,6 +51,8 @@ public class GameThread extends JPanel implements Runnable {
 				t += dt;
 				accumulator -= dt;
 			}
+
+			update();
 
 			// Used for interpolation
 			alpha = accumulator / dt;
@@ -59,14 +63,16 @@ public class GameThread extends JPanel implements Runnable {
 		}
 	}
 
-	private void fixedUpdate(double t, double dt) {
-		if ( gameWindow != null )
-			// Update the screen logic
-			for (PhysicsEntity ent : ObjectManager.getPhysicsObjects())
-				if ( ent != null )
-					ent.updatePhysics(t, dt);
+	private void update() {
+		for (GameEntity currEnt : ObjectManager.getObjects())
+			currEnt.update();
+	}
 
-		gameWindow.fixedUpdate();
+	private void fixedUpdate(double t, double dt) {
+		// Update the screen logic
+		for (PhysicsEntity ent : ObjectManager.getPhysicsObjects())
+			if ( ent != null )
+				ent.updatePhysics(t, dt);
 	}
 
 	@Override
@@ -76,9 +82,8 @@ public class GameThread extends JPanel implements Runnable {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// TODO Set this to draw all objects that are visible
-		if ( gameWindow != null )
-			for (GameEntity ent : ObjectManager.getObjects())
-				if ( ent != null && ent.renderer != null )
-					ent.renderer.renderObject(g2d, alpha);
+		for (GameEntity ent : ObjectManager.getObjects())
+			if ( ent != null && ent.renderer != null )
+				ent.renderer.renderObject(g2d, alpha);
 	}
 }
