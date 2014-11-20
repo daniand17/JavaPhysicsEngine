@@ -2,6 +2,9 @@ package game_engine;
 
 public class Vector2 extends Vector {
 
+	public static final Vector2 forward = new Vector2(0f, 1f);
+	public static final Vector2 right = new Vector2(1f, 0f);
+
 	// Fields
 	public float x;
 	public float y;
@@ -29,6 +32,5 @@ public class Vector2 extends Vector {
 		x *= scalar;
 		y *= scalar;
 	}
-	
-	
+
 }

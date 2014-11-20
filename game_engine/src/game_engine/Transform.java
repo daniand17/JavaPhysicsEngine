@@ -4,12 +4,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Transform {
-	
+
 	public Quaternion rotation;
 
 	public GameEntity gameEntity;
 	public Vector3 position;
 	private List<Transform> children;
+
+	public Transform() {
+		this(new Vector3(0f, 0f, 0f));
+	}
 
 	public Transform(Vector3 pos) {
 		position = pos;
