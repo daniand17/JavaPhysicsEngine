@@ -1,6 +1,6 @@
 package game_engine;
 
-public abstract class GameEntity implements IEntity, PhysicsEntity {
+public abstract class GameEntity implements PhysicsEntity {
 
 	public Transform transform = new Transform();
 	public RigidBody rigidbody = new RigidBody();
