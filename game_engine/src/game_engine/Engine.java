@@ -12,7 +12,6 @@ public class Engine {
 	public Engine(int windowX, int windowY, String title) {
 		// Creates the window
 		window = new JFrame();
-
 		// Sets the parameters of the window
 		window.setSize(windowX, windowY);
 		displayDims = new Vector2(windowX, windowY);

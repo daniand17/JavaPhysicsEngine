@@ -11,6 +11,7 @@ public class GameThread extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private Graphics2D g2d;
 	private GameScreen gameWindow;
+	private double alpha = 0;
 
 	public GameThread(Engine game) {
 		gameWindow = new GameScreen();
@@ -42,7 +43,6 @@ public class GameThread extends JPanel implements Runnable {
 			accumulator += frameTime;
 
 			while (accumulator >= dt) {
-				// Fixed update logic
 
 				// Might need to do some sort of integrate(currentState, t, dt) here
 				fixedUpdate(t, dt);
@@ -50,12 +50,12 @@ public class GameThread extends JPanel implements Runnable {
 				accumulator -= dt;
 			}
 
-			//Used for interpolation
-			double alpha = accumulator / dt;
-			
-			
+			// Used for interpolation
+			alpha = accumulator / dt;
+
 			// Renders the game state
 			repaint(); // TODO implement interpolation
+
 		}
 	}
 
@@ -69,6 +69,7 @@ public class GameThread extends JPanel implements Runnable {
 		gameWindow.fixedUpdate();
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		g2d = (Graphics2D) g;
@@ -78,6 +79,6 @@ public class GameThread extends JPanel implements Runnable {
 		if ( gameWindow != null )
 			for (IEntity ent : ObjectManager.getObjects())
 				if ( ent != null )
-					ent.draw(g2d);
+					ent.render(g2d, alpha);
 	}
 }

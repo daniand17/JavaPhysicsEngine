@@ -31,6 +31,7 @@ public class ObjectManager {
 			Vector3 location) {
 		if (newObj != null) {
 			newObj.transform.position = location;
+			newObj.prevPos = location;
 			objects.add(newObj);
 			numObjects++;
 

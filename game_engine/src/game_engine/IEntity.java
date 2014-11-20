@@ -4,10 +4,8 @@ import java.awt.Graphics2D;
 
 public interface IEntity {
 
-	public Transform transform = null;
+	public Transform transform = new Transform();
 
-	public void fixedUpdate();
-
-	public void draw(Graphics2D g2d);
+	public void render(Graphics2D g2d, double alpha);
 
 }
