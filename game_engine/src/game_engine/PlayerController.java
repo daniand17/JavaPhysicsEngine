@@ -27,18 +27,18 @@ public class PlayerController extends GameEntity {
 		if ( Input.getKeyDown(KeyEvent.VK_A) )
 			rigidbody.velocity.x -= accel;
 
-		if ( transform.position.x > Engine.displayDims.x )
+		if ( transform.position.x > Display.SIZE.width )
 			transform.position.x = 0;
 		else if ( transform.position.x < 0 )
-			transform.position.x = Engine.displayDims.x;
+			transform.position.x = Display.SIZE.width;
 	}
 
 	public void update() {
 		// Wraparound
-		if ( transform.position.y > Engine.displayDims.y )
+		if ( transform.position.y > Display.SIZE.height )
 			transform.position.y = 0;
 		else if ( transform.position.y < 0 )
-			transform.position.y = Engine.displayDims.y;
+			transform.position.y = Display.SIZE.height;
 	}
 
 }

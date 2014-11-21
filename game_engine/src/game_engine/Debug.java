@@ -74,8 +74,13 @@ public class Debug {
 	 */
 	public static void logF(String message) {
 
-		if ( out != null && message != null )
+		if ( out == null )
+			setupDebugOutput();
+
+		if ( out != null && message != null ) {
 			out.write(message + "\n");
+			out.flush();
+		}
 		else
 			System.err.println("Debug.LogF() not successful. Could not print to Debug Log: "
 					+ logName);

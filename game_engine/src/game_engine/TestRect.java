@@ -37,16 +37,18 @@ public class TestRect extends GameEntity {
 				rigidbody.velocity.z + zV);
 		// Wraparound on the x axis
 		if ( transform.position.x < 0 )
-			transform.position = new Vector3(800, transform.position.y, transform.position.z);
-		else if ( transform.position.x > 800 )
-			transform.position = new Vector3(transform.position.x % 800, transform.position.y,
+			transform.position = new Vector3(Display.SIZE.width, transform.position.y,
 					transform.position.z);
+		else if ( transform.position.x > 800 )
+			transform.position = new Vector3(transform.position.x % Display.SIZE.width,
+					transform.position.y, transform.position.z);
 		// Wraparound on the y axis
 		if ( transform.position.y < 0 )
-			transform.position = new Vector3(transform.position.x, 600, transform.position.z);
-		else if ( transform.position.y > 600 )
-			transform.position = new Vector3(transform.position.x, transform.position.y % 600,
+			transform.position = new Vector3(transform.position.x, Display.SIZE.height,
 					transform.position.z);
+		else if ( transform.position.y > Display.SIZE.height )
+			transform.position = new Vector3(transform.position.x, transform.position.y
+					% Display.SIZE.height, transform.position.z);
 	}
 
 	public void update() {
