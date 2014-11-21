@@ -22,7 +22,6 @@ public abstract class Renderer implements RenderableEntity {
 			// Call the implementing class' render function
 
 			render(g2d, interpPos);
-
 		}
 	}
 
