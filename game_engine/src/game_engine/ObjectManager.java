@@ -6,14 +6,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ObjectManager {
 
 	private static List<GameEntity> objects = new CopyOnWriteArrayList<GameEntity>();
-	private static List<GameEntity> physicsObjects = new CopyOnWriteArrayList<GameEntity>();
-	private static int numObjects = 0;
+	private static List<PhysicsEntity> physicsObjects = new CopyOnWriteArrayList<PhysicsEntity>();
+
+	public static List<CanUpdate> startObjects = new CopyOnWriteArrayList<CanUpdate>();
 
 	public static synchronized List<GameEntity> getObjects() {
 		return objects;
 	}
 
-	public static synchronized List<GameEntity> getPhysicsObjects() {
+	public static synchronized List<PhysicsEntity> getPhysicsObjects() {
 		return physicsObjects;
 	}
 
@@ -27,19 +28,26 @@ public class ObjectManager {
 	 *            the Vector2 location to instantate the object at
 	 * @return the instantiated object
 	 */
-	public static synchronized IEntity instantiate(GameEntity newObj, Vector3 location) {
+	public static synchronized GameEntity instantiate(GameEntity newObj, Vector3 location) {
 		if ( newObj != null ) {
 			newObj.transform.position = location;
-			objects.add(newObj);
-			numObjects++;
-
-			if ( newObj.rigidbody != null )
-				physicsObjects.add(newObj);
+			startObjects.add(newObj);
 		}
 		return newObj;
 	}
 
-	public static int getObjectAmount() {
-		return numObjects;
+	public static synchronized void initializeStartObjects() {
+
+		for (int i = 0 ; i < ObjectManager.startObjects.size() ; i++) {
+			CanUpdate obj = ObjectManager.startObjects.remove(i);
+			// Call the start function of the object
+			obj.start();
+			if ( obj instanceof GameEntity ) {
+				objects.add((GameEntity) obj);
+
+				if ( ((GameEntity) obj).rigidbody != null )
+					physicsObjects.add((PhysicsEntity) obj);
+			}
+		}
 	}
 }
