@@ -6,7 +6,6 @@ public class Engine {
 
 	private final JFrame window;
 	private final Display display;
-
 	private final GameThread gameThread;
 
 	public Engine(int windowX, int windowY, String title) {
@@ -14,7 +13,6 @@ public class Engine {
 		window = new JFrame();
 		// Sets the parameters of the window
 		window.setSize(windowX, windowY);
-
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Allows us to listen for keyboard input on the window

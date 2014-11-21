@@ -48,6 +48,10 @@ public class GameThread implements Runnable {
 
 			// Renders the game state
 			display.render(alpha);
+
+			double then = System.nanoTime() / NANO_CONV - now;
+
+			System.out.println(then * 1000);
 		}
 	}
 
