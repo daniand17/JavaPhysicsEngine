@@ -4,6 +4,8 @@ public class GameThread implements Runnable {
 
 	private final Display display;
 
+	private static String mtInfo = "";
+
 	public GameThread(Display display) {
 		this.display = display;
 		display.setupWindow();
@@ -51,8 +53,17 @@ public class GameThread implements Runnable {
 
 			double then = System.nanoTime() / NANO_CONV - now;
 
-			System.out.println(then * 1000);
+			mtInfo = updateFrequencyInfo(then * 1000);
 		}
+	}
+
+	private String updateFrequencyInfo(double threadTime) {
+
+		return "MT-Period: " + Utility.round(threadTime) + " ms";
+	}
+
+	public static String getMTInfo() {
+		return mtInfo;
 	}
 
 	private void update() {

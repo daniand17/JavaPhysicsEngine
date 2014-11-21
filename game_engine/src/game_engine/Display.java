@@ -64,9 +64,10 @@ public class Display extends Canvas {
 	}
 
 	public void renderGUI(Graphics2D g2d) {
-
+		int leftmargin = 12;
 		g2d.setColor(Color.green.brighter());
-		g2d.drawString("Objects on screen: " + ObjectManager.getObjects().size(), 32, 32);
+		g2d.drawString("Objects on screen: " + ObjectManager.getObjects().size(), leftmargin, 20);
+		g2d.drawString(GameThread.getMTInfo(), leftmargin, 40);
 
 	}
 }
