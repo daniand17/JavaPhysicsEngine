@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces_abstracts;
 
 public interface CanUpdate {
 

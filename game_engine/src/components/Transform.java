@@ -2,11 +2,10 @@ package components;
 
 import game_engine.Quaternion;
 import game_engine.Vector3;
+import interfaces_abstracts.GameEntity;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import abstracts.GameEntity;
 
 public class Transform {
 

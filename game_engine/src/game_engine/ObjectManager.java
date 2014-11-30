@@ -1,12 +1,11 @@
 package game_engine;
 
-import interfaces.CanUpdate;
-import interfaces.PhysicsEntity;
+import interfaces_abstracts.CanUpdate;
+import interfaces_abstracts.GameEntity;
+import interfaces_abstracts.PhysicsEntity;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import abstracts.GameEntity;
 
 public class ObjectManager {
 

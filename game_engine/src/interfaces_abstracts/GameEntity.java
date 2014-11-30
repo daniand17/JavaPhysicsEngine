@@ -1,10 +1,7 @@
-package abstracts;
+package interfaces_abstracts;
 
 import components.RigidBody;
 import components.Transform;
-
-import interfaces.CanUpdate;
-import interfaces.PhysicsEntity;
 import game_engine.Vector3;
 
 public abstract class GameEntity implements PhysicsEntity, CanUpdate {

@@ -1,4 +1,4 @@
-package abstracts;
+package interfaces_abstracts;
 
 import game_engine.Vector2;
 import game_engine.Vector3;

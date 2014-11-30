@@ -1,5 +1,7 @@
 package game_engine;
 
+import interfaces_abstracts.GameEntity;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,8 +10,6 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
-
-import abstracts.GameEntity;
 
 public class Display extends Canvas {
 

@@ -3,10 +3,10 @@ package objects;
 import game_engine.Display;
 import game_engine.Input;
 import game_engine.ObjectManager;
+import interfaces_abstracts.GameEntity;
 
 import java.awt.event.KeyEvent;
 
-import abstracts.GameEntity;
 import components.RigidBody;
 import components.SquareRenderer;
 

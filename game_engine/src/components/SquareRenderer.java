@@ -1,11 +1,10 @@
 package components;
 
 import game_engine.Vector3;
+import interfaces_abstracts.Renderer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import abstracts.Renderer;
 
 public class SquareRenderer extends Renderer {
 

@@ -1,6 +1,6 @@
 package game_engine;
 
-import abstracts.Vector;
+import interfaces_abstracts.Vector;
 
 public class Vector3 extends Vector {
 

@@ -1,7 +1,7 @@
 package game_engine;
 
-import abstracts.GameEntity;
-import interfaces.PhysicsEntity;
+import interfaces_abstracts.GameEntity;
+import interfaces_abstracts.PhysicsEntity;
 
 public class GameThread implements Runnable {
 
