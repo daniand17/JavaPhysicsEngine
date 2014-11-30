@@ -1,4 +1,7 @@
-package game_engine;
+package abstracts;
+
+import game_engine.Vector3;
+import interfaces.RenderableEntity;
 
 import java.awt.Graphics2D;
 

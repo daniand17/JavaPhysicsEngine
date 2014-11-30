@@ -1,6 +1,14 @@
-package game_engine;
+package objects;
+
+import game_engine.Display;
+import game_engine.Input;
+import game_engine.Vector3;
 
 import java.awt.event.KeyEvent;
+
+import abstracts.GameEntity;
+import components.RigidBody;
+import components.SquareRenderer;
 
 public class TestRect extends GameEntity {
 

@@ -1,4 +1,7 @@
-package game_engine;
+package abstracts;
+
+import game_engine.Vector2;
+import game_engine.Vector3;
 
 public abstract class Vector {
 

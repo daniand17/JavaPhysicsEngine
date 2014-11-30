@@ -1,5 +1,7 @@
 package game_engine;
 
+import abstracts.Vector;
+
 public class Vector3 extends Vector {
 
 	public static final Vector3 up = new Vector3(0f, 0f, 1f);

@@ -35,11 +35,11 @@ public class Input {
 		return mouse.getMouseCoords();
 	}
 
-	// TODO add public static boolean onMouseDown()
-	// TODO add public static boolean onMouseUp()
+	// TODO (Andy) add public static boolean onMouseDown()
+	// TODO (Andy) add public static boolean onMouseUp()
 
-	// TODO add public static boolean onKeyDown(int key)
-	// TODO add public static boolean onKeyUp(int key)
+	// TODO (Andy) add public static boolean onKeyDown(int key)
+	// TODO (Andy) add public static boolean onKeyUp(int key)
 }
 
 class MousepadListener implements MouseListener, MouseMotionListener {

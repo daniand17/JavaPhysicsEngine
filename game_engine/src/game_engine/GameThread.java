@@ -1,5 +1,8 @@
 package game_engine;
 
+import abstracts.GameEntity;
+import interfaces.PhysicsEntity;
+
 public class GameThread implements Runnable {
 
 	private final Display display;
@@ -27,7 +30,7 @@ public class GameThread implements Runnable {
 			double now = System.nanoTime() / NANO_CONV;
 			double frameTime = now - currentTime;
 
-			if ( frameTime > 0.25 )
+			if (frameTime > 0.25)
 				frameTime = 0.25;
 
 			currentTime = now;
@@ -37,7 +40,8 @@ public class GameThread implements Runnable {
 
 			while (accumulator >= dt) {
 
-				// Might need to do some sort of integrate(currentState, t, dt) here
+				// Might need to do some sort of integrate(currentState, t, dt)
+				// here
 				fixedUpdate(t, dt);
 				t += dt;
 				accumulator -= dt;
@@ -59,7 +63,7 @@ public class GameThread implements Runnable {
 
 	private String updateFrequencyInfo(double threadTime) {
 
-		return "MT-Period: " + Utility.round(threadTime) + " ms";
+		return "MT-Period: " + Utility.roundToTenth(threadTime) + " ms";
 	}
 
 	public static String getMTInfo() {
@@ -74,7 +78,7 @@ public class GameThread implements Runnable {
 	private void fixedUpdate(double t, double dt) {
 		// Update the screen logic
 		for (PhysicsEntity ent : ObjectManager.getPhysicsObjects())
-			if ( ent != null )
+			if (ent != null)
 				ent.updatePhysics(t, dt);
 	}
 }

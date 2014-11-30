@@ -1,6 +1,14 @@
-package game_engine;
+package objects;
+
+import game_engine.Display;
+import game_engine.Input;
+import game_engine.ObjectManager;
 
 import java.awt.event.KeyEvent;
+
+import abstracts.GameEntity;
+import components.RigidBody;
+import components.SquareRenderer;
 
 public class PlayerController extends GameEntity {
 
