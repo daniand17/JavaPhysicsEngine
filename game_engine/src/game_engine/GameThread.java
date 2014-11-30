@@ -7,7 +7,7 @@ public class GameThread implements Runnable {
 
 	private final Display display;
 
-	private static String mtInfo = "";
+	private static double mtPeriod = 0;
 
 	public GameThread(Display display) {
 		this.display = display;
@@ -57,7 +57,19 @@ public class GameThread implements Runnable {
 
 			double then = System.nanoTime() / NANO_CONV - now;
 
-			mtInfo = updateFrequencyInfo(then * 1000);
+			mtPeriod = then * 1000;
+
+			// Sleeps the thread for just a bit to save on CPU
+			if (mtPeriod < 10)
+				try {
+					Thread.sleep((long) (12 - mtPeriod));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+			// Updates the length the main thread took for info purposes
+			then = System.nanoTime() / NANO_CONV - now;
+			mtPeriod = then * 1000;
 		}
 	}
 
@@ -66,8 +78,8 @@ public class GameThread implements Runnable {
 		return "MT-Period: " + Utility.roundToTenth(threadTime) + " ms";
 	}
 
-	public static String getMTInfo() {
-		return mtInfo;
+	public static double getMTInfo() {
+		return mtPeriod;
 	}
 
 	private void update() {

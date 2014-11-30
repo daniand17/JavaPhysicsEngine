@@ -36,7 +36,6 @@ public class Display extends Canvas {
 
 		// Uses a double buffer, and ignores repaint requests since we are
 		// handling the graphics
-		// updates manually
 		this.createBufferStrategy(2);
 		strategy = this.getBufferStrategy();
 		this.setIgnoreRepaint(true);
@@ -94,7 +93,11 @@ public class Display extends Canvas {
 		g2d.setColor(Color.green.brighter());
 		g2d.drawString("Objects on screen: "
 				+ ObjectManager.getObjects().size(), leftmargin, 20);
-		g2d.drawString(GameThread.getMTInfo(), leftmargin, 40);
+
+		double amt = GameThread.getMTInfo();
+
+		g2d.drawString("FPS: " + Utility.roundToTenth((1 / amt) * 1000),
+				leftmargin, 40);
 
 	}
 }
