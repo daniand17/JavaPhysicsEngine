@@ -8,8 +8,8 @@ public class Vector2 extends Vector {
 	public static final Vector2 right = new Vector2(1f, 0f);
 
 	// Fields
-	public float x;
-	public float y;
+	public double x;
+	public double y;
 
 	/**
 	 * Initializes the vector with a value of 0 for x and y.
@@ -22,17 +22,21 @@ public class Vector2 extends Vector {
 	/**
 	 * Used to initialize the vector with initial values.
 	 * 
-	 * @param x
-	 * @param y
+	 * @param d
+	 * @param e
 	 */
-	public Vector2(float x, float y) {
-		this.x = x;
-		this.y = y;
+	public Vector2(double d, double e) {
+		this.x = d;
+		this.y = e;
 	}
 
 	public void scale(float scalar) {
 		x *= scalar;
 		y *= scalar;
+	}
+
+	public Vector2 add(Vector2 grav) {
+		return new Vector2(this.x + grav.x, this.y + grav.y);
 	}
 
 }

@@ -39,13 +39,9 @@ public class PlayerController extends GameEntity {
 			transform.position.x = 0;
 		else if ( transform.position.x < 0 )
 			transform.position.x = Display.SIZE.width;
-
-		if ( Input.getKeyDown(KeyEvent.VK_0) )
-			ObjectManager.instantiate(new TestRect(), transform.position);
 	}
-
 	public void update() {
-		// Wraparound
+		// Screen wraparound
 		if ( transform.position.y > Display.SIZE.height )
 			transform.position.y = 0;
 		else if ( transform.position.y < 0 )

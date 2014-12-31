@@ -2,7 +2,7 @@ package objects;
 
 import game_engine.Display;
 import game_engine.Input;
-import game_engine.Vector3;
+import game_engine.Vector2;
 import interfaces_abstracts.GameEntity;
 
 import java.awt.event.KeyEvent;
@@ -16,7 +16,8 @@ public class TestRect extends GameEntity {
 	boolean debug = true;
 
 	public void start() {
-		// This function is used for calling things that you want to happen after the object is
+		// This function is used for calling things that you want to happen
+		// after the object is
 		// instantiated, but after the constructor
 	}
 
@@ -41,26 +42,25 @@ public class TestRect extends GameEntity {
 		if ( Input.getKeyDown(KeyEvent.VK_D) )
 			xV += accel;
 		// Sets the velocity given input
-		rigidbody.velocity = new Vector3(rigidbody.velocity.x + xV, rigidbody.velocity.y + yV,
-				rigidbody.velocity.z + zV);
+		rigidbody.velocity = new Vector2(rigidbody.velocity.x + xV, rigidbody.velocity.y + yV);
 		// Wraparound on the x axis
 		if ( transform.position.x < 0 )
-			transform.position = new Vector3(Display.SIZE.width, transform.position.y,
-					transform.position.z);
+			transform.position = new Vector2(Display.SIZE.width, transform.position.y);
 		else if ( transform.position.x > 800 )
-			transform.position = new Vector3(transform.position.x % Display.SIZE.width,
-					transform.position.y, transform.position.z);
+			transform.position = new Vector2(transform.position.x % Display.SIZE.width,
+					transform.position.y);
+		
 		// Wraparound on the y axis
 		if ( transform.position.y < 0 )
-			transform.position = new Vector3(transform.position.x, Display.SIZE.height,
-					transform.position.z);
+			transform.position = new Vector2(transform.position.x, Display.SIZE.height);
 		else if ( transform.position.y > Display.SIZE.height )
-			transform.position = new Vector3(transform.position.x, transform.position.y
-					% Display.SIZE.height, transform.position.z);
+			transform.position = new Vector2(transform.position.x, transform.position.y
+					% Display.SIZE.height);
 	}
 
 	public void update() {
-		// This function is for doing things you want done outside the physics loop, and more often
+		// This function is for doing things you want done outside the physics
+		// loop, and more often
 		// than a physics step
 
 	}

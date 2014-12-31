@@ -1,8 +1,9 @@
 package interfaces_abstracts;
 
+import game_engine.Vector2;
+
 import components.RigidBody;
 import components.Transform;
-import game_engine.Vector3;
 
 public abstract class GameEntity implements PhysicsEntity, CanUpdate {
 
@@ -18,9 +19,10 @@ public abstract class GameEntity implements PhysicsEntity, CanUpdate {
 		if ( rigidbody != null ) {
 			// Allows implementing class to do physics stuff
 			fixedUpdate();
-			Vector3 prevPos = transform.position;
+			Vector2 prevPos = transform.position;
 			transform.position = rigidbody.integratePositionFromVelocity(t, dt, transform.position);
-			// Updates the positions that were just calculated so the renderer can interpolate
+			// Updates the positions that were just calculated so the renderer
+			// can interpolate
 			if ( renderer != null )
 				renderer.updateRendererPositions(prevPos, transform.position);
 		}

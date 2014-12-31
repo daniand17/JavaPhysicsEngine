@@ -40,8 +40,6 @@ public class GameThread implements Runnable {
 
 			while (accumulator >= dt) {
 
-				// Might need to do some sort of integrate(currentState, t, dt)
-				// here
 				fixedUpdate(t, dt);
 				t += dt;
 				accumulator -= dt;

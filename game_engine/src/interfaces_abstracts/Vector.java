@@ -6,8 +6,9 @@ import game_engine.Vector3;
 public abstract class Vector {
 
 	/**
-	 * Defines how each type of vector is multiplied by a scalar. Implementation is dependent on the
-	 * dimension of the vector-thus Vector2D and Vector3D implement this a bit differently.
+	 * Defines how each type of vector is multiplied by a scalar. Implementation
+	 * is dependent on the dimension of the vector-thus Vector2D and Vector3D
+	 * implement this a bit differently.
 	 * 
 	 * @param scalar
 	 */
@@ -20,12 +21,12 @@ public abstract class Vector {
 	 * @param second
 	 * @return
 	 */
-	public static float distance(Vector2 first, Vector2 second) {
+	public static double distance(Vector2 first, Vector2 second) {
 
-		float dist = (second.x - first.x) * (second.x - first.x) + (second.y - first.y)
+		double dist = (second.x - first.x) * (second.x - first.x) + (second.y - first.y)
 				* (second.y - first.y);
 
-		return (float) Math.sqrt(dist);
+		return Math.sqrt(dist);
 	}
 
 	/**
@@ -49,9 +50,9 @@ public abstract class Vector {
 	 * @param vec
 	 * @return
 	 */
-	public static float magnitude(Vector2 vec) {
-		float mag = vec.x * vec.x + vec.y * vec.y;
-		return (float) Math.sqrt(mag);
+	public static double magnitude(Vector2 vec) {
+		double mag = vec.x * vec.x + vec.y * vec.y;
+		return Math.sqrt(mag);
 	}
 
 	/**
@@ -74,7 +75,7 @@ public abstract class Vector {
 	 *            the second vector
 	 * @return the dot product of vec1 and vec2
 	 */
-	public static float dot(Vector2 vec1, Vector2 vec2) {
+	public static double dot(Vector2 vec1, Vector2 vec2) {
 		return vec1.x * vec2.x + vec1.y * vec2.y;
 	}
 

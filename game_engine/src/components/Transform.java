@@ -1,7 +1,7 @@
 package components;
 
 import game_engine.Quaternion;
-import game_engine.Vector3;
+import game_engine.Vector2;
 import interfaces_abstracts.GameEntity;
 
 import java.util.LinkedList;
@@ -12,14 +12,14 @@ public class Transform {
 	public Quaternion rotation;
 
 	public GameEntity gameEntity;
-	public Vector3 position;
+	public Vector2 position;
 	private List<Transform> children;
 
 	public Transform() {
-		this(new Vector3(0f, 0f, 0f));
+		this(new Vector2(0f, 0f));
 	}
 
-	public Transform(Vector3 pos) {
+	public Transform(Vector2 pos) {
 		position = pos;
 		children = new LinkedList<Transform>();
 	}
