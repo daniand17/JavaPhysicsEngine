@@ -20,12 +20,19 @@ public abstract class Renderer implements RenderableEntity {
 			Vector2 cRenderPos = new Vector2(current.x * alpha, current.y * alpha);
 			Vector2 pRenderPos = new Vector2(previous.x * (1 - alpha), previous.y * (1 - alpha));
 			Vector2 interpPos = cRenderPos.add(pRenderPos);
-			
+
 			// Call the implementing class' render function
 			render(g2d, interpPos);
 		}
 	}
 
+	/**
+	 * This method is used to update the position of an object for interpolation
+	 * between two points
+	 * 
+	 * @param prevPos
+	 * @param position
+	 */
 	public void updateRendererPositions(Vector2 prevPos, Vector2 position) {
 		previous = prevPos;
 		current = position;

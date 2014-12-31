@@ -2,10 +2,7 @@ package game_engine;
 
 import interfaces_abstracts.Vector;
 
-public class Vector2 extends Vector {
-
-	public static final Vector2 forward = new Vector2(0f, 1f);
-	public static final Vector2 right = new Vector2(1f, 0f);
+public class Vector2 implements Vector {
 
 	// Fields
 	public double x;
@@ -30,13 +27,20 @@ public class Vector2 extends Vector {
 		this.y = e;
 	}
 
-	public void scale(float scalar) {
-		x *= scalar;
-		y *= scalar;
-	}
-
 	public Vector2 add(Vector2 grav) {
 		return new Vector2(this.x + grav.x, this.y + grav.y);
+	}
+
+	@Override
+	public Vector2 scale(double scalar) {
+		return new Vector2(scalar * x, scalar * y);
+	}
+
+	/**
+	 * Returns the string representation of this vector for debugging purposes
+	 */
+	public String toString() {
+		return "Vector2: (" + x + ", " + y + ")";
 	}
 
 }

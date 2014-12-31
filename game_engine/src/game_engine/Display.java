@@ -41,8 +41,8 @@ public class Display extends Canvas {
 		this.setIgnoreRepaint(true);
 
 		// Sets the background of the game window
-		backgroundGradient = new GradientPaint(0, 0, Color.gray, SIZE.width,
-				SIZE.height, Color.lightGray.brighter());
+		backgroundGradient = new GradientPaint(0, 0, Color.gray, SIZE.width, SIZE.height,
+				Color.lightGray.brighter());
 
 		// Allows this component to get input from mouse and keyboard
 		setFocusable(true);
@@ -65,10 +65,10 @@ public class Display extends Canvas {
 		// Fills the rectangle corresponding to the background
 		g2d.fillRect(0, 0, SIZE.width, SIZE.height);
 
-		// TODO renders each game object by calling the renderer
+		// TODO renders each game object by calling the renderer of that object
 		// TODO (Andy) Set this to draw only objects that are visible
 		for (GameEntity ent : ObjectManager.getObjects())
-			if (ent != null && ent.renderer != null)
+			if ( ent != null && ent.renderer != null )
 				ent.renderer.renderObject(g2d, alpha);
 
 		// Renders the GUI
@@ -91,13 +91,11 @@ public class Display extends Canvas {
 	public void renderGUI(Graphics2D g2d) {
 		int leftmargin = 12;
 		g2d.setColor(Color.green.brighter());
-		g2d.drawString("Objects on screen: "
-				+ ObjectManager.getObjects().size(), leftmargin, 20);
+		g2d.drawString("Objects on screen: " + ObjectManager.getObjects().size(), leftmargin, 20);
 
 		double amt = GameThread.getMTInfo();
 
-		g2d.drawString("FPS: " + Utility.roundToTenth((1 / amt) * 1000),
-				leftmargin, 40);
+		g2d.drawString("FPS: " + Utility.roundToTenth((1 / amt) * 1000), leftmargin, 40);
 
 	}
 }
