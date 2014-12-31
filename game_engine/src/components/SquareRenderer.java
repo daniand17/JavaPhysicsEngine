@@ -1,7 +1,6 @@
 package components;
 
 import game_engine.Vector2;
-import game_engine.Vector3;
 import interfaces_abstracts.Renderer;
 
 import java.awt.Color;

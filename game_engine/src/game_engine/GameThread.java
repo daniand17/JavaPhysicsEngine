@@ -30,7 +30,7 @@ public class GameThread implements Runnable {
 			double now = System.nanoTime() / NANO_CONV;
 			double frameTime = now - currentTime;
 
-			if (frameTime > 0.25)
+			if ( frameTime > 0.25 )
 				frameTime = 0.25;
 
 			currentTime = now;
@@ -58,7 +58,7 @@ public class GameThread implements Runnable {
 			mtPeriod = then * 1000;
 
 			// Sleeps the thread for just a bit to save on CPU
-			if (mtPeriod < 10)
+			if ( mtPeriod < 10 )
 				try {
 					Thread.sleep((long) (12 - mtPeriod));
 				} catch (InterruptedException e) {
@@ -69,11 +69,6 @@ public class GameThread implements Runnable {
 			then = System.nanoTime() / NANO_CONV - now;
 			mtPeriod = then * 1000;
 		}
-	}
-
-	private String updateFrequencyInfo(double threadTime) {
-
-		return "MT-Period: " + Utility.roundToTenth(threadTime) + " ms";
 	}
 
 	public static double getMTInfo() {
@@ -88,7 +83,7 @@ public class GameThread implements Runnable {
 	private void fixedUpdate(double t, double dt) {
 		// Update the screen logic
 		for (PhysicsEntity ent : ObjectManager.getPhysicsObjects())
-			if (ent != null)
+			if ( ent != null )
 				ent.updatePhysics(t, dt);
 	}
 }
