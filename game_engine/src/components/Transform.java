@@ -1,6 +1,5 @@
 package components;
 
-import game_engine.Quaternion;
 import game_engine.Vector2;
 import interfaces_abstracts.GameEntity;
 
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class Transform {
 
-	public Quaternion rotation;
+	public double rotation;
 
 	public GameEntity gameEntity;
 	public Vector2 position;
@@ -27,7 +26,8 @@ public class Transform {
 	public Transform addChild(Transform newChild) {
 		// Adds the child to the list of children
 		children.add(newChild);
-		// Returns the child in case we want to use it for other things after instantiation
+		// Returns the child in case we want to use it for other things after
+		// instantiation
 		return newChild;
 	}
 

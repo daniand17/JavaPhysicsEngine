@@ -17,7 +17,6 @@ public class PlayerController extends GameEntity {
 
 	public void start() {
 		rigidbody = new RigidBody();
-		rigidbody.drag = .001f;
 		renderer = new SquareRenderer();
 	}
 
@@ -40,6 +39,7 @@ public class PlayerController extends GameEntity {
 		else if ( transform.position.x < 0 )
 			transform.position.x = Display.SIZE.width;
 	}
+
 	public void update() {
 		// Screen wraparound
 		if ( transform.position.y > Display.SIZE.height )

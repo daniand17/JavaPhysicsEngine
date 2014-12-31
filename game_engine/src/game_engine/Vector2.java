@@ -27,8 +27,8 @@ public class Vector2 implements Vector {
 		this.y = e;
 	}
 
-	public Vector2 add(Vector2 grav) {
-		return new Vector2(this.x + grav.x, this.y + grav.y);
+	public Vector2 add(Vector2 otherVector) {
+		return new Vector2(this.x + otherVector.x, this.y + otherVector.y);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class Vector2 implements Vector {
 	 * Returns the string representation of this vector for debugging purposes
 	 */
 	public String toString() {
-		return "Vector2: (" + x + ", " + y + ")";
+		return "Vector2: (" + Utility.roundToThousandth(x) + ", " + Utility.roundToThousandth(y) + ")";
 	}
 
 }

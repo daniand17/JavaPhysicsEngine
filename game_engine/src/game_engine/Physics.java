@@ -19,13 +19,27 @@ public class Physics {
 	 *            the velocity of the object to integrate
 	 * @return the new position of the object after this timestep
 	 */
-	public static Vector2 integratePositionFromVelocity(double t, double dt, Vector2 position,
+	public static Vector2[] integratePositionFromVelocity(double t, double dt, Vector2 position,
 			Vector2 velocity) {
 		// TODO (Joe) Call the specific integration method you want to use here
 		return rk4Integration(t, dt, position, velocity);
 	}
 
-	private static Vector2 rk4Integration(double t, double dt, Vector2 position, Vector2 velocity) {
+	/**
+	 * This function evaluates the new position over a timestep from a velocity,
+	 * starting position, and a start time.
+	 * 
+	 * @param t
+	 *            the start time
+	 * @param dt
+	 *            the time to integrate over
+	 * @param position
+	 *            the starting position
+	 * @param velocity
+	 *            the velocity of the rigidbody
+	 * @return the new position after integration
+	 */
+	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, Vector2 velocity) {
 		// Uses RK4 (runge-kutta) integration to determine velocity.
 		Vector2[] a = evaluateRK4Derivative(t, dt, position, velocity);
 		Vector2[] b = evaluateRK4Derivative(t, dt * 0.5f, a[0], a[1]);
@@ -40,10 +54,13 @@ public class Physics {
 		double dvxdt = 1.0f / 6.0f * (a[1].x + 2.0f * (b[1].x + c[1].x) + d[1].x);
 		double dvydt = 1.0f / 6.0f * (a[1].y + 2.0f * (b[1].y + c[1].y) + d[1].y);
 
-		// Set the new velocity of this rigidbody
+		// Make the new velocity vector
 		velocity = new Vector2(dvxdt, dvydt);
-		// Return the new position to the caller method
-		return new Vector2(dxdt, dydt);
+		// Make the new position vector
+		Vector2 newPos = new Vector2(dxdt, dydt);
+		// Return the new position and velocity to the caller
+		Vector2[] rtnVals = { newPos, velocity };
+		return rtnVals;
 	}
 
 	/**
@@ -61,12 +78,12 @@ public class Physics {
 	 *         integration
 	 */
 	private static Vector2[] evaluateRK4Derivative(double t, double dt, Vector2 pos, Vector2 vel) {
-		pos.x += vel.x * (float) dt;
-		pos.y += vel.y * (float) dt;
+		pos.x += vel.x * dt;
+		pos.y += vel.y * dt;
 
 		Vector2 newVel = addGravityToVelocity(vel, dt);
-		Vector2[] tmp = { pos, newVel };
-		return tmp;
+		Vector2[] rtnVals = { pos, newVel };
+		return rtnVals;
 	}
 
 	/**
@@ -75,7 +92,7 @@ public class Physics {
 	 * @param vel
 	 *            the current velocity
 	 * @param dt
-	 *            the time to integrate over
+	 *            the timestep
 	 * @return the vector corresponding to the new velocity due to drag and
 	 *         gravity
 	 */
