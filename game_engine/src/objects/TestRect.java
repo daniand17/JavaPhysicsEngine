@@ -30,43 +30,20 @@ public class TestRect extends GameEntity {
 
 	@Override
 	public void fixedUpdate() {
-
-		float xV = 0f;
-		float yV = 0f;
-		float zV = 0f;
-
-		if (Input.getKeyDown(KeyEvent.VK_S))
-			yV = accel;
-		if (Input.getKeyDown(KeyEvent.VK_W))
-			yV += -accel;
-		if (Input.getKeyDown(KeyEvent.VK_A))
-			xV = -accel;
-		if (Input.getKeyDown(KeyEvent.VK_D))
-			xV += accel;
-		// Sets the velocity given input
-		rigidbody.velocity = new Vector2(rigidbody.velocity.x + xV,
-				rigidbody.velocity.y + yV);
-		// Wraparound on the x axis
-		if (transform.position.x < 0)
-			transform.position = new Vector2(Display.SIZE.width,
-					transform.position.y);
-		else if (transform.position.x > 800)
-			transform.position = new Vector2(transform.position.x
-					% Display.SIZE.width, transform.position.y);
-
-		// Wraparound on the y axis
-		if (transform.position.y < 0)
-			transform.position = new Vector2(transform.position.x,
-					Display.SIZE.height);
-		else if (transform.position.y > Display.SIZE.height)
-			transform.position = new Vector2(transform.position.x,
-					transform.position.y % Display.SIZE.height);
+		// No control inputs
 	}
 
 	@Override
 	public void update() {
-		// This function is for doing things you want done outside the physics
-		// loop, and more often
-		// than a physics step
-	}
+		if ( transform.position.y > Display.SIZE.height ){
+			rigidbody.position.y = 0;}
+		else if ( transform.position.y < 0 ){
+			rigidbody.position.y = Display.SIZE.height;}
+		
+		if ( transform.position.x > Display.SIZE.width ){
+			rigidbody.position.x = 0;}
+		else if ( transform.position.x < 0 ){
+			rigidbody.position.x = Display.SIZE.width;}
+		}		
 }
+
