@@ -1,30 +1,34 @@
 package game_engine;
-
+import components.RigidBody;
 public class Physics {
 
-	public static double gravity = 9.81d;
-	public static double zeta = 0.01d;
-	public static Vector2 gravityVector = new Vector2(0d, gravity);
-	public Vector2 forceVector = new Vector2();
-
+	private static double gravity = 9.81d;
+	private static Vector2 gravityVector = new Vector2(0d, gravity);
+	private RigidBody RB;
+	private double dt;
+	
 	/**
-	 * This method is called by a rigidbody to update its position given a time,
+	 * This method is called by a RigidBody to update its position given a time,
 	 * timestep, current position, and velocity
 	 * 
-	 * @param t
-	 *            the current time
 	 * @param dt
-	 *            the timestep to integrate over
-	 * @param position
-	 *            the starting position
-	 * @param velocity
-	 *            the velocity of the object to integrate
-	 * @return the new position of the object after this timestep
+	 *          the timestep to integrate over
+	 * @param rigidbody
+	 * 			rigidbody associated with this physics object, contains mass, drag, position, and 
+	 * 			velocity information
 	 */
-	public static Vector2[] integratePositionFromVelocity(double t, double dt, Vector2 position,
-			Vector2 velocity, double zeta) {
-		// TODO (Joe) Call the specific integration method you want to use here
-		return rk4Integration(t, dt, position, velocity, zeta);
+	public Physics(double dt, RigidBody rigidbody){
+		this.dt = dt;
+		this.RB = rigidbody;
+		integrateRB();
+	}
+	
+	private void integrateRB() {
+		// This method is just a wrapper for different integration techniques. Later, we may 
+		// want to switch between methods on-the-fly based on some measure of error in the
+		// integration.
+		rk4Integration();
+		//return RB;
 	}
 
 	/**
@@ -41,29 +45,20 @@ public class Physics {
 	 *            the velocity of the rigidbody
 	 * @return the new position after integration
 	 */
-	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, Vector2 velocity,
-			double zeta) {
-		// Uses RK4 (runge-kutta) integration to determine velocity.
-		Vector2[] a = evaluateRK4Derivative(t, dt, position, velocity, zeta);
-		Vector2[] b = evaluateRK4Derivative(t, dt * 0.5f, a[0], a[1], zeta);
-		Vector2[] c = evaluateRK4Derivative(t, dt * 0.5f, b[0], b[1], zeta);
-		Vector2[] d = evaluateRK4Derivative(t, dt, c[0], c[1], zeta);
+	private void rk4Integration() {
+		// Uses the classical Runge-Kutta method (RK4) to update velocity and position.
+		Vector2[] a = evaluatePosition(0d, RB.position, RB.velocity);
+		Vector2[] b = evaluatePosition(0.5d, a[0], a[1]);
+		Vector2[] c = evaluatePosition(0.5d, b[0], b[1]);
+		Vector2[] d = evaluatePosition(1d, c[0], c[1]);
 
 		// Evaluate the new position vector
-		double dxdt = 1.0f / 6.0f * (a[0].x + 2.0f * (b[0].x + c[0].x) + d[0].x);
-		double dydt = 1.0f / 6.0f * (a[0].y + 2.0f * (b[0].y + c[0].y) + d[0].y);
+		RB.position.x = 1.0d / 6.0d * (a[0].x + 2.0d * (b[0].x + c[0].x) + d[0].x);
+		RB.position.y = 1.0d / 6.0d * (a[0].y + 2.0d * (b[0].y + c[0].y) + d[0].y);
 
 		// Evaluate the new velocity vector
-		double dvxdt = 1.0f / 6.0f * (a[1].x + 2.0f * (b[1].x + c[1].x) + d[1].x);
-		double dvydt = 1.0f / 6.0f * (a[1].y + 2.0f * (b[1].y + c[1].y) + d[1].y);
-
-		// Make the new velocity vector
-		velocity = new Vector2(dvxdt, dvydt);
-		// Make the new position vector
-		Vector2 newPos = new Vector2(dxdt, dydt);
-		// Return the new position and velocity to the caller
-		Vector2[] rtnVals = { newPos, velocity };
-		return rtnVals;
+		RB.velocity.x = 1.0f / 6.0f * (a[1].x + 2.0f * (b[1].x + c[1].x) + d[1].x);
+		RB.velocity.y = 1.0f / 6.0f * (a[1].y + 2.0f * (b[1].y + c[1].y) + d[1].y);
 	}
 
 	/**
@@ -80,32 +75,31 @@ public class Physics {
 	 * @return an array containing the position and new velocity of this
 	 *         integration
 	 */
-	private static Vector2[] evaluateRK4Derivative(double t, double dt, Vector2 pos, Vector2 vel,
-			double zeta) {
-		pos.x += vel.x * dt;
-		pos.y += vel.y * dt;
-
-		Vector2 newVel = addForce(vel, dt, zeta);
-		Vector2[] rtnVals = { pos, newVel };
-		return rtnVals;
+	private Vector2[] evaluatePosition(double factor, Vector2 pos, Vector2 vel) {
+		
+		// Method 1 //
+		// This feels slower and is probably tougher to read, but is the "better"
+		// way of doing things with respect to OOD guidelines. 
+		/*
+		pos = pos.add(vel.scale(dt*factor));
+		
+		Vector2 acc = vel.scale(-RB.zeta/RB.mass); 
+		acc = acc.add(RB.force.scale(1/RB.mass));
+		acc = acc.add(gravityVector); // Add in gravity vector
+		vel = vel.add(acc.scale(dt*factor));
+		*/
+		// Method 2 //
+		// This feels faster and is more concise, but reflects "poor" OOD 
+		// principles (we shouldn't be accessing these fields directly)
+		
+		pos.x += vel.x*dt*factor;
+		pos.y += vel.y*dt*factor;
+		vel.x += dt*factor*((RB.force.x - RB.zeta*vel.x)/RB.mass + gravityVector.x);
+		vel.y += dt*factor*((RB.force.y - RB.zeta*vel.y)/RB.mass + gravityVector.y);
+		
+		Vector2[] retVals  = {pos, vel};
+		return retVals;
 	}
 
-	/**
-	 * This method factors in gravity and eventually drag
-	 * 
-	 * @param vel
-	 *            the current velocity
-	 * @param dt
-	 *            the timestep
-	 * @return the vector corresponding to the new velocity due to drag and
-	 *         gravity
-	 */
-	public static Vector2 addForce(Vector2 vel, double dt, double zeta) {
-		// The gravity vector scaled to the amt of accel this timestep
-		// FIXME not sure if this is right
-		// Add any force specified on the rigid body from the playercontroller
-		Vector2 gravityThisStep = gravityVector.scale(dt);
-		return vel.add(gravityThisStep);
-	}
 
 }

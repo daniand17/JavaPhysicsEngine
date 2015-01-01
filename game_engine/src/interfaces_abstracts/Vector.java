@@ -98,4 +98,5 @@ public interface Vector<T> {
 	 */
 	public T tangent();
 	
+	
 }

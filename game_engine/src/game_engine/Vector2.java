@@ -58,8 +58,8 @@ public class Vector2 implements Vector<Vector2> {
 	 * @return new Vector
 	 */
 	public Vector2 rotate(double theta) {
-		return new Vector2((Math.cos(theta)*x - Math.sin(theta)*this.y),
-				Math.sin(theta)*x + Math.cos(theta)*y);
+		return new Vector2((Math.cos(theta)*x + Math.sin(theta)*this.y),
+				-Math.sin(theta)*x + Math.cos(theta)*y);
 	}
 
 	///////* IMPLEMENTED METHODS OF THE VECTOR INTERFACE *///////
@@ -78,6 +78,7 @@ public class Vector2 implements Vector<Vector2> {
 	public Vector2 add(Vector2 otherVector) {
 		return new Vector2(this.x + otherVector.x, this.y + otherVector.y);
 	}
+	
 	@Override
 	public Vector2 sub(Vector2 otherVector) {
 		return new Vector2(this.x - otherVector.x, this.y - otherVector.y);
@@ -93,7 +94,6 @@ public class Vector2 implements Vector<Vector2> {
 		return Math.sqrt(dot(this));
 	}
 
-
 	@Override
 	public double angle(Vector2 otherVector) {
 		double cosTheta = dot(otherVector) / (this.norm()*otherVector.norm());
@@ -105,5 +105,16 @@ public class Vector2 implements Vector<Vector2> {
 		double norm = this.norm();
 		return new Vector2(this.x/norm, this.y/norm);
 	}
-
+	
+	public static void test() {
+		Vector2 zeroVec = new Vector2();
+		Vector2 testVec = zeroVec.add(new Vector2(1/Math.sqrt(2), 1/Math.sqrt(2)));
+		System.out.println("Initial test Vector (should be [.707, .707]: " + testVec);
+		System.out.println("Subtraction test (should be [0, 0]): " + (testVec.sub(testVec)));
+		System.out.println("Scaling test (should be [1, 1]): " + testVec.scale(Math.sqrt(2)));
+		System.out.println("Dot Product Test (should be 1): " + testVec.dot(testVec));
+		System.out.println("Norm test (should be 1): " + testVec.norm());
+		System.out.println("Angle test (Should be 0.785): " + testVec.angle(new Vector2(1, 0)));
+		System.out.println("Rotate test (should be [1, 0] " + testVec.rotate(Math.PI/4d));
+	}
 }

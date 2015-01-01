@@ -17,17 +17,17 @@ public class GameThread implements Runnable {
 	@Override
 	public void run() {
 
-		final double NANO_CONV = 1000000000;
+		final double NANO_CONV = 1E-9d;
 
 		double t = 0;
 		double dt = 0.01;
 
-		double currentTime = System.nanoTime() / NANO_CONV;
+		double currentTime = System.nanoTime() * NANO_CONV;
 		double accumulator = 0.0;
 
 		while (true) {
 
-			double now = System.nanoTime() / NANO_CONV;
+			double now = System.nanoTime() * NANO_CONV;
 			double frameTime = now - currentTime;
 
 			if ( frameTime > 0.25 )
@@ -53,7 +53,7 @@ public class GameThread implements Runnable {
 			// Renders the game state
 			display.render(alpha);
 
-			double then = System.nanoTime() / NANO_CONV - now;
+			double then = System.nanoTime() * NANO_CONV - now;
 
 			mtPeriod = then * 1000;
 
@@ -66,7 +66,7 @@ public class GameThread implements Runnable {
 				}
 
 			// Updates the length the main thread took for info purposes
-			then = System.nanoTime() / NANO_CONV - now;
+			then = System.nanoTime() * NANO_CONV - now;
 			mtPeriod = then * 1000;
 		}
 	}

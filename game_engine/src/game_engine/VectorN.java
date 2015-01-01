@@ -15,7 +15,7 @@ public class VectorN implements Vector<VectorN> {
 		size = N;
 		// Default values of 0.0d for double arrays
 		eles = new double[size];
-		for(int i = 0; i < size; i++){
+		for (int i = 0; i < size; i++) {
 			eles[i] = value;
 		}
 	}
@@ -29,25 +29,24 @@ public class VectorN implements Vector<VectorN> {
 	public VectorN(int N, double[] inputArray) {
 		size = N;
 		eles = new double[size];
-		for(int i = 0; i < size; i++){
+		for (int i = 0; i < size; i++) {
 			eles[i] = inputArray[i];
 		}
 	}
 
-
-	///////* IMPLEMENTED METHODS OF THE VECTOR INTERFACE *///////
+	// /////* IMPLEMENTED METHODS OF THE VECTOR INTERFACE *///////
 
 	@Override
 	public String toString() {
-		return "VectorN: (" + Utility.roundToThousandth(eles[0]) + ", ..., " 
+		return "VectorN: (" + Utility.roundToThousandth(eles[0]) + ", ..., "
 				+ Utility.roundToThousandth(eles[size - 1]) + ")";
 	}
-	
+
 	@Override
 	public VectorN scale(double scalar) {
 		VectorN scaledVector = new VectorN(size, 0);
-		for(int i = 0; i < size; i++) {
-			scaledVector.eles[i] = scalar*this.eles[i];
+		for (int i = 0; i < size; i++) {
+			scaledVector.eles[i] = scalar * this.eles[i];
 		}
 		return scaledVector;
 	}
@@ -59,11 +58,12 @@ public class VectorN implements Vector<VectorN> {
 			throw new InternalError();
 		}
 		VectorN newVector = new VectorN(size, 0);
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			newVector.eles[i] = this.eles[i] + otherVector.eles[i];
 		}
 		return newVector;
 	}
+
 	@Override
 	public VectorN sub(VectorN otherVector) {
 		if (this.size != otherVector.size) {
@@ -71,12 +71,12 @@ public class VectorN implements Vector<VectorN> {
 			throw new InternalError();
 		}
 		VectorN newVector = new VectorN(size, 0);
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			newVector.eles[i] = this.eles[i] - otherVector.eles[i];
 		}
 		return newVector;
 	}
-	
+
 	@Override
 	public double dot(VectorN otherVector) {
 		if (this.size != otherVector.size) {
@@ -84,8 +84,8 @@ public class VectorN implements Vector<VectorN> {
 			throw new InternalError();
 		}
 		double dotProduct = 0;
-		for(int i = 0; i < size; i++) {
-			dotProduct += this.eles[i]*otherVector.eles[i];
+		for (int i = 0; i < size; i++) {
+			dotProduct += this.eles[i] * otherVector.eles[i];
 		}
 		return dotProduct;
 	}
@@ -93,22 +93,21 @@ public class VectorN implements Vector<VectorN> {
 	@Override
 	public double norm() {
 		double magnitude = 0;
-		for(int i = 0; i < size; i++) {
-			magnitude += eles[i]*eles[i];
+		for (int i = 0; i < size; i++) {
+			magnitude += eles[i] * eles[i];
 		}
 		return Math.sqrt(magnitude);
 	}
 
-
 	@Override
 	public double angle(VectorN otherVector) {
-		double cosTheta = dot(otherVector) / (this.norm()*otherVector.norm());
+		double cosTheta = dot(otherVector) / (this.norm() * otherVector.norm());
 		return Math.acos(cosTheta);
 	}
 
 	@Override
 	public VectorN tangent() {
 		double norm = this.norm();
-		return this.scale(1/norm);
+		return this.scale(1 / norm);
 	}
 }
