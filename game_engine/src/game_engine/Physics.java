@@ -2,8 +2,10 @@ package game_engine;
 
 public class Physics {
 
-	public static double gravity = 9.81f;
-	public static Vector2 gravityVector = new Vector2(0, gravity);
+	public static double gravity = 9.81d;
+	public static double zeta = 0.01d;
+	public static Vector2 gravityVector = new Vector2(0d, gravity);
+	public Vector2 forceVector = new Vector2();
 
 	/**
 	 * This method is called by a rigidbody to update its position given a time,
@@ -20,9 +22,9 @@ public class Physics {
 	 * @return the new position of the object after this timestep
 	 */
 	public static Vector2[] integratePositionFromVelocity(double t, double dt, Vector2 position,
-			Vector2 velocity) {
+			Vector2 velocity, double zeta) {
 		// TODO (Joe) Call the specific integration method you want to use here
-		return rk4Integration(t, dt, position, velocity);
+		return rk4Integration(t, dt, position, velocity, zeta);
 	}
 
 	/**
@@ -39,12 +41,13 @@ public class Physics {
 	 *            the velocity of the rigidbody
 	 * @return the new position after integration
 	 */
-	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, Vector2 velocity) {
+	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, Vector2 velocity,
+			double zeta) {
 		// Uses RK4 (runge-kutta) integration to determine velocity.
-		Vector2[] a = evaluateRK4Derivative(t, dt, position, velocity);
-		Vector2[] b = evaluateRK4Derivative(t, dt * 0.5f, a[0], a[1]);
-		Vector2[] c = evaluateRK4Derivative(t, dt * 0.5f, b[0], b[1]);
-		Vector2[] d = evaluateRK4Derivative(t, dt, c[0], c[1]);
+		Vector2[] a = evaluateRK4Derivative(t, dt, position, velocity, zeta);
+		Vector2[] b = evaluateRK4Derivative(t, dt * 0.5f, a[0], a[1], zeta);
+		Vector2[] c = evaluateRK4Derivative(t, dt * 0.5f, b[0], b[1], zeta);
+		Vector2[] d = evaluateRK4Derivative(t, dt, c[0], c[1], zeta);
 
 		// Evaluate the new position vector
 		double dxdt = 1.0f / 6.0f * (a[0].x + 2.0f * (b[0].x + c[0].x) + d[0].x);
@@ -77,11 +80,12 @@ public class Physics {
 	 * @return an array containing the position and new velocity of this
 	 *         integration
 	 */
-	private static Vector2[] evaluateRK4Derivative(double t, double dt, Vector2 pos, Vector2 vel) {
+	private static Vector2[] evaluateRK4Derivative(double t, double dt, Vector2 pos, Vector2 vel,
+			double zeta) {
 		pos.x += vel.x * dt;
 		pos.y += vel.y * dt;
 
-		Vector2 newVel = addGravityToVelocity(vel, dt);
+		Vector2 newVel = addForce(vel, dt, zeta);
 		Vector2[] rtnVals = { pos, newVel };
 		return rtnVals;
 	}
@@ -96,10 +100,12 @@ public class Physics {
 	 * @return the vector corresponding to the new velocity due to drag and
 	 *         gravity
 	 */
-	public static Vector2 addGravityToVelocity(Vector2 vel, double dt) {
+	public static Vector2 addForce(Vector2 vel, double dt, double zeta) {
 		// The gravity vector scaled to the amt of accel this timestep
 		// FIXME not sure if this is right
+		// Add any force specified on the rigid body from the playercontroller
 		Vector2 gravityThisStep = gravityVector.scale(dt);
 		return vel.add(gravityThisStep);
 	}
+
 }

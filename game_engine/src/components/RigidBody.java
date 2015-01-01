@@ -17,9 +17,7 @@ public class RigidBody {
 		mass = 5f;
 	}
 
-	public void addForce(Vector2 direction, double amount) {
-		// TODO implement this method
-		Vector2 forceToAdd = direction.scale(amount);
-
-	}
+	//public void addForce(Vector2 direction, double amount) {
+	//	return direction.scale(amount);
+	//}
 }

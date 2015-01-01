@@ -25,11 +25,12 @@ public abstract class GameEntity implements PhysicsEntity, CanUpdate {
 		if ( rigidbody != null ) {
 			// Allows implementing class to do physics stuff
 			fixedUpdate();
+			double zeta = 0.01;
 			Vector2 prevPos = transform.position;
 			// Get the new position and velocity by calling the physics
 			// integration giving position and velocity
 			Vector2[] newPosAndVel = Physics.integratePositionFromVelocity(t, dt,
-					transform.position, rigidbody.velocity);
+					transform.position, rigidbody.velocity, zeta);
 			// Update the position and velocity using the return values
 			transform.position = newPosAndVel[0];
 			rigidbody.velocity = newPosAndVel[1];
