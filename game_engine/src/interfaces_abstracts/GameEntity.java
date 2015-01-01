@@ -38,7 +38,6 @@ public abstract class GameEntity implements PhysicsEntity, CanUpdate {
 			// not it has a rigidbody. This works for now.
 			
 			new Physics(dt, rigidbody);
-			update(); // check for screen wraparound 
 
 			transform.position = rigidbody.position.scale(1d); // Get new position.
 			// Give the renderer the old and new positions for rendering of the

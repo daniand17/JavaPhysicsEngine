@@ -31,7 +31,7 @@ public class PlayerController extends GameEntity {
 	
 	@Override
 	/**
-	 * Initialize rigid body and rendere objects.
+	 * Initialize rigid body and rendered objects.
 	 */
 	public void start() {
 		rigidbody = new RigidBody();
