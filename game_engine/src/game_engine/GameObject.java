@@ -1,11 +1,10 @@
-package interfaces_abstracts;
+package game_engine;
 
-import game_engine.Physics;
-import game_engine.Vector2;
+import interfaces_abstracts.Renderer;
 import components.RigidBody;
 import components.Transform;
 
-public abstract class GameEntity implements PhysicsEntity, CanUpdate {
+public abstract class GameObject {
 
 	// All game objects have a transform starting at 0, 0
 	public Transform transform = new Transform();
@@ -17,29 +16,34 @@ public abstract class GameEntity implements PhysicsEntity, CanUpdate {
 	/**
 	 * The empty constructor used to create a game entity
 	 */
-	public GameEntity() {
+	public GameObject() {
 
 	}
 
-	public void updatePhysics(double t, double dt) {
+	void updatePhysics(double t, double dt) {
 		if ( rigidbody != null ) {
 			// Allows implementing class to do physics stuff
 			fixedUpdate(); // Get control inputs prior to physics calculation
-			// TODO: I think fixedUpdate() is where collision checking should occur,
-			// so that post-contact velocities are updated prior to the next physics call
-			
+			// TODO: I think fixedUpdate() is where collision checking should
+			// occur,
+			// so that post-contact velocities are updated prior to the next
+			// physics call
+
 			// Store previous position for use in the renderer
 			Vector2 prevPos = rigidbody.position.scale(1d);
-			
-			// TODO: Ideally, we could just instantiate the Physics object once, per
-			// GameEntity, then call integrateRB() at each step. That would have 
-			// to be done in the constructor, however, and I'm not sure how the constructor works
-			// in this class, i.e. at what point the GameEntity knows whether or 
+
+			// TODO: Ideally, we could just instantiate the Physics object once,
+			// per
+			// GameEntity, then call integrateRB() at each step. That would have
+			// to be done in the constructor, however, and I'm not sure how the
+			// constructor works
+			// in this class, i.e. at what point the GameEntity knows whether or
 			// not it has a rigidbody. This works for now.
-			
+
 			new Physics(dt, rigidbody);
 
-			transform.position = rigidbody.position.scale(1d); // Get new position.
+			transform.position = rigidbody.position.scale(1d); // Get new
+																// position.
 			// Give the renderer the old and new positions for rendering of the
 			// obj
 			if ( renderer != null )
@@ -61,7 +65,6 @@ public abstract class GameEntity implements PhysicsEntity, CanUpdate {
 	 * game logic based things once all collisions are resolved etc.
 	 */
 	abstract public void update();
-	
 
 	/**
 	 * Called upon instantiation of a game object before all physics updates and

@@ -1,7 +1,5 @@
 package game_engine;
 
-import interfaces_abstracts.GameEntity;
-
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -67,7 +65,7 @@ public class Display extends Canvas {
 
 		// TODO renders each game object by calling the renderer of that object
 		// TODO (Andy) Set this to draw only objects that are visible
-		for (GameEntity ent : ObjectManager.getObjects())
+		for (GameObject ent : ObjectManager.getObjects())
 			if ( ent != null && ent.renderer != null )
 				ent.renderer.renderObject(g2d, alpha);
 

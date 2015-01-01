@@ -1,10 +1,9 @@
 package objects;
 
 import game_engine.Display;
+import game_engine.GameObject;
 import game_engine.Input;
-import game_engine.ObjectManager;
 import game_engine.Vector2;
-import interfaces_abstracts.GameEntity;
 
 import java.awt.event.KeyEvent;
 
@@ -22,7 +21,7 @@ import components.SquareRenderer;
  * 
  * @field yVec: Control direction associated with up/down movement
  */
-public class PlayerController extends GameEntity {
+public class PlayerController extends GameObject {
 
 	boolean debug = true;
 	double gain = 100.0d;

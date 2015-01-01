@@ -1,16 +1,16 @@
 package objects;
 
 import game_engine.Display;
+import game_engine.GameObject;
 import game_engine.Input;
 import game_engine.Vector2;
-import interfaces_abstracts.GameEntity;
 
 import java.awt.event.KeyEvent;
 
 import components.RigidBody;
 import components.SquareRenderer;
 
-public class TestRect extends GameEntity {
+public class TestRect extends GameObject {
 
 	private float accel = 1f;
 	boolean debug = true;

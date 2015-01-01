@@ -1,30 +1,26 @@
 package game_engine;
 
-import interfaces_abstracts.CanUpdate;
-import interfaces_abstracts.GameEntity;
-import interfaces_abstracts.PhysicsEntity;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ObjectManager {
 
-	private static List<GameEntity> objects = new CopyOnWriteArrayList<GameEntity>();
-	private static List<PhysicsEntity> physicsObjects = new CopyOnWriteArrayList<PhysicsEntity>();
+	private static List<GameObject> objects = new CopyOnWriteArrayList<GameObject>();
+	private static List<GameObject> physicsObjects = new CopyOnWriteArrayList<GameObject>();
 
-	public static List<CanUpdate> startObjects = new CopyOnWriteArrayList<CanUpdate>();
+	public static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
 
-	public static synchronized List<GameEntity> getObjects() {
+	public static synchronized List<GameObject> getObjects() {
 		return objects;
 	}
 
-	public static synchronized List<PhysicsEntity> getPhysicsObjects() {
+	public static synchronized List<GameObject> getPhysicsObjects() {
 		return physicsObjects;
 	}
 
 	/**
-	 * Instantiates the object provided in the first argument at the 2D location specified in the
-	 * second argument
+	 * Instantiates the object provided in the first argument at the 2D location
+	 * specified in the second argument
 	 * 
 	 * @param newObj
 	 *            the entity to instantiate
@@ -32,7 +28,7 @@ public class ObjectManager {
 	 *            the Vector2 location to instantate the object at
 	 * @return the instantiated object
 	 */
-	public static synchronized GameEntity instantiate(GameEntity newObj, Vector2 location) {
+	public static synchronized GameObject instantiate(GameObject newObj, Vector2 location) {
 		if ( newObj != null ) {
 			newObj.transform.position = location;
 			startObjects.add(newObj);
@@ -42,15 +38,15 @@ public class ObjectManager {
 
 	public static synchronized void initializeStartObjects() {
 
-		for (int i = 0 ; i < ObjectManager.startObjects.size() ; i++) {
-			CanUpdate obj = ObjectManager.startObjects.remove(i);
+		for (int i = 0; i < ObjectManager.startObjects.size(); i++) {
+			GameObject obj = ObjectManager.startObjects.remove(i);
 			// Call the start function of the object
 			obj.start();
-			if ( obj instanceof GameEntity ) {
-				objects.add((GameEntity) obj);
+			if ( obj instanceof GameObject ) {
+				objects.add((GameObject) obj);
 
-				if ( ((GameEntity) obj).rigidbody != null )
-					physicsObjects.add((PhysicsEntity) obj);
+				if ( ((GameObject) obj).rigidbody != null )
+					physicsObjects.add(obj);
 			}
 		}
 	}
