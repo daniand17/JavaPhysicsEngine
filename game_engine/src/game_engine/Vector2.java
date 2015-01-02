@@ -95,6 +95,14 @@ public class Vector2 implements Vector<Vector2> {
 		return new Vector2((Math.cos(theta) * x + Math.sin(theta) * this.y), -Math.sin(theta) * x
 				+ Math.cos(theta) * y);
 	}
+	
+	public Vector2 transform(double theta) {
+		return this.rotate(-theta);
+	}
+	
+	public double angle() {
+		return Math.atan2(y, x);
+	}
 
 	// /////* IMPLEMENTED METHODS OF THE VECTOR INTERFACE *///////
 

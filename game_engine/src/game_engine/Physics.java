@@ -4,7 +4,9 @@ public class Physics {
 
 	private static double gravity = 9.81d;
 	private static Vector2 gravityVector = new Vector2(0d, gravity);
-	private static double dt = 0.1;
+	private static double dt = 0.01; // FIXME - this needs to be the same as the dt
+	// being passed to the integrateState() method, because I am also using it in the 
+	// resolveCollision() method.
 
 	/**
 	 * This method is called by a RigidBody to update its position given a time,
@@ -205,6 +207,10 @@ public class Physics {
 		// with another collider, and performing actions as a result of that
 		// collision (ie destroying an object when it has been hit--user
 		// determined)
+		
+		double e = 0.85; // Basic default value, this should later depend
+		 // on the RB's in collision
+		
 		col1.getGameObject().onCollision(col2);
 		col2.getGameObject().onCollision(col1);
 
@@ -215,12 +221,48 @@ public class Physics {
 		
 		// The code below will directly modify the velocities of the two rigid bodies. It must
 		// occur prior to the integration call
-		Vector2 v1p = col1_rb.velocity; Vector2 v2p = col2_rb.velocity;
-		Vector2 r1 = col1.getPositionInWorldSpace(); Vector2 r2 = col1.getPositionInWorldSpace();
+		Vector2 v1pre = col1_rb.velocity; Vector2 v2pre = col2_rb.velocity;
+		Vector2 r1 = col1.getPositionInWorldSpace(); Vector2 r2 = col2.getPositionInWorldSpace();
 		
 		// 1) Determine the line of contact using the relative position between the two objects
-		//Vector2 rho = 
+		Vector2 rho = r2.sub(r1); // Line of contact
+		double theta = rho.angle(); // Angle from x-axis to line of contact
 		
+		// 2) Determine if this is a "first contact" situation, i.e. if the velocities
+		// are oriented towards each other in a situation that could cause contact
+		// the condition is:
+		boolean nonContactCondition1 = (v1pre.dot(rho) < 0) && (v2pre.dot(rho) > 0);
+		boolean nonContactCondition2 = (Math.signum(v1pre.dot(rho)) == Math.signum(v2pre.dot(rho))) 
+				&& (v1pre.dot(rho) < v2pre.dot(rho));
+		boolean nonContactCondition3 = (Math.signum(r1.dot(rho)) == Math.signum(r2.dot(rho))) 
+				&& (r1.dot(rho) > r2.dot(rho));
+		//boolean nonContactCondition1 = (r1.dot(rho) < 0) && (r2.dot(rho) > 0);
+		System.out.print("Rho = " + rho);
+		if (!(nonContactCondition1 || nonContactCondition2)) {
+			System.out.println(" Yes," + nonContactCondition1 + ", " + nonContactCondition2);
+			// 2) Transform the velocities to a coordinate system with the X-axis aligned on the LOC
+			v1pre = v1pre.transform(theta); v2pre = v2pre.transform(theta);
+			
+			// 3) Conserve momentum and energy to obtain the post-impact velocities.
+			// The y-direction velocities are not modified. The x-direction velocities must
+			// be determined by solving a system of 2 equations to conserve momentum and restitution
+			double gamma = 1 + e; 
+			double lambda = col2_rb.getMass()/col1_rb.getMass();
+			
+			double v2x = (gamma*v1pre.x + v2pre.x*(lambda - e))/(1 + lambda);
+			double v1x = v2x + e*(v2pre.x - v1pre.x);
+			
+			Vector2 v1post = new Vector2(v1x, v1pre.y);
+			Vector2 v2post = new Vector2(v2x, v2pre.y);
+			//v1post = v1post.transform(-theta); v2post = v2post.transform(-theta);
+			col1_rb.velocity = v1post.transform(-theta);
+			col2_rb.velocity = v2post.transform(-theta);
+			//col1_rb.addForce(v1post, v1post.norm());
+			//col2_rb.addForce(v2post, v2post.norm());
+			col1_rb.setForce(v1post, 0d);
+			col1_rb.setForce(v2post, 0d);	
+		}
+		System.out.println("");
 	}
 	
 	static void resolveGravity(GameObject obj1, GameObject obj2) {
