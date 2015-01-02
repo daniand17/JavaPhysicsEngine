@@ -7,7 +7,7 @@ public class Transform {
 
 	public double rotation;
 
-	public GameObject gameEntity;
+	public GameObject gameObject;
 	public Vector2 position;
 	private List<Transform> children;
 

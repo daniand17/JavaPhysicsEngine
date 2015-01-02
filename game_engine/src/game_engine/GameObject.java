@@ -29,6 +29,18 @@ public abstract class GameObject implements IGameObject {
 			getCollider().initializeComponentReferences(this, getTransform());
 	}
 
+	public void addComponent(Component newComponent) {
+
+		if ( newComponent instanceof Rigidbody2D )
+			this.rigidbody = (Rigidbody2D) newComponent;
+		else if ( newComponent instanceof BoxCollider2D )
+			this.collider = (BoxCollider2D) newComponent;
+		else if ( newComponent instanceof CircleCollider2D )
+			this.collider = (CircleCollider2D) newComponent;
+		else if ( newComponent instanceof SquareRenderer )
+			this.renderer = (SquareRenderer) newComponent;
+	}
+
 	/**
 	 * This method is called by the game thread only if there is a rigidbody
 	 * attached. It is used to update the position of the GameObject using

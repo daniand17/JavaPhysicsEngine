@@ -26,7 +26,7 @@ public abstract class Collider extends Component {
 	 */
 	Vector2 getPosition() {
 
-		return relativePosition.add(transform.position);
+		return relativePosition.add(getTransform().position);
 	}
 
 	/**

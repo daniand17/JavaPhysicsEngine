@@ -30,7 +30,7 @@ public class Display extends Canvas {
 		SIZE = dims;
 	}
 
-	public void setupWindow() {
+	void setupWindow() {
 
 		// Uses a double buffer, and ignores repaint requests since we are
 		// handling the graphics
@@ -55,7 +55,7 @@ public class Display extends Canvas {
 	 * @param alpha
 	 *            the interpolation value
 	 */
-	public void render(double alpha) {
+	void render(double alpha) {
 		// Gets the graphics strategy and sets the background to the one defined
 		// by backgroundGradient
 		Graphics2D g2d = (Graphics2D) strategy.getDrawGraphics();
@@ -86,7 +86,7 @@ public class Display extends Canvas {
 	 * @param g2d
 	 *            the graphics context to render to
 	 */
-	public void renderGUI(Graphics2D g2d) {
+	void renderGUI(Graphics2D g2d) {
 		int leftmargin = 12;
 		g2d.setColor(Color.green.brighter());
 		g2d.drawString("Objects on screen: " + ObjectManager.getAllObjects().size(), leftmargin, 20);

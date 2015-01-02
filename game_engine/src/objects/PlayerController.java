@@ -26,8 +26,8 @@ import java.awt.event.KeyEvent;
  */
 public class PlayerController extends GameObject {
 
-	boolean debug = true;
-	double gain = 100.0d;
+	private boolean debug = true;
+	private double gain = 100.0d;
 	private Vector2 xVec = new Vector2(1d, 0d);
 	private Vector2 yVec = new Vector2(0d, 1d);
 
@@ -62,6 +62,7 @@ public class PlayerController extends GameObject {
 		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
 			getRigidbody().addForce(xVec, -gain);
 		}
+		
 	}
 
 	@Override
@@ -86,6 +87,6 @@ public class PlayerController extends GameObject {
 	}
 
 	public void onCollision(Collider other) {
-		Debug.log(name, "Collided with: " + other.gameObject.name);
+		Debug.log(name, "Collided with: " + other.getGameObject().name);
 	}
 }

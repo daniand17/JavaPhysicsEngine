@@ -207,13 +207,13 @@ public class Physics {
 		// with another collider, and performing actions as a result of that
 		// collision (ie destroying an object when it has been hit--user
 		// determined)
-		col1.gameObject.onCollision(col2);
-		col2.gameObject.onCollision(col1);
+		col1.getGameObject().onCollision(col2);
+		col2.getGameObject().onCollision(col1);
 
 		// TODO (Joe) Implement the remainder of this method
 		// The rigidbodies can be gotten as follows:
-		Rigidbody2D col1_rb = col1.gameObject.getRigidbody();
-		Rigidbody2D col2_rb = col2.gameObject.getRigidbody();
+		Rigidbody2D col1_rb = col1.getGameObject().getRigidbody();
+		Rigidbody2D col2_rb = col2.getGameObject().getRigidbody();
 
 	}
 }

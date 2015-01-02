@@ -30,7 +30,7 @@ public abstract class Renderer extends Component {
 	 * @param prevPos
 	 * @param position
 	 */
-	public void updateRendererPositions(Vector2 prevPos, Vector2 position) {
+	void updateRendererPositions(Vector2 prevPos, Vector2 position) {
 		previous = prevPos;
 		current = position;
 	}
@@ -40,5 +40,5 @@ public abstract class Renderer extends Component {
 	 * class. Takes a Graphics2D object and a position in which to render the
 	 * object.
 	 */
-	public abstract void render(Graphics2D g2d, Vector2 renderPos);
+	abstract void render(Graphics2D g2d, Vector2 renderPos);
 }
