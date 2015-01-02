@@ -28,8 +28,6 @@ public class PlayerController extends GameObject {
 
 	private boolean debug = true;
 	private double gain = 100.0d;
-	private Vector2 xVec = new Vector2(1d, 0d);
-	private Vector2 yVec = new Vector2(0d, 1d);
 
 	@Override
 	/**
@@ -50,16 +48,16 @@ public class PlayerController extends GameObject {
 	 */
 	public void physicsUpdate() {
 		if ( Input.getKeyDown(KeyEvent.VK_W) ) {
-			getRigidbody().addForce(yVec, -gain);
+			getRigidbody().addForce(Vector2.up(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_S) ) {
-			getRigidbody().addForce(yVec, gain);
+			getRigidbody().addForce(Vector2.down(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_D) ) {
-			getRigidbody().addForce(xVec, gain);
+			getRigidbody().addForce(Vector2.right(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
-			getRigidbody().addForce(xVec, -gain);
+			getRigidbody().addForce(Vector2.left(), gain);
 		}
 	}
 

@@ -5,8 +5,8 @@ public class Rigidbody2D extends Component {
 	public Vector2 velocity; // The velocity of this Rigidbody.
 	private double mass; // The mass of this RigidBody
 	private double drag; // The drag coefficient of this Rigidbody
-	public Vector2 force; // Force acting on the RigidBody for the next physics
-							// update
+	Vector2 force; // Force acting on the RigidBody for the next physics
+					// update
 	public double angularSpeed;
 	private double angularDrag;
 
@@ -48,7 +48,7 @@ public class Rigidbody2D extends Component {
 	 * @param amount
 	 *            Magnitude of the desired force.
 	 */
-	public void setForce(Vector2 direction, double amount) {
+	void setForce(Vector2 direction, double amount) {
 		// Don't supply a zero value for direction
 		force = direction.scale(amount / direction.norm());
 	}
