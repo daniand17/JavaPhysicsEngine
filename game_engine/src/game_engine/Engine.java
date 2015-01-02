@@ -2,12 +2,27 @@ package game_engine;
 
 import javax.swing.JFrame;
 
+/**
+ * This class is a low-level class designed solely to get the engine up and
+ * running. It initializes the game window, adds key, mouse, and mouse motion
+ * listeners to the window, and starts the game thread.
+ * 
+ * @author andrew
+ *
+ */
 public class Engine {
 
 	private final JFrame window;
 	private final Display display;
 	private final GameThread gameThread;
 
+	/**
+	 * The constructor which is called by Main.java to construct a new game.
+	 * 
+	 * @param windowX
+	 * @param windowY
+	 * @param title
+	 */
 	public Engine(int windowX, int windowY, String title) {
 		// Creates the window
 		window = new JFrame();

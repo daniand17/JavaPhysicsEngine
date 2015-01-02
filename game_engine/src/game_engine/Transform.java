@@ -1,7 +1,4 @@
-package components;
-
-import game_engine.GameObject;
-import game_engine.Vector2;
+package game_engine;
 
 import java.util.LinkedList;
 import java.util.List;

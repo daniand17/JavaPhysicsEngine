@@ -3,12 +3,11 @@ package objects;
 import game_engine.Display;
 import game_engine.GameObject;
 import game_engine.Input;
+import game_engine.RigidBody;
+import game_engine.SquareRenderer;
 import game_engine.Vector2;
 
 import java.awt.event.KeyEvent;
-
-import components.RigidBody;
-import components.SquareRenderer;
 
 public class TestRect extends GameObject {
 
@@ -29,21 +28,21 @@ public class TestRect extends GameObject {
 	}
 
 	@Override
-	public void fixedUpdate() {
+	public void physicsUpdate() {
 		// No control inputs
 	}
 
 	@Override
 	public void update() {
 		if ( transform.position.y > Display.SIZE.height ){
-			rigidbody.position.y = 0;}
+			transform.position.y = 0;}
 		else if ( transform.position.y < 0 ){
-			rigidbody.position.y = Display.SIZE.height;}
+			transform.position.y = Display.SIZE.height;}
 		
 		if ( transform.position.x > Display.SIZE.width ){
-			rigidbody.position.x = 0;}
+			transform.position.x = 0;}
 		else if ( transform.position.x < 0 ){
-			rigidbody.position.x = Display.SIZE.width;}
+			transform.position.x = Display.SIZE.width;}
 		}		
 }
 

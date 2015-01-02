@@ -1,7 +1,4 @@
-package components;
-
-import game_engine.Vector2;
-import interfaces_abstracts.Renderer;
+package game_engine;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

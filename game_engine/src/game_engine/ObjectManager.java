@@ -4,18 +4,21 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ObjectManager {
-
-	private static List<GameObject> objects = new CopyOnWriteArrayList<GameObject>();
-	private static List<GameObject> physicsObjects = new CopyOnWriteArrayList<GameObject>();
-
 	public static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
+	private static List<GameObject> allObjects = new CopyOnWriteArrayList<GameObject>();
+	private static List<GameObject> physicsObjects = new CopyOnWriteArrayList<GameObject>();
+	private static List<GameObject> colliderObjects = new CopyOnWriteArrayList<GameObject>();
 
-	public static synchronized List<GameObject> getObjects() {
-		return objects;
+	public static synchronized List<GameObject> getAllObjects() {
+		return allObjects;
 	}
 
 	public static synchronized List<GameObject> getPhysicsObjects() {
 		return physicsObjects;
+	}
+	
+	public static synchronized List<GameObject> getColliderObjects() {
+		return colliderObjects;
 	}
 
 	/**
@@ -43,7 +46,7 @@ public class ObjectManager {
 			// Call the start function of the object
 			obj.start();
 			if ( obj instanceof GameObject ) {
-				objects.add((GameObject) obj);
+				allObjects.add((GameObject) obj);
 
 				if ( ((GameObject) obj).rigidbody != null )
 					physicsObjects.add(obj);

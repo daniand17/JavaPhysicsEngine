@@ -73,7 +73,7 @@ public class GameThread implements Runnable {
 	}
 
 	private void update() {
-		for (GameObject currEnt : ObjectManager.getObjects())
+		for (GameObject currEnt : ObjectManager.getAllObjects())
 			currEnt.update();
 	}
 

@@ -1,10 +1,8 @@
-package interfaces_abstracts;
-
-import game_engine.Vector2;
+package game_engine;
 
 import java.awt.Graphics2D;
 
-public abstract class Renderer {
+public abstract class Renderer extends Component {
 
 	private Vector2 previous;
 	private Vector2 current;
@@ -14,7 +12,7 @@ public abstract class Renderer {
 	 * an alpha value, and a graphics2D object. Calls the implementing class'
 	 * render method to render the object.
 	 */
-	public void renderObject(Graphics2D g2d, double alpha) {
+	void renderObject(Graphics2D g2d, double alpha) {
 		if ( previous != null && current != null ) {
 			// calculate the interpolated vectors
 			Vector2 cRenderPos = new Vector2(current.x * alpha, current.y * alpha);
