@@ -1,11 +1,13 @@
 package game_engine;
 
+import java.util.List;
+
 public abstract class GameObject {
 
 	// All game objects have a transform starting at 0, 0
 	public Transform transform = new Transform();
 	// If this object has a rigidbody, it will partake in physics updates.
-	public RigidBody rigidbody;
+	public Rigidbody2D rigidbody;
 	// This object will be rendered if this is not null
 	public Renderer renderer;
 	public Collider collider;
@@ -64,14 +66,22 @@ public abstract class GameObject {
 	/**
 	 * This is a package-access method that is used to resolve collisions
 	 * involving this GameObject. It is called only if this object has a
-	 * collider attached to it
+	 * collider attached to it. It is handed a list of objects in which
+	 * collisions may occur
+	 * 
+	 * @param collidingObjects
+	 *            the list of objects that MIGHT collide with this game object
 	 */
-	void resolveCollisions() {
-
+	void resolveCollisions(List<GameObject> collidingObjects) {
 		collider.collisionsResolvedThisFrame = true;
-		// TODO Put this object into the quadtree and get back the objects used
-		// to check collisions from
 
+		// Iterate through the list of colliding objects
+		for (GameObject obj : collidingObjects)
+			// Checks to see if this collisions was already resolved
+			if ( !obj.collider.collisionsResolvedThisFrame ) {
+				if ( Physics.collided(this.collider, obj.collider) )
+					Physics.resolveCollision(this.collider, obj.collider);
+			}
 	}
 
 	/**

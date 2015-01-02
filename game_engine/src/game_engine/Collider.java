@@ -1,6 +1,6 @@
 package game_engine;
 
-import java.awt.Rectangle;
+import java.awt.Shape;
 
 public abstract class Collider extends Component {
 
@@ -11,9 +11,9 @@ public abstract class Collider extends Component {
 	public Vector2 size;
 	// The position of the collider relative to the transform of the GameObject
 	// it is attached to
-	private Vector2 position = new Vector2(0f, 0f);
+	private Vector2 relativePosition = new Vector2(0f, 0f);
 
-	abstract Rectangle getBounds();
+	abstract Shape getBoundedArea();
 
 	/**
 	 * Package-access methodd that gets the coordinates of this collider
@@ -25,7 +25,8 @@ public abstract class Collider extends Component {
 	 * @return the Vector2 representing the position of this collider.
 	 */
 	Vector2 getPosition() {
-		return position.add(transform.position);
+
+		return relativePosition.add(transform.position);
 	}
 
 	/**
@@ -37,7 +38,7 @@ public abstract class Collider extends Component {
 	 * @return the position of this collider.
 	 */
 	Vector2 getRelativePosition() {
-		return position;
+		return relativePosition;
 	}
 
 	Vector2 getPositionInWorldSpace() {
