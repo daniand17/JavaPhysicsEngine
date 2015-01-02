@@ -33,7 +33,7 @@ public class GameThread implements Runnable {
 			currentTime = now;
 			accumulator += frameTime;
 
-			ObjectManager.initializeStartObjects();
+			ObjectManager.sortObjectsByComponents();
 
 			while (accumulator >= dt) {
 

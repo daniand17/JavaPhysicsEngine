@@ -18,9 +18,12 @@ public abstract class GameObject {
 	}
 
 	void initializeComponentReferences() {
-		rigidbody.initializeComponentReferences(this, transform);
-		renderer.initializeComponentReferences(this, transform);
-		collider.initializeComponentReferences(this, transform);
+		if ( rigidbody != null )
+			rigidbody.initializeComponentReferences(this, transform);
+		if ( renderer != null )
+			renderer.initializeComponentReferences(this, transform);
+		if ( collider != null )
+			collider.initializeComponentReferences(this, transform);
 	}
 
 	/**
@@ -66,7 +69,8 @@ public abstract class GameObject {
 	void resolveCollisions() {
 
 		collider.collisionsResolvedThisFrame = true;
-		//TODO Put this object into the quadtree and get back the objects used to check collisions from
+		// TODO Put this object into the quadtree and get back the objects used
+		// to check collisions from
 
 	}
 
