@@ -17,7 +17,7 @@ public class Physics {
 	 *            drag, position, and velocity information
 	 */
 
-	static Vector2[] integrateState(double t, double dt, Vector2 position, RigidBody rigidbody) {
+	static Vector2[] integrateState(double t, double dt, Vector2 position, Rigidbody2D rigidbody) {
 		Physics.dt = dt;
 		return rk4Integration(t, dt, position, rigidbody);
 	}
@@ -30,7 +30,7 @@ public class Physics {
 	 */
 
 	private static Vector2[] rk4Integration(double t, double dt, Vector2 position,
-			RigidBody rigidbody) {
+			Rigidbody2D rigidbody) {
 
 		Vector2[] a = evaluatePosition(0d, position, rigidbody.velocity, rigidbody);
 		Vector2[] b = evaluatePosition(0.5d, a[0], a[1], rigidbody);
@@ -60,7 +60,7 @@ public class Physics {
 	 * 
 	 */
 	@SuppressWarnings("unused")
-	private void DOPRI5(RigidBody RB) {
+	private void DOPRI5(Rigidbody2D RB) {
 		// TODO: * Put these constants somewhere they don't get defined at each
 		// integration call
 
@@ -110,7 +110,7 @@ public class Physics {
 	 *         each evaluation
 	 */
 	private static Vector2[] evaluatePosition(double factor, Vector2 pos, Vector2 vel,
-			RigidBody rigidbody) {
+			Rigidbody2D rigidbody) {
 
 		// Method 1 //
 		// This feels slower and is probably tougher to read, but is the
@@ -131,9 +131,9 @@ public class Physics {
 		pos.x += vel.x * dt * factor;
 		pos.y += vel.y * dt * factor;
 		vel.x += dt * factor
-				* ((rigidbody.force.x - rigidbody.zeta * vel.x) / rigidbody.mass + gravityVector.x);
+				* ((rigidbody.force.x - rigidbody.drag * vel.x) / rigidbody.mass + gravityVector.x);
 		vel.y += dt * factor
-				* ((rigidbody.force.y - rigidbody.zeta * vel.y) / rigidbody.mass + gravityVector.y);
+				* ((rigidbody.force.y - rigidbody.drag * vel.y) / rigidbody.mass + gravityVector.y);
 
 		Vector2[] retVals = { pos, vel };
 		return retVals;
@@ -190,8 +190,8 @@ public class Physics {
 		// The rigidbodies can be gotten as follows:
 
 		Debug.log("Physics", "resolveCollision");
-		RigidBody col1_rb = col1.gameObject.rigidbody;
-		RigidBody col2_rb = col2.gameObject.rigidbody;
+		Rigidbody2D col1_rb = col1.gameObject.rigidbody;
+		Rigidbody2D col2_rb = col2.gameObject.rigidbody;
 
 	}
 }

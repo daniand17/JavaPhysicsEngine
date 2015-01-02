@@ -1,23 +1,25 @@
 package game_engine;
 
-public class RigidBody extends Component {
+public class Rigidbody2D extends Component {
 
-	public Vector2 velocity; // The velocity of this RigidBody.
+	public Vector2 velocity; // The velocity of this Rigidbody.
 	public double mass; // The mass of this RigidBody
-	public double zeta; // The drag coefficient of this RigdBody
+	public double drag; // The drag coefficient of this Rigidbody
 	public Vector2 force; // Force acting on the RigidBody for the next physics
 							// update
+	public double angularSpeed;
+	public double angularDrag;
 
 	/**
 	 * Default public constructor. Creates a new velocity vector with no
 	 * velocity, initializes the mass to 5 (kg), the drag to 0.001, and the
 	 * gravity scale as defined in the Physics class.
 	 */
-	public RigidBody() {
+	public Rigidbody2D() {
 		if ( velocity == null )
 			velocity = new Vector2();
 		mass = 1d;
-		zeta = 0.1d;
+		drag = 0.1d;
 		setForce(new Vector2(1d, 0d), 0d);
 	}
 
@@ -31,10 +33,10 @@ public class RigidBody extends Component {
 	 * @param initMass
 	 *            The initial mass of the rigidbody
 	 */
-	public RigidBody(Vector2 velocity, double mass, double zeta) {
+	public Rigidbody2D(Vector2 velocity, double mass, double zeta) {
 		this.velocity = velocity;
 		this.mass = mass;
-		this.zeta = zeta;
+		this.drag = zeta;
 	}
 
 	/**
@@ -67,5 +69,15 @@ public class RigidBody extends Component {
 	public void addForce(Vector2 direction, double amount) {
 		// Don't supply a zero value for direction
 		force = force.add(direction.scale(amount / direction.norm()));
+	}
+
+	public void addTorque(VectorN axis) {
+		// TODO (Joe) implement this method
+
+		// use transform.rotation = result of physics integration called in this
+		// method
+		// We will likely need to discuss some more architectural aspects of
+		// this since I'm not sure yet how we should be doing integration for
+		// this
 	}
 }

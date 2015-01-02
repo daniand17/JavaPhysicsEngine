@@ -7,7 +7,7 @@ public abstract class GameObject {
 	// All game objects have a transform starting at 0, 0
 	public Transform transform = new Transform();
 	// If this object has a rigidbody, it will partake in physics updates.
-	public RigidBody rigidbody;
+	public Rigidbody2D rigidbody;
 	// This object will be rendered if this is not null
 	public Renderer renderer;
 	public Collider collider;

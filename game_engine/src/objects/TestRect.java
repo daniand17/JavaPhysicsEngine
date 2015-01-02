@@ -3,7 +3,7 @@ package objects;
 import game_engine.BoxCollider2D;
 import game_engine.Display;
 import game_engine.GameObject;
-import game_engine.RigidBody;
+import game_engine.Rigidbody2D;
 import game_engine.SquareRenderer;
 import game_engine.Vector2;
 
@@ -21,7 +21,7 @@ public class TestRect extends GameObject {
 
 	public TestRect() {
 		// Sets up the rigidbody and renderer for this component
-		rigidbody = new RigidBody();
+		rigidbody = new Rigidbody2D();
 		renderer = new SquareRenderer(new Vector2(64f, 64f));
 		collider = new BoxCollider2D(new Vector2(64f, 64f));
 	}
