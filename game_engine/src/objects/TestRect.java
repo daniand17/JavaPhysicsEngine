@@ -20,6 +20,8 @@ public class TestRect extends GameObject {
 	}
 
 	public TestRect() {
+		// The name of this game object
+		this.name = "TestRect";
 		// Sets up the rigidbody and renderer for this component
 		rigidbody = new Rigidbody2D();
 		renderer = new SquareRenderer(new Vector2(64f, 64f));

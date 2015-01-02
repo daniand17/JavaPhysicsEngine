@@ -185,11 +185,29 @@ public class Physics {
 		return collided;
 	}
 
-	public static void resolveCollision(Collider col1, Collider col2) {
-		// TODO implement this method
-		// The rigidbodies can be gotten as follows:
+	/**
+	 * This is a package-access method used to resolve a collision that has
+	 * occurred between two colliders. This method adjusts the rigidbody
+	 * velocity, adds an impulse force, spin, etc. It also calls the
+	 * onCollision() methods for the gameObjects involved in the collision if
+	 * the game designer chooses to perform certain high-level behaviors or
+	 * actions based on this collision.
+	 * 
+	 * @param col1
+	 * @param col2
+	 */
+	static void resolveCollision(Collider col1, Collider col2) {
 
-		Debug.log("Physics", "resolveCollision");
+		// These methods are called so that certain high-level scripting
+		// behaviors can be obtained by knowing when a collision has occured
+		// with another collider, and performing actions as a result of that
+		// collision (ie destroying an object when it has been hit--user
+		// determined)
+		col1.gameObject.onCollision(col2);
+		col2.gameObject.onCollision(col1);
+
+		// TODO (Joe) Implement the remainder of this method
+		// The rigidbodies can be gotten as follows:
 		Rigidbody2D col1_rb = col1.gameObject.rigidbody;
 		Rigidbody2D col2_rb = col2.gameObject.rigidbody;
 

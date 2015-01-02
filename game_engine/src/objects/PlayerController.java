@@ -1,6 +1,8 @@
 package objects;
 
 import game_engine.BoxCollider2D;
+import game_engine.Collider;
+import game_engine.Debug;
 import game_engine.Display;
 import game_engine.GameObject;
 import game_engine.Input;
@@ -34,6 +36,8 @@ public class PlayerController extends GameObject {
 	 * Initialize rigid body and rendered objects.
 	 */
 	public void start() {
+		// The name of this game object
+		this.name = "PlayerController";
 		rigidbody = new Rigidbody2D();
 		renderer = new SquareRenderer(new Vector2(64f, 64f));
 		collider = new BoxCollider2D(new Vector2(64f, 64f));
@@ -69,14 +73,20 @@ public class PlayerController extends GameObject {
 
 		if ( transform.position.y > Display.SIZE.height ) {
 			transform.position.y = 0;
-		} else if ( transform.position.y < 0 ) {
+		}
+		else if ( transform.position.y < 0 ) {
 			transform.position.y = Display.SIZE.height;
 		}
 
 		if ( transform.position.x > Display.SIZE.width ) {
 			transform.position.x = 0;
-		} else if ( transform.position.x < 0 ) {
+		}
+		else if ( transform.position.x < 0 ) {
 			transform.position.x = Display.SIZE.width;
 		}
+	}
+
+	public void onCollision(Collider other) {
+		Debug.log(name, "Collided with: " + other.gameObject.name);
 	}
 }
