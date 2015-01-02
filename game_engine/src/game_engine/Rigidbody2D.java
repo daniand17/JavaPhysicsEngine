@@ -12,6 +12,7 @@ public class Rigidbody2D extends Component {
 	public double angularSpeed; // Rotational speed; positive CW
 	private double angularDrag; // Viscous angular drag coefficient (linear)
 	public double torque; // Angular force component acting on this RigidBody
+	public double gravityScale = 1;
 
 	/**
 	 * Default public constructor. Creates a new velocity vector with no

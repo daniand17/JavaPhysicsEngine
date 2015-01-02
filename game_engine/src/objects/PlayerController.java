@@ -42,6 +42,7 @@ public class PlayerController extends GameObject {
 		// Sets initial rotational characteristics
 		rigidbody.setAngularDrag(1);
 		rigidbody.setInertia(1);
+		rigidbody.gravityScale = 0;
 	}
 
 	@Override

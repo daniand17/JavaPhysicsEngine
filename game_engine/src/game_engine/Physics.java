@@ -130,10 +130,12 @@ public class Physics {
 		// Velocity updates
 		vel.x += dt
 				* factor
-				* ((rigidbody.force.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x);
+				* ((rigidbody.force.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x
+						* rigidbody.gravityScale);
 		vel.y += dt
 				* factor
-				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y);
+				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y
+						* rigidbody.gravityScale);
 		rot.y += dt * factor
 				* (rigidbody.torque / rigidbody.getInertia() - rigidbody.getAngularDrag() * rot.y);
 
@@ -164,6 +166,12 @@ public class Physics {
 		// Simple rectangular collision (naive implementation)
 		boolean collided = false;
 
+		// TODO (Joe/Andy) we might need to reimplement some of this collision
+		// checking because we are likely not accounting for rotation of the
+		// collider
+
+		// While the shapes themselves are rendered accurately (I think), I
+		// don't believe the colliders are actually being rotated
 		if ( col1 instanceof BoxCollider2D ) {
 			// If col2 is a BoxCollider
 			if ( col2 instanceof BoxCollider2D ) {
