@@ -1,13 +1,19 @@
 package game_engine;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public abstract class Renderer extends Component {
 
 	private Vector2 previous;
 	private Vector2 current;
+	protected BufferedImage imageToRender;
+	protected AffineTransform affineTransform;
+	
+	protected Renderer() {
+		affineTransform = new AffineTransform();
+	}
 
 	/**
 	 * This method does the interpolation for the rendering of the object given
@@ -44,11 +50,5 @@ public abstract class Renderer extends Component {
 	 */
 	abstract void render(Graphics2D g2d, Vector2 renderPos);
 
-	protected BufferedImage makeImage(Shape s) {
-		
-		
-
-		return null;
-
-	}
+	protected abstract BufferedImage makeImageFromShape();
 }

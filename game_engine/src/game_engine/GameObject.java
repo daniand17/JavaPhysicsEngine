@@ -120,8 +120,9 @@ public abstract class GameObject implements IGameObject {
 		Vector2[] physicsResults = Physics.integrateState(t, dt, prevPos, prevTheta, getRigidbody());
 
 		// Update transform position and rotation
-		getTransform().position = physicsResults[0];
-		getTransform().setRotation(physicsResults[1].x);
+		transform.position = physicsResults[0];
+		transform.setRotation(physicsResults[1].x);
+		
 
 		//Update renderer position and rotation
 		if ( renderer != null )

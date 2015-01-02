@@ -39,6 +39,9 @@ public class PlayerController extends GameObject {
 		rigidbody = new Rigidbody2D();
 		renderer = new SquareRenderer(new Vector2(64d, 64d));
 		collider = new BoxCollider2D(new Vector2(64d, 64d));
+		// Sets initial rotational characteristics
+		rigidbody.setAngularDrag(10);
+		rigidbody.setInertia(1);
 	}
 
 	@Override
@@ -60,11 +63,13 @@ public class PlayerController extends GameObject {
 			getRigidbody().addForce(Vector2.left(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_Q) ) {
-			getRigidbody().addTorque(-gain);
+			getRigidbody().addTorque(-gain * .5);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
-			getRigidbody().addTorque(gain);
+			getRigidbody().addTorque(gain * .5);
 		}
+
+		Debug.log(name, "" + getTransform().getEulerRotation());
 	}
 
 	@Override

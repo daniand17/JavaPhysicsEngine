@@ -33,12 +33,24 @@ public class Transform extends Component {
 	}
 
 	/**
-	 * Return the double representation of the rotation of this transform. Positive CW.
+	 * Return the double representation of the rotation of this transform.
+	 * Positive CW.
 	 * 
 	 * @return the rotation
 	 */
 	public double getRotation() {
 		return rotation;
+	}
+
+	/**
+	 * Returns the double representation of the rotation of this transform in
+	 * terms of degrees
+	 * 
+	 * @return
+	 */
+	public double getEulerRotation() {
+
+		return rotation * 57.29577951;
 	}
 
 	/**
@@ -49,7 +61,6 @@ public class Transform extends Component {
 	 */
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
-
 		this.rotation = this.rotation % (2 * Math.PI);
 	}
 }
