@@ -33,7 +33,7 @@ public class Transform extends Component {
 	}
 
 	/**
-	 * Return the double representation of the rotation of this transform
+	 * Return the double representation of the rotation of this transform. Positive CW.
 	 * 
 	 * @return the rotation
 	 */
@@ -42,7 +42,7 @@ public class Transform extends Component {
 	}
 
 	/**
-	 * Sets the rotation of this transform in radians
+	 * Sets the rotation of this transform in radians. Positive CW.
 	 * 
 	 * @param rotation
 	 *            the rotation to set
@@ -50,6 +50,6 @@ public class Transform extends Component {
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
 
-		this.rotation = this.rotation - (this.rotation % 2 * Math.PI);
+		this.rotation = this.rotation % (2 * Math.PI);
 	}
 }

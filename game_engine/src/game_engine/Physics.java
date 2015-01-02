@@ -17,9 +17,9 @@ public class Physics {
 	 *            drag, position, and velocity information
 	 */
 
-	static Vector2[] integrateState(double t, double dt, Vector2 position, Rigidbody2D rigidbody) {
+	static Vector2[] integrateState(double t, double dt, Vector2 position, double theta, Rigidbody2D rigidbody) {
 		Physics.dt = dt;
-		return rk4Integration(t, dt, position, rigidbody);
+		return rk4Integration(t, dt, position, theta, rigidbody);
 	}
 
 	/**
@@ -30,12 +30,12 @@ public class Physics {
 	 */
 
 	private static Vector2[] rk4Integration(double t, double dt, Vector2 position,
-			Rigidbody2D rigidbody) {
-
-		Vector2[] a = evaluatePosition(0d, position, rigidbody.velocity, rigidbody);
-		Vector2[] b = evaluatePosition(0.5d, a[0], a[1], rigidbody);
-		Vector2[] c = evaluatePosition(0.5d, b[0], b[1], rigidbody);
-		Vector2[] d = evaluatePosition(1d, c[0], c[1], rigidbody);
+			double theta, Rigidbody2D rigidbody) {
+		Vector2 rot = new Vector2(theta, rigidbody.angularSpeed);
+		Vector2[] a = evaluatePosition(0d, position, rigidbody.velocity, rot, rigidbody);
+		Vector2[] b = evaluatePosition(0.5d, a[0], a[1], a[2], rigidbody);
+		Vector2[] c = evaluatePosition(0.5d, b[0], b[1], b[2], rigidbody);
+		Vector2[] d = evaluatePosition(1d, c[0], c[1], c[2], rigidbody);
 
 		// Evaluate the new position vector
 		position.x = 1.0d / 6.0d * (a[0].x + 2.0d * (b[0].x + c[0].x) + d[0].x);
@@ -45,8 +45,14 @@ public class Physics {
 		rigidbody.velocity.x = 1.0f / 6.0f * (a[1].x + 2.0f * (b[1].x + c[1].x) + d[1].x);
 		rigidbody.velocity.y = 1.0f / 6.0f * (a[1].y + 2.0f * (b[1].y + c[1].y) + d[1].y);
 
-		Vector2[] retVal = { position, rigidbody.velocity };
-		return retVal;
+		// Evaluate the new rotation vector
+		rot.x = 1.0d / 6.0d * (a[2].x + 2.0d * (b[2].x + c[2].x) + d[2].x);
+		rigidbody.angularSpeed = 1.0d / 6.0d * (a[2].y + 2.0d * (b[2].y + c[2].y) + d[2].y);
+		
+		// The x field of rot contains the updated rotation
+		Vector2[] retVals = {position, rot};
+	
+		return retVals;
 	}
 
 	/**
@@ -106,38 +112,30 @@ public class Physics {
 	 *            Position to evaluate at
 	 * @param vel
 	 *            Velocity to evaulate at
-	 * @return retVals a Vector2 array containing the position and velocity from
+	 * @param rot
+	 * 			  Vector of angular position (x) and velocity (y) in radians           
+	 * 
+	 * @return retVals a Vector2 array containing the position, velocity, and rotation from
 	 *         each evaluation
 	 */
 	private static Vector2[] evaluatePosition(double factor, Vector2 pos, Vector2 vel,
-			Rigidbody2D rigidbody) {
+			Vector2 rot, Rigidbody2D rigidbody) {
 
-		// Method 1 //
-		// This feels slower and is probably tougher to read, but is the
-		// "better"
-		// way of doing things with respect to OOD guidelines.
-		/*
-		 * pos = pos.add(vel.scale(dt*factor));
-		 * 
-		 * Vector2 acc = vel.scale(-RB.zeta/RB.mass); acc =
-		 * acc.add(RB.force.scale(1/RB.mass)); acc = acc.add(gravityVector);
-		 */
-		// Add in gravity vector vel = vel.add(acc.scale(dt*factor));
-
-		// Method 2 //
-		// This feels faster and is more concise, but reflects "poor" OOD
-		// principles (we shouldn't be accessing these fields directly)
-
+		// Position updates
 		pos.x += vel.x * dt * factor;
 		pos.y += vel.y * dt * factor;
+		rot.x += rot.y*dt*factor;
+		
+		// Velocity updates
 		vel.x += dt
 				* factor
 				* ((rigidbody.force.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x);
 		vel.y += dt
 				* factor
 				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y);
-
-		Vector2[] retVals = { pos, vel };
+		rot.y += dt*factor*(rigidbody.torque/rigidbody.getInertia() - rigidbody.getAngularDrag()*rot.y);
+		
+		Vector2[] retVals = { pos, vel, rot };
 		return retVals;
 	}
 
@@ -214,6 +212,20 @@ public class Physics {
 		// The rigidbodies can be gotten as follows:
 		Rigidbody2D col1_rb = col1.getGameObject().getRigidbody();
 		Rigidbody2D col2_rb = col2.getGameObject().getRigidbody();
-
+		
+		// The code below will directly modify the velocities of the two rigid bodies. It must
+		// occur prior to the integration call
+		Vector2 v1p = col1_rb.velocity; Vector2 v2p = col2_rb.velocity;
+		Vector2 r1 = col1.getPositionInWorldSpace(); Vector2 r2 = col1.getPositionInWorldSpace();
+		
+		// 1) Determine the line of contact using the relative position between the two objects
+		//Vector2 rho = 
+		
 	}
+	
+	static void resolveGravity(GameObject obj1, GameObject obj2) {
+		// TODO this method will behave similar to resolveCollision, calculating the gravitational
+		// force from one object to another. I'm not sure what type of object it will accept, however.
+	}
+
 }

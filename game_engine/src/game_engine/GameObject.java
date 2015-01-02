@@ -109,28 +109,29 @@ public abstract class GameObject implements IGameObject {
 	 *            the time step to integrate over
 	 */
 	void updatePhysics(double t, double dt) {
-
+		
+		// Obtain prior position and rotation
 		Vector2 prevPos = getTransform().position;
-		// Allows implementing class to do physics stuff
-		physicsUpdate(); // Get control inputs prior to physics calculation
-		// Store previous position for use in the renderer
+		double prevTheta = getTransform().getRotation(); 
 
-		Vector2[] physicsResults = Physics.integrateState(t, dt, prevPos, getRigidbody());
+		physicsUpdate(); // Check for control inputs, gravity, collisions
+		
+		// Perform integration from current to updates state
+		Vector2[] physicsResults = Physics.integrateState(t, dt, prevPos, prevTheta, getRigidbody());
 
-		// FIXME can change this once physics is fixed
-		transform.position = physicsResults[0];
-		rigidbody.velocity = physicsResults[1];
-		// position.
-		// Give the renderer the old and new positions for rendering of the
-		// obj
+		// Update transform position and rotation
+		getTransform().position = physicsResults[0];
+		getTransform().setRotation(physicsResults[1].x);
+
+		//Update renderer position and rotation
 		if ( renderer != null )
-			// FIXME this might become an issue later on if we want to
-			// interpolate positions of non-rigidbody objects that are
-			// moving
+			// FIXME turn on rotations
 			renderer.updateRendererPositions(prevPos, getTransform().position);
-
-		// Resets the forces on the object
+			//render.updateRendererRotation(prevTheta, getTransform().getRotation());
+		
+		// Reset the forces on the object
 		rigidbody.setForce(Vector2.right(), 0);
+		rigidbody.setTorque(0);
 	}
 
 	/**

@@ -46,7 +46,8 @@ public abstract class Collider extends Component {
 		// transforms and conversion from transform local space to world space.
 		// Not crucial yet but this should eventually be the defacto method used
 		// for collision detection once transforms are figured out.
-		return null;
+		
+		return relativePosition.add(getTransform().position);
 	}
 
 }
