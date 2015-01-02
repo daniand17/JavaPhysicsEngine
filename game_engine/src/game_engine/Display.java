@@ -66,8 +66,8 @@ public class Display extends Canvas {
 		// TODO renders each game object by calling the renderer of that object
 		// TODO (Andy) Set this to draw only objects that are visible
 		for (GameObject ent : ObjectManager.getAllObjects())
-			if ( ent != null && ent.renderer != null )
-				ent.renderer.renderObject(g2d, alpha);
+			if ( ent != null && ent.getRenderer() != null )
+				ent.getRenderer().renderObject(g2d, alpha);
 
 		// Renders the GUI
 		renderGUI(g2d);

@@ -6,12 +6,12 @@ public abstract class GameObject implements IGameObject {
 
 	public String name = "GameObject";
 	// All game objects have a transform starting at 0, 0
-	public Transform transform = new Transform();
+	private Transform transform = new Transform();
 	// If this object has a rigidbody, it will partake in physics updates.
-	public Rigidbody2D rigidbody;
+	protected Rigidbody2D rigidbody;
 	// This object will be rendered if this is not null
-	public Renderer renderer;
-	public Collider collider;
+	protected Renderer renderer;
+	protected Collider collider;
 
 	/**
 	 * The empty constructor used to create a game entity
@@ -21,12 +21,12 @@ public abstract class GameObject implements IGameObject {
 	}
 
 	void initializeComponentReferences() {
-		if ( rigidbody != null )
-			rigidbody.initializeComponentReferences(this, transform);
-		if ( renderer != null )
-			renderer.initializeComponentReferences(this, transform);
-		if ( collider != null )
-			collider.initializeComponentReferences(this, transform);
+		if ( getRigidbody() != null )
+			getRigidbody().initializeComponentReferences(this, getTransform());
+		if ( getRenderer() != null )
+			getRenderer().initializeComponentReferences(this, getTransform());
+		if ( getCollider() != null )
+			getCollider().initializeComponentReferences(this, getTransform());
 	}
 
 	/**
@@ -44,24 +44,24 @@ public abstract class GameObject implements IGameObject {
 	 */
 	void updatePhysics(double t, double dt) {
 
-		Vector2 prevPos = transform.position;
+		Vector2 prevPos = getTransform().position;
 		// Allows implementing class to do physics stuff
 		physicsUpdate(); // Get control inputs prior to physics calculation
 		// Store previous position for use in the renderer
 
-		Vector2[] physicsResults = Physics.integrateState(t, dt, prevPos, rigidbody);
+		Vector2[] physicsResults = Physics.integrateState(t, dt, prevPos, getRigidbody());
 
 		// FIXME can change this once physics is fixed
-		transform.position = physicsResults[0];
-		rigidbody.velocity = physicsResults[1];
+		getTransform().position = physicsResults[0];
+		getRigidbody().velocity = physicsResults[1];
 		// position.
 		// Give the renderer the old and new positions for rendering of the
 		// obj
-		if ( renderer != null )
+		if ( getRenderer() != null )
 			// FIXME this might become an issue later on if we want to
 			// interpolate positions of non-rigidbody objects that are
 			// moving
-			renderer.updateRendererPositions(prevPos, transform.position);
+			getRenderer().updateRendererPositions(prevPos, getTransform().position);
 	}
 
 	/**
@@ -74,14 +74,14 @@ public abstract class GameObject implements IGameObject {
 	 *            the list of objects that MIGHT collide with this game object
 	 */
 	void resolveCollisions(List<GameObject> collidingObjects) {
-		collider.collisionsResolvedThisFrame = true;
+		getCollider().collisionsResolvedThisFrame = true;
 
 		// Iterate through the list of colliding objects
 		for (GameObject obj : collidingObjects)
 			// Checks to see if this collisions was already resolved
-			if ( !obj.collider.collisionsResolvedThisFrame ) {
-				if ( Physics.collided(this.collider, obj.collider) )
-					Physics.resolveCollision(this.collider, obj.collider);
+			if ( !obj.getCollider().collisionsResolvedThisFrame ) {
+				if ( Physics.collided(this.getCollider(), obj.getCollider()) )
+					Physics.resolveCollision(this.getCollider(), obj.getCollider());
 			}
 	}
 
@@ -109,13 +109,46 @@ public abstract class GameObject implements IGameObject {
 	 * logic takes place.
 	 */
 	public void start() {
-		// TODO this is called here so that this method doesn't need to be
+		// This is called here so that this method doesn't need to be
 		// implemented in an inheriting class
 	}
 
 	public void onCollision(Collider other) {
-		// TODO this is called here so that this method doesn't need to be
+		// This is called here so that this method doesn't need to be
 		// implemented in an inheriting class
 	}
 
+	/**
+	 * Returns the rigidbody attached to this object
+	 * 
+	 * @return the rigidbody
+	 */
+	public Rigidbody2D getRigidbody() {
+		return rigidbody;
+	}
+
+	/**
+	 * Returns the renderer attached to this object
+	 * 
+	 * @return the renderer
+	 */
+	public Renderer getRenderer() {
+		return renderer;
+	}
+
+	/**
+	 * Returns the collider attached to this object
+	 * 
+	 * @return the collider
+	 */
+	public Collider getCollider() {
+		return collider;
+	}
+
+	/**
+	 * @return the transform
+	 */
+	public Transform getTransform() {
+		return transform;
+	}
 }

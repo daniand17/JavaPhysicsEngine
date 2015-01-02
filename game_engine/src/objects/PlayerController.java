@@ -41,7 +41,6 @@ public class PlayerController extends GameObject {
 		rigidbody = new Rigidbody2D();
 		renderer = new SquareRenderer(new Vector2(64f, 64f));
 		collider = new BoxCollider2D(new Vector2(64f, 64f));
-
 	}
 
 	@Override
@@ -50,18 +49,18 @@ public class PlayerController extends GameObject {
 	 * events on W, A, S, and D.
 	 */
 	public void physicsUpdate() {
-		rigidbody.setForce(xVec, 0d);
+		getRigidbody().setForce(xVec, 0d);
 		if ( Input.getKeyDown(KeyEvent.VK_W) ) {
-			rigidbody.addForce(yVec, -gain);
+			getRigidbody().addForce(yVec, -gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_S) ) {
-			rigidbody.addForce(yVec, gain);
+			getRigidbody().addForce(yVec, gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_D) ) {
-			rigidbody.addForce(xVec, gain);
+			getRigidbody().addForce(xVec, gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
-			rigidbody.addForce(xVec, -gain);
+			getRigidbody().addForce(xVec, -gain);
 		}
 	}
 
@@ -71,18 +70,18 @@ public class PlayerController extends GameObject {
 	 */
 	public void update() {
 
-		if ( transform.position.y > Display.SIZE.height ) {
-			transform.position.y = 0;
+		if ( getTransform().position.y > Display.SIZE.height ) {
+			getTransform().position.y = 0;
 		}
-		else if ( transform.position.y < 0 ) {
-			transform.position.y = Display.SIZE.height;
+		else if ( getTransform().position.y < 0 ) {
+			getTransform().position.y = Display.SIZE.height;
 		}
 
-		if ( transform.position.x > Display.SIZE.width ) {
-			transform.position.x = 0;
+		if ( getTransform().position.x > Display.SIZE.width ) {
+			getTransform().position.x = 0;
 		}
-		else if ( transform.position.x < 0 ) {
-			transform.position.x = Display.SIZE.width;
+		else if ( getTransform().position.x < 0 ) {
+			getTransform().position.x = Display.SIZE.width;
 		}
 	}
 

@@ -3,12 +3,12 @@ package game_engine;
 public class Rigidbody2D extends Component {
 
 	public Vector2 velocity; // The velocity of this Rigidbody.
-	public double mass; // The mass of this RigidBody
-	public double drag; // The drag coefficient of this Rigidbody
+	private double mass; // The mass of this RigidBody
+	private double drag; // The drag coefficient of this Rigidbody
 	public Vector2 force; // Force acting on the RigidBody for the next physics
 							// update
 	public double angularSpeed;
-	public double angularDrag;
+	private double angularDrag;
 
 	/**
 	 * Default public constructor. Creates a new velocity vector with no
@@ -18,25 +18,23 @@ public class Rigidbody2D extends Component {
 	public Rigidbody2D() {
 		if ( velocity == null )
 			velocity = new Vector2();
-		mass = 1d;
-		drag = 0.1d;
+		setMass(1d);
+		setDrag(0.1d);
 		setForce(new Vector2(1d, 0d), 0d);
 	}
 
 	/**
 	 * Paramaterized public constructor. Creates a new rigid body with specified
-	 * velocity and mass.
+	 * mass and drag
 	 * 
-	 * @param Vector2
-	 *            initVelocity The initial velocity of the rigidbody
-	 * 
-	 * @param initMass
-	 *            The initial mass of the rigidbody
+	 * @param mass
+	 *            the mass of this rigidbody
+	 * @param zeta
+	 *            the drag of this rigidbody
 	 */
-	public Rigidbody2D(Vector2 velocity, double mass, double zeta) {
-		this.velocity = velocity;
-		this.mass = mass;
-		this.drag = zeta;
+	public Rigidbody2D(double mass, double zeta) {
+		this.setMass(mass);
+		this.setDrag(zeta);
 	}
 
 	/**
@@ -79,5 +77,69 @@ public class Rigidbody2D extends Component {
 		// We will likely need to discuss some more architectural aspects of
 		// this since I'm not sure yet how we should be doing integration for
 		// this
+	}
+
+	/**
+	 * Get the double representation of the mass of this rigidbody
+	 * 
+	 * @return the mass
+	 */
+	public double getMass() {
+		return mass;
+	}
+
+	/**
+	 * Sets the mass to always be something slightly greater than zero since
+	 * nothing is massless
+	 * 
+	 * @param mass
+	 *            the mass to set
+	 */
+	public void setMass(double mass) {
+		if ( mass > 0 )
+			this.mass = mass;
+		else
+			this.mass = 0.01;
+	}
+
+	/**
+	 * Gets the double representation of the drag of this rigidbody
+	 * 
+	 * @return the drag
+	 */
+	public double getDrag() {
+		return drag;
+	}
+
+	/**
+	 * Sets the drag of this rigidbody. If a negative number is supplied then it
+	 * sets the drag to zero
+	 * 
+	 * @param drag
+	 *            the drag to set
+	 */
+	public void setDrag(double drag) {
+		if ( drag >= 0 )
+			this.drag = drag;
+		else
+			this.drag = 0;
+	}
+
+	/**
+	 * @return the angularDrag
+	 */
+	public double getAngularDrag() {
+		return angularDrag;
+	}
+
+	/**
+	 * @param angularDrag
+	 *            the angularDrag to set
+	 */
+	public void setAngularDrag(double angularDrag) {
+		if ( angularDrag >= 0 )
+			this.angularDrag = angularDrag;
+		else
+			angularDrag = 0;
 	}
 }

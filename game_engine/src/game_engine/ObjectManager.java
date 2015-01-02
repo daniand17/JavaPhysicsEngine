@@ -48,7 +48,7 @@ public class ObjectManager {
 	 */
 	public static synchronized GameObject instantiate(GameObject newObj, Vector2 location) {
 		if ( newObj != null ) {
-			newObj.transform.position = location;
+			newObj.getTransform().position = location;
 			startObjects.add(newObj);
 		}
 		return newObj;
@@ -69,11 +69,11 @@ public class ObjectManager {
 			allObjects.add((GameObject) obj);
 
 			// Subject to physics updates if object has a rigidbody
-			if ( obj.rigidbody != null )
+			if ( obj.getRigidbody() != null )
 				physicsObjects.add(obj);
 
 			// Add to the list of collidable objects if object has a collider
-			if ( obj.collider != null )
+			if ( obj.getCollider() != null )
 				colliderObjects.add(obj);
 
 		}
@@ -86,7 +86,7 @@ public class ObjectManager {
 	public static synchronized void clearQuadtreeAndResetColliders() {
 		quadtree.clear();
 		for (GameObject obj : colliderObjects)
-			obj.collider.collisionsResolvedThisFrame = false;
+			obj.getCollider().collisionsResolvedThisFrame = false;
 
 	}
 }

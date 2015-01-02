@@ -130,24 +130,28 @@ public class Physics {
 
 		pos.x += vel.x * dt * factor;
 		pos.y += vel.y * dt * factor;
-		vel.x += dt * factor
-				* ((rigidbody.force.x - rigidbody.drag * vel.x) / rigidbody.mass + gravityVector.x);
-		vel.y += dt * factor
-				* ((rigidbody.force.y - rigidbody.drag * vel.y) / rigidbody.mass + gravityVector.y);
+		vel.x += dt
+				* factor
+				* ((rigidbody.force.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x);
+		vel.y += dt
+				* factor
+				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y);
 
 		Vector2[] retVals = { pos, vel };
 		return retVals;
 	}
 
 	/**
-	 * This method will be used to determine whether two objects have been
-	 * collided with, and what to do with them
+	 * Package-access method used to determine whether two objects have collided
+	 * with each other this frame.
 	 * 
 	 * @param col1
+	 *            the first collider
 	 * @param col2
-	 * @return
+	 *            the second collider
+	 * @return boolean representing whether these objects have collided
 	 */
-	public static boolean collided(Collider col1, Collider col2) {
+	static boolean collided(Collider col1, Collider col2) {
 		// TODO We will eventually implement this method. Currently I am unsure
 		// where to place collision
 		// resolution in terms of physics updates, but I have some ideas. I will
@@ -208,8 +212,8 @@ public class Physics {
 
 		// TODO (Joe) Implement the remainder of this method
 		// The rigidbodies can be gotten as follows:
-		Rigidbody2D col1_rb = col1.gameObject.rigidbody;
-		Rigidbody2D col2_rb = col2.gameObject.rigidbody;
+		Rigidbody2D col1_rb = col1.gameObject.getRigidbody();
+		Rigidbody2D col2_rb = col2.gameObject.getRigidbody();
 
 	}
 }

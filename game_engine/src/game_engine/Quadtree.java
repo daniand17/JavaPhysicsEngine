@@ -75,7 +75,7 @@ public class Quadtree {
 	private int getIndex(GameObject ent) {
 		// TODO eventually use collider.getPositionInWorldSpace() when it is
 		// implemented
-		Vector2 objLocation = ent.collider.getPosition();
+		Vector2 objLocation = ent.getCollider().getPosition();
 		
 		int index = -1;
 		double verticalMidpoint = bounds.getX() + (bounds.getWidth() / 2);
@@ -84,14 +84,14 @@ public class Quadtree {
 		// TODO not sure if this is completely right with the
 		// getBounds().height...will only know once we are doing collisions
 		boolean topQuadrant = (objLocation.y < horizontalMidpoint && objLocation.y
-				+ ent.collider.getBoundedArea().getBounds().height < horizontalMidpoint);
+				+ ent.getCollider().getBoundedArea().getBounds().height < horizontalMidpoint);
 		// Object can completely fit within the bottom quadrants
 		boolean bottomQuadrant = (objLocation.y > horizontalMidpoint);
 		// Object can completely fit within the left quadrants
 		// TODO not sure if this is completely right with the
 		// getBounds().width...will only know once we are doing collisions
-		if ( ent.collider.getPosition().x < verticalMidpoint
-				&& ent.collider.getPosition().y + ent.collider.getBoundedArea().getBounds().width < verticalMidpoint ) {
+		if ( ent.getCollider().getPosition().x < verticalMidpoint
+				&& ent.getCollider().getPosition().y + ent.getCollider().getBoundedArea().getBounds().width < verticalMidpoint ) {
 			if ( topQuadrant ) {
 				index = 1;
 			} else if ( bottomQuadrant ) {
