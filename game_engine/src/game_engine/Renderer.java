@@ -1,6 +1,8 @@
 package game_engine;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.image.BufferedImage;
 
 public abstract class Renderer extends Component {
 
@@ -41,4 +43,12 @@ public abstract class Renderer extends Component {
 	 * object.
 	 */
 	abstract void render(Graphics2D g2d, Vector2 renderPos);
+
+	protected BufferedImage makeImage(Shape s) {
+		
+		
+
+		return null;
+
+	}
 }
