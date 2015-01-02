@@ -9,5 +9,7 @@ public interface IGameObject {
 	public void physicsUpdate();
 	
 	public void update();
+	
+	public void addComponent(Component newComponent);
 
 }

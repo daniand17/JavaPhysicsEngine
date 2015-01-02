@@ -11,12 +11,25 @@ package game_engine;
 public abstract class Component {
 
 	public String className = "Component";
-	public GameObject gameObject;
-	public Transform transform;
+	private GameObject gameObject;
+	private Transform transform;
 
 	void initializeComponentReferences(GameObject gameObj, Transform trans) {
-		gameObject = gameObj;
-		transform = trans;
+		this.gameObject = gameObj;
+		this.transform = trans;
 	}
 
+	/**
+	 * @return the gameObject
+	 */
+	public GameObject getGameObject() {
+		return gameObject;
+	}
+
+	/**
+	 * @return the transform
+	 */
+	public Transform getTransform() {
+		return transform;
+	}
 }

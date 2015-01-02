@@ -15,11 +15,7 @@ public class TestRect extends GameObject {
 	@Override
 	public void start() {
 		// This function is used for calling things that you want to happen
-		// after the object is
-		// instantiated, but after the constructor
-	}
-
-	public TestRect() {
+		// after the object is instantiated, but after the constructor
 		// The name of this game object
 		this.name = "TestRect";
 		// Sets up the rigidbody and renderer for this component
@@ -29,22 +25,19 @@ public class TestRect extends GameObject {
 	}
 
 	@Override
-	public void physicsUpdate() {
-		// No control inputs
-	}
-
-	@Override
 	public void update() {
-		if ( transform.position.y > Display.SIZE.height ) {
-			transform.position.y = 0;
-		} else if ( transform.position.y < 0 ) {
-			transform.position.y = Display.SIZE.height;
+		if ( getTransform().position.y > Display.SIZE.height ) {
+			getTransform().position.y = 0;
+		}
+		else if ( getTransform().position.y < 0 ) {
+			getTransform().position.y = Display.SIZE.height;
 		}
 
-		if ( transform.position.x > Display.SIZE.width ) {
-			transform.position.x = 0;
-		} else if ( transform.position.x < 0 ) {
-			transform.position.x = Display.SIZE.width;
+		if ( getTransform().position.x > Display.SIZE.width ) {
+			getTransform().position.x = 0;
+		}
+		else if ( getTransform().position.x < 0 ) {
+			getTransform().position.x = Display.SIZE.width;
 		}
 	}
 }
