@@ -2,21 +2,36 @@ package game_engine;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 public class SquareRenderer extends Renderer {
 
 	private Vector2 size; // The size of this SquareRenderer
+	private Rectangle2D.Double shape;
 
 	public SquareRenderer(Vector2 sizeDimensions) {
 		setSize(sizeDimensions);
+
+		// Create the shape that will be rendered
+		shape = new Rectangle2D.Double(-sizeDimensions.x * 0.5, -sizeDimensions.y * 0.5,
+				sizeDimensions.x, sizeDimensions.y);
 	}
 
 	@Override
 	void render(Graphics2D g2d, Vector2 renderPos) {
-		g2d.setColor(Color.blue);
-		g2d.drawRect((int) Math.round(renderPos.x), (int) Math.round(renderPos.y),
-				(int) getSize().x, (int) getSize().y);
-
+		AffineTransform start = g2d.getTransform();
+		// Get the rotation of the transform
+		double rotation = this.getTransform().getRotation();
+		// Translate the entire context to the render position such that the
+		// shape to render is at 0,0
+		g2d.translate(renderPos.x, renderPos.y);
+		// Rotate the context
+		g2d.rotate(rotation);
+		g2d.setColor(Color.BLUE);
+		g2d.draw(shape);
+		g2d.setTransform(start);
 	}
 
 	/**
@@ -24,7 +39,7 @@ public class SquareRenderer extends Renderer {
 	 * 
 	 * @return the size
 	 */
-	private Vector2 getSize() {
+	public Vector2 getSize() {
 		return size;
 	}
 
@@ -35,7 +50,7 @@ public class SquareRenderer extends Renderer {
 	 * @param size
 	 *            the size to set
 	 */
-	private void setSize(Vector2 size) {
+	public void setSize(Vector2 size) {
 		if ( size.x < 0 )
 			size.x = 0;
 

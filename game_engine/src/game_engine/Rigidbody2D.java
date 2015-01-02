@@ -4,10 +4,11 @@ public class Rigidbody2D extends Component {
 
 	public Vector2 velocity; // The velocity of this Rigidbody.
 	private double mass; // The mass of this RigidBody
-	private double inertia; // The inertia of this Rigidbody
-	private double drag; // The linear, viscous drag coefficient of this Rigidbody
+	private double inertia = 1; // The inertia of this Rigidbody
+	private double drag; // The linear, viscous drag coefficient of this
+							// Rigidbody
 	public Vector2 force; // Force acting on the RigidBody for the next physics
-					// update
+	// update
 	public double angularSpeed; // Rotational speed; positive CW
 	private double angularDrag; // Viscous angular drag coefficient (linear)
 	public double torque; // Angular force component acting on this RigidBody
@@ -35,8 +36,10 @@ public class Rigidbody2D extends Component {
 	 *            the drag of this rigidbody
 	 */
 	public Rigidbody2D(double mass, double zeta, double angularDrag, double inertia) {
-		this.setMass(mass); this.setInertia(inertia);
-		this.setDrag(zeta); this.setAngularDrag(angularDrag);
+		this.setMass(mass);
+		this.setInertia(inertia);
+		this.setDrag(zeta);
+		this.setAngularDrag(angularDrag);
 	}
 
 	/**
@@ -45,7 +48,8 @@ public class Rigidbody2D extends Component {
 	 * 
 	 * @param direction
 	 *            Direction of the force. Should be a unit vector, but will be
-	 *            divided by its magnitude just in case. (Don't supply 0 vectors!)
+	 *            divided by its magnitude just in case. (Don't supply 0
+	 *            vectors!)
 	 * 
 	 * @param amount
 	 *            Magnitude of the desired force.
@@ -54,11 +58,13 @@ public class Rigidbody2D extends Component {
 		// Don't supply a zero value for direction
 		force = direction.scale(amount / direction.norm());
 	}
+
 	/**
 	 * Method to SET a torque on the object, wiping out any other amount
+	 * 
 	 * @param torque
-	 * 			  Magnitude of desired torque. Positive CW.
-	 * 			
+	 *            Magnitude of desired torque. Positive CW.
+	 * 
 	 */
 	void setTorque(double torque) {
 		this.torque = torque;
@@ -79,13 +85,14 @@ public class Rigidbody2D extends Component {
 		// Don't supply a zero value for direction
 		force = force.add(direction.scale(amount / direction.norm()));
 	}
+
 	/**
 	 * Method to ADD a torque to an object, in addition to any other torque
 	 * currently present.
 	 * 
 	 * @param torque
-	 * 			Amount of torque to add. Positive CW.
-	 */			
+	 *            Amount of torque to add. Positive CW.
+	 */
 	public void addTorque(double torque) {
 		this.torque += torque;
 	}
@@ -122,6 +129,7 @@ public class Rigidbody2D extends Component {
 		else
 			this.mass = 0.01;
 	}
+
 	/**
 	 * Sets the inertia to always be something slightly greater than zero since
 	 * nothing is inertia-less
@@ -130,11 +138,15 @@ public class Rigidbody2D extends Component {
 	 *            the inertia to set
 	 */
 	public void setInertia(double inertia) {
+
+		// TODO eventually auto-calc this based on the attached collider, and
+		// make this method package access
 		if ( inertia > 0 )
 			this.inertia = inertia;
 		else
 			this.inertia = 0.01;
 	}
+
 	/**
 	 * Get the double representation of the inertia of this rigidbody
 	 * 
@@ -143,6 +155,7 @@ public class Rigidbody2D extends Component {
 	public double getInertia() {
 		return inertia;
 	}
+
 	/**
 	 * Gets the double representation of the drag of this rigidbody
 	 * 

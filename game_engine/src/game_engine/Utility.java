@@ -23,5 +23,5 @@ public class Utility {
 	 */
 	public static float roundToTenth(double num) {
 		return ((int) (num * 10)) / 10f;
-	}
+	}	
 }

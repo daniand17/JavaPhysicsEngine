@@ -1,11 +1,14 @@
 package game_engine;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.image.BufferedImage;
 
 public abstract class Renderer extends Component {
 
 	private Vector2 previous;
 	private Vector2 current;
+	protected BufferedImage imageToRender;
 
 	/**
 	 * This method does the interpolation for the rendering of the object given
@@ -35,10 +38,15 @@ public abstract class Renderer extends Component {
 		current = position;
 	}
 
+	void drawShape(Shape circle) {
+
+	}
+
 	/**
 	 * The render method is called by the class implementing this abstract
 	 * class. Takes a Graphics2D object and a position in which to render the
 	 * object.
 	 */
 	abstract void render(Graphics2D g2d, Vector2 renderPos);
+
 }

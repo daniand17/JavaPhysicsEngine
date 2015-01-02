@@ -39,6 +39,9 @@ public class PlayerController extends GameObject {
 		rigidbody = new Rigidbody2D();
 		renderer = new SquareRenderer(new Vector2(64d, 64d));
 		collider = new BoxCollider2D(new Vector2(64d, 64d));
+		// Sets initial rotational characteristics
+		rigidbody.setAngularDrag(1);
+		rigidbody.setInertia(1);
 	}
 
 	@Override
@@ -48,22 +51,22 @@ public class PlayerController extends GameObject {
 	 */
 	public void physicsUpdate() {
 		if ( Input.getKeyDown(KeyEvent.VK_W) ) {
-			getRigidbody().addForce(Vector2.up(), gain);
+			getRigidbody().addForce(getTransform().up(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_S) ) {
-			getRigidbody().addForce(Vector2.down(), gain);
+			getRigidbody().addForce(getTransform().down(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_D) ) {
-			getRigidbody().addForce(Vector2.right(), gain);
+			getRigidbody().addForce(getTransform().right(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
-			getRigidbody().addForce(Vector2.left(), gain);
+			getRigidbody().addForce(getTransform().left(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_Q) ) {
-			getRigidbody().addTorque(-gain);
+			getRigidbody().addTorque(-gain * .1);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
-			getRigidbody().addTorque(gain);
+			getRigidbody().addTorque(gain * .1);
 		}
 	}
 

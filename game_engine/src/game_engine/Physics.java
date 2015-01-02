@@ -17,7 +17,8 @@ public class Physics {
 	 *            drag, position, and velocity information
 	 */
 
-	static Vector2[] integrateState(double t, double dt, Vector2 position, double theta, Rigidbody2D rigidbody) {
+	static Vector2[] integrateState(double t, double dt, Vector2 position, double theta,
+			Rigidbody2D rigidbody) {
 		Physics.dt = dt;
 		return rk4Integration(t, dt, position, theta, rigidbody);
 	}
@@ -29,8 +30,8 @@ public class Physics {
 	 * 
 	 */
 
-	private static Vector2[] rk4Integration(double t, double dt, Vector2 position,
-			double theta, Rigidbody2D rigidbody) {
+	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, double theta,
+			Rigidbody2D rigidbody) {
 		Vector2 rot = new Vector2(theta, rigidbody.angularSpeed);
 		Vector2[] a = evaluatePosition(0d, position, rigidbody.velocity, rot, rigidbody);
 		Vector2[] b = evaluatePosition(0.5d, a[0], a[1], a[2], rigidbody);
@@ -48,10 +49,10 @@ public class Physics {
 		// Evaluate the new rotation vector
 		rot.x = 1.0d / 6.0d * (a[2].x + 2.0d * (b[2].x + c[2].x) + d[2].x);
 		rigidbody.angularSpeed = 1.0d / 6.0d * (a[2].y + 2.0d * (b[2].y + c[2].y) + d[2].y);
-		
+
 		// The x field of rot contains the updated rotation
-		Vector2[] retVals = {position, rot};
-	
+		Vector2[] retVals = { position, rot };
+
 		return retVals;
 	}
 
@@ -113,19 +114,19 @@ public class Physics {
 	 * @param vel
 	 *            Velocity to evaulate at
 	 * @param rot
-	 * 			  Vector of angular position (x) and velocity (y) in radians           
+	 *            Vector of angular position (x) and velocity (y) in radians
 	 * 
-	 * @return retVals a Vector2 array containing the position, velocity, and rotation from
-	 *         each evaluation
+	 * @return retVals a Vector2 array containing the position, velocity, and
+	 *         rotation from each evaluation
 	 */
-	private static Vector2[] evaluatePosition(double factor, Vector2 pos, Vector2 vel,
-			Vector2 rot, Rigidbody2D rigidbody) {
+	private static Vector2[] evaluatePosition(double factor, Vector2 pos, Vector2 vel, Vector2 rot,
+			Rigidbody2D rigidbody) {
 
 		// Position updates
 		pos.x += vel.x * dt * factor;
 		pos.y += vel.y * dt * factor;
-		rot.x += rot.y*dt*factor;
-		
+		rot.x += rot.y * dt * factor;
+
 		// Velocity updates
 		vel.x += dt
 				* factor
@@ -133,8 +134,9 @@ public class Physics {
 		vel.y += dt
 				* factor
 				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y);
-		rot.y += dt*factor*(rigidbody.torque/rigidbody.getInertia() - rigidbody.getAngularDrag()*rot.y);
-		
+		rot.y += dt * factor
+				* (rigidbody.torque / rigidbody.getInertia() - rigidbody.getAngularDrag() * rot.y);
+
 		Vector2[] retVals = { pos, vel, rot };
 		return retVals;
 	}
@@ -212,20 +214,26 @@ public class Physics {
 		// The rigidbodies can be gotten as follows:
 		Rigidbody2D col1_rb = col1.getGameObject().getRigidbody();
 		Rigidbody2D col2_rb = col2.getGameObject().getRigidbody();
-		
-		// The code below will directly modify the velocities of the two rigid bodies. It must
+
+		// The code below will directly modify the velocities of the two rigid
+		// bodies. It must
 		// occur prior to the integration call
-		Vector2 v1p = col1_rb.velocity; Vector2 v2p = col2_rb.velocity;
-		Vector2 r1 = col1.getPositionInWorldSpace(); Vector2 r2 = col1.getPositionInWorldSpace();
-		
-		// 1) Determine the line of contact using the relative position between the two objects
-		//Vector2 rho = 
-		
+		Vector2 v1p = col1_rb.velocity;
+		Vector2 v2p = col2_rb.velocity;
+		Vector2 r1 = col1.getPositionInWorldSpace();
+		Vector2 r2 = col1.getPositionInWorldSpace();
+
+		// 1) Determine the line of contact using the relative position between
+		// the two objects
+		// Vector2 rho =
+
 	}
-	
+
 	static void resolveGravity(GameObject obj1, GameObject obj2) {
-		// TODO this method will behave similar to resolveCollision, calculating the gravitational
-		// force from one object to another. I'm not sure what type of object it will accept, however.
+		// TODO this method will behave similar to resolveCollision, calculating
+		// the gravitational
+		// force from one object to another. I'm not sure what type of object it
+		// will accept, however.
 	}
 
 }
