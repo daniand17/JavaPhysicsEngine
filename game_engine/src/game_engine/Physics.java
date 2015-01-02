@@ -4,7 +4,9 @@ public class Physics {
 
 	private static double gravity = 9.81d;
 	private static Vector2 gravityVector = new Vector2(0d, gravity);
-	private static double dt = 0.1;
+	private static double dt = 0.01; // FIXME - this needs to be the same as the dt
+	// being passed to the integrateState() method, because I am also using it in the 
+	// resolveCollision() method.
 
 	/**
 	 * This method is called by a RigidBody to update its position given a time,
@@ -17,8 +19,7 @@ public class Physics {
 	 *            drag, position, and velocity information
 	 */
 
-	static Vector2[] integrateState(double t, double dt, Vector2 position, double theta,
-			Rigidbody2D rigidbody) {
+	static Vector2[] integrateState(double t, double dt, Vector2 position, double theta, Rigidbody2D rigidbody) {
 		Physics.dt = dt;
 		return rk4Integration(t, dt, position, theta, rigidbody);
 	}
@@ -30,8 +31,8 @@ public class Physics {
 	 * 
 	 */
 
-	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, double theta,
-			Rigidbody2D rigidbody) {
+	private static Vector2[] rk4Integration(double t, double dt, Vector2 position,
+			double theta, Rigidbody2D rigidbody) {
 		Vector2 rot = new Vector2(theta, rigidbody.angularSpeed);
 		Vector2[] a = evaluatePosition(0d, position, rigidbody.velocity, rot, rigidbody);
 		Vector2[] b = evaluatePosition(0.5d, a[0], a[1], a[2], rigidbody);
@@ -49,10 +50,10 @@ public class Physics {
 		// Evaluate the new rotation vector
 		rot.x = 1.0d / 6.0d * (a[2].x + 2.0d * (b[2].x + c[2].x) + d[2].x);
 		rigidbody.angularSpeed = 1.0d / 6.0d * (a[2].y + 2.0d * (b[2].y + c[2].y) + d[2].y);
-
+		
 		// The x field of rot contains the updated rotation
-		Vector2[] retVals = { position, rot };
-
+		Vector2[] retVals = {position, rot};
+	
 		return retVals;
 	}
 
@@ -114,31 +115,28 @@ public class Physics {
 	 * @param vel
 	 *            Velocity to evaulate at
 	 * @param rot
-	 *            Vector of angular position (x) and velocity (y) in radians
+	 * 			  Vector of angular position (x) and velocity (y) in radians           
 	 * 
-	 * @return retVals a Vector2 array containing the position, velocity, and
-	 *         rotation from each evaluation
+	 * @return retVals a Vector2 array containing the position, velocity, and rotation from
+	 *         each evaluation
 	 */
-	private static Vector2[] evaluatePosition(double factor, Vector2 pos, Vector2 vel, Vector2 rot,
-			Rigidbody2D rigidbody) {
+	private static Vector2[] evaluatePosition(double factor, Vector2 pos, Vector2 vel,
+			Vector2 rot, Rigidbody2D rigidbody) {
 
 		// Position updates
 		pos.x += vel.x * dt * factor;
 		pos.y += vel.y * dt * factor;
-		rot.x += rot.y * dt * factor;
-
+		rot.x += rot.y*dt*factor;
+		
 		// Velocity updates
 		vel.x += dt
 				* factor
-				* ((rigidbody.force.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x
-						* rigidbody.gravityScale);
+				* ((rigidbody.force.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x);
 		vel.y += dt
 				* factor
-				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y
-						* rigidbody.gravityScale);
-		rot.y += dt * factor
-				* (rigidbody.torque / rigidbody.getInertia() - rigidbody.getAngularDrag() * rot.y);
-
+				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y);
+		rot.y += dt*factor*(rigidbody.torque/rigidbody.getInertia() - rigidbody.getAngularDrag()*rot.y);
+		
 		Vector2[] retVals = { pos, vel, rot };
 		return retVals;
 	}
@@ -166,12 +164,6 @@ public class Physics {
 		// Simple rectangular collision (naive implementation)
 		boolean collided = false;
 
-		// TODO (Joe/Andy) we might need to reimplement some of this collision
-		// checking because we are likely not accounting for rotation of the
-		// collider
-
-		// While the shapes themselves are rendered accurately (I think), I
-		// don't believe the colliders are actually being rotated
 		if ( col1 instanceof BoxCollider2D ) {
 			// If col2 is a BoxCollider
 			if ( col2 instanceof BoxCollider2D ) {
@@ -215,6 +207,10 @@ public class Physics {
 		// with another collider, and performing actions as a result of that
 		// collision (ie destroying an object when it has been hit--user
 		// determined)
+		
+		double e = 0.85; // Basic default value, this should later depend
+		 // on the RB's in collision
+		
 		col1.getGameObject().onCollision(col2);
 		col2.getGameObject().onCollision(col1);
 
@@ -222,26 +218,56 @@ public class Physics {
 		// The rigidbodies can be gotten as follows:
 		Rigidbody2D col1_rb = col1.getGameObject().getRigidbody();
 		Rigidbody2D col2_rb = col2.getGameObject().getRigidbody();
-
-		// The code below will directly modify the velocities of the two rigid
-		// bodies. It must
+		
+		// The code below will directly modify the velocities of the two rigid bodies. It must
 		// occur prior to the integration call
-		Vector2 v1p = col1_rb.velocity;
-		Vector2 v2p = col2_rb.velocity;
-		Vector2 r1 = col1.getPositionInWorldSpace();
-		Vector2 r2 = col1.getPositionInWorldSpace();
-
-		// 1) Determine the line of contact using the relative position between
-		// the two objects
-		// Vector2 rho =
-
+		Vector2 v1pre = col1_rb.velocity; Vector2 v2pre = col2_rb.velocity;
+		Vector2 r1 = col1.getPositionInWorldSpace(); Vector2 r2 = col2.getPositionInWorldSpace();
+		
+		// 1) Determine the line of contact using the relative position between the two objects
+		Vector2 rho = r2.sub(r1); // Line of contact
+		double theta = rho.angle(); // Angle from x-axis to line of contact
+		
+		// 2) Determine if this is a "first contact" situation, i.e. if the velocities
+		// are oriented towards each other in a situation that could cause contact
+		// the condition is:
+		boolean nonContactCondition1 = (v1pre.dot(rho) < 0) && (v2pre.dot(rho) > 0);
+		boolean nonContactCondition2 = (Math.signum(v1pre.dot(rho)) == Math.signum(v2pre.dot(rho))) 
+				&& (v1pre.dot(rho) < v2pre.dot(rho));
+		boolean nonContactCondition3 = (Math.signum(r1.dot(rho)) == Math.signum(r2.dot(rho))) 
+				&& (r1.dot(rho) > r2.dot(rho));
+		//boolean nonContactCondition1 = (r1.dot(rho) < 0) && (r2.dot(rho) > 0);
+		System.out.print("Rho = " + rho);
+		if (!(nonContactCondition1 || nonContactCondition2)) {
+			System.out.println(" Yes," + nonContactCondition1 + ", " + nonContactCondition2);
+			// 2) Transform the velocities to a coordinate system with the X-axis aligned on the LOC
+			v1pre = v1pre.transform(theta); v2pre = v2pre.transform(theta);
+			
+			// 3) Conserve momentum and energy to obtain the post-impact velocities.
+			// The y-direction velocities are not modified. The x-direction velocities must
+			// be determined by solving a system of 2 equations to conserve momentum and restitution
+			double gamma = 1 + e; 
+			double lambda = col2_rb.getMass()/col1_rb.getMass();
+			
+			double v2x = (gamma*v1pre.x + v2pre.x*(lambda - e))/(1 + lambda);
+			double v1x = v2x + e*(v2pre.x - v1pre.x);
+			
+			Vector2 v1post = new Vector2(v1x, v1pre.y);
+			Vector2 v2post = new Vector2(v2x, v2pre.y);
+			//v1post = v1post.transform(-theta); v2post = v2post.transform(-theta);
+			col1_rb.velocity = v1post.transform(-theta);
+			col2_rb.velocity = v2post.transform(-theta);
+			//col1_rb.addForce(v1post, v1post.norm());
+			//col2_rb.addForce(v2post, v2post.norm());
+			col1_rb.setForce(v1post, 0d);
+			col1_rb.setForce(v2post, 0d);	
+		}
+		System.out.println("");
 	}
-
+	
 	static void resolveGravity(GameObject obj1, GameObject obj2) {
-		// TODO this method will behave similar to resolveCollision, calculating
-		// the gravitational
-		// force from one object to another. I'm not sure what type of object it
-		// will accept, however.
+		// TODO this method will behave similar to resolveCollision, calculating the gravitational
+		// force from one object to another. I'm not sure what type of object it will accept, however.
 	}
 
 }

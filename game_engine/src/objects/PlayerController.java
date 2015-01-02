@@ -94,6 +94,6 @@ public class PlayerController extends GameObject {
 
 	@Override
 	public void onCollision(Collider other) {
-		Debug.log(name, "Collided with: " + other.getGameObject().name);
+		//Debug.log(name, "Collided with: " + other.getGameObject().name);
 	}
 }
