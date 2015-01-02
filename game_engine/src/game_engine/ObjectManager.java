@@ -66,7 +66,7 @@ public class ObjectManager {
 			// gameobject etc can get referenced from any component
 			obj.initializeComponentReferences();
 
-			allObjects.add((GameObject) obj);
+			allObjects.add(obj);
 
 			// Subject to physics updates if object has a rigidbody
 			if ( obj.getRigidbody() != null )

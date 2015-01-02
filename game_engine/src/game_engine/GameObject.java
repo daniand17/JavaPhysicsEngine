@@ -13,22 +13,7 @@ public abstract class GameObject implements IGameObject {
 	protected Renderer renderer;
 	protected Collider collider;
 
-	/**
-	 * The empty constructor used to create a game entity
-	 */
-	public GameObject() {
-
-	}
-
-	void initializeComponentReferences() {
-		if ( getRigidbody() != null )
-			getRigidbody().initializeComponentReferences(this, getTransform());
-		if ( getRenderer() != null )
-			getRenderer().initializeComponentReferences(this, getTransform());
-		if ( getCollider() != null )
-			getCollider().initializeComponentReferences(this, getTransform());
-	}
-
+	@Override
 	public void addComponent(Component newComponent) {
 
 		if ( newComponent instanceof Rigidbody2D )
@@ -39,6 +24,75 @@ public abstract class GameObject implements IGameObject {
 			this.collider = (CircleCollider2D) newComponent;
 		else if ( newComponent instanceof SquareRenderer )
 			this.renderer = (SquareRenderer) newComponent;
+	}
+
+	void initializeComponentReferences() {
+		if ( transform != null )
+			transform.initializeComponentReferences(this, transform);
+		if ( rigidbody != null )
+			rigidbody.initializeComponentReferences(this, getTransform());
+		if ( renderer != null )
+			renderer.initializeComponentReferences(this, getTransform());
+		if ( collider != null )
+			collider.initializeComponentReferences(this, getTransform());
+	}
+
+	@Override
+	public void onCollision(Collider other) {
+		// This is called here so that this method doesn't need to be
+		// implemented in an inheriting class
+	}
+
+	/**
+	 * This method is used primarily to do physics based things if you want them
+	 * to occur this physics update (ie adding forces etc)
+	 */
+	@Override
+	public void physicsUpdate() {
+		// TODO this is called here so that this method doesn't need to be
+		// implemented in an inheriting class
+	}
+
+	/**
+	 * This is a package-access method that is used to resolve collisions
+	 * involving this GameObject. It is called only if this object has a
+	 * collider attached to it. It is handed a list of objects in which
+	 * collisions may occur
+	 * 
+	 * @param collidingObjects
+	 *            the list of objects that MIGHT collide with this game object
+	 */
+	void resolveCollisions(List<GameObject> collidingObjects) {
+		getCollider().collisionsResolvedThisFrame = true;
+
+		// Iterate through the list of colliding objects
+		for (GameObject obj : collidingObjects)
+			// Checks to see if this collisions was already resolved
+			if ( !obj.getCollider().collisionsResolvedThisFrame ) {
+				if ( Physics.collided(this.getCollider(), obj.getCollider()) )
+					Physics.resolveCollision(this.getCollider(), obj.getCollider());
+			}
+	}
+
+	/**
+	 * Called upon instantiation of a game object before all physics updates and
+	 * logic updates. Used primarily to generate references and such before game
+	 * logic takes place.
+	 */
+	@Override
+	public void start() {
+		// This is called here so that this method doesn't need to be
+		// implemented in an inheriting class
+	}
+
+	/**
+	 * This method is called right after the physics updates. Used for other
+	 * game logic based things once all collisions are resolved etc.
+	 */
+	@Override
+	public void update() {
+		// TODO this is called here so that this method doesn't need to be
+		// implemented in an inheriting class
 	}
 
 	/**
@@ -64,79 +118,28 @@ public abstract class GameObject implements IGameObject {
 		Vector2[] physicsResults = Physics.integrateState(t, dt, prevPos, getRigidbody());
 
 		// FIXME can change this once physics is fixed
-		getTransform().position = physicsResults[0];
-		getRigidbody().velocity = physicsResults[1];
+		transform.position = physicsResults[0];
+		rigidbody.velocity = physicsResults[1];
 		// position.
 		// Give the renderer the old and new positions for rendering of the
 		// obj
-		if ( getRenderer() != null )
+		if ( renderer != null )
 			// FIXME this might become an issue later on if we want to
 			// interpolate positions of non-rigidbody objects that are
 			// moving
-			getRenderer().updateRendererPositions(prevPos, getTransform().position);
+			renderer.updateRendererPositions(prevPos, getTransform().position);
+
+		// Resets the forces on the object
+		rigidbody.setForce(Vector2.right(), 0);
 	}
 
 	/**
-	 * This is a package-access method that is used to resolve collisions
-	 * involving this GameObject. It is called only if this object has a
-	 * collider attached to it. It is handed a list of objects in which
-	 * collisions may occur
+	 * Returns the collider attached to this object
 	 * 
-	 * @param collidingObjects
-	 *            the list of objects that MIGHT collide with this game object
+	 * @return the collider
 	 */
-	void resolveCollisions(List<GameObject> collidingObjects) {
-		getCollider().collisionsResolvedThisFrame = true;
-
-		// Iterate through the list of colliding objects
-		for (GameObject obj : collidingObjects)
-			// Checks to see if this collisions was already resolved
-			if ( !obj.getCollider().collisionsResolvedThisFrame ) {
-				if ( Physics.collided(this.getCollider(), obj.getCollider()) )
-					Physics.resolveCollision(this.getCollider(), obj.getCollider());
-			}
-	}
-
-	/**
-	 * This method is used primarily to do physics based things if you want them
-	 * to occur this physics update (ie adding forces etc)
-	 */
-	public void physicsUpdate() {
-		// TODO this is called here so that this method doesn't need to be
-		// implemented in an inheriting class
-	}
-
-	/**
-	 * This method is called right after the physics updates. Used for other
-	 * game logic based things once all collisions are resolved etc.
-	 */
-	public void update() {
-		// TODO this is called here so that this method doesn't need to be
-		// implemented in an inheriting class
-	}
-
-	/**
-	 * Called upon instantiation of a game object before all physics updates and
-	 * logic updates. Used primarily to generate references and such before game
-	 * logic takes place.
-	 */
-	public void start() {
-		// This is called here so that this method doesn't need to be
-		// implemented in an inheriting class
-	}
-
-	public void onCollision(Collider other) {
-		// This is called here so that this method doesn't need to be
-		// implemented in an inheriting class
-	}
-
-	/**
-	 * Returns the rigidbody attached to this object
-	 * 
-	 * @return the rigidbody
-	 */
-	public Rigidbody2D getRigidbody() {
-		return rigidbody;
+	public Collider getCollider() {
+		return collider;
 	}
 
 	/**
@@ -149,12 +152,12 @@ public abstract class GameObject implements IGameObject {
 	}
 
 	/**
-	 * Returns the collider attached to this object
+	 * Returns the rigidbody attached to this object
 	 * 
-	 * @return the collider
+	 * @return the rigidbody
 	 */
-	public Collider getCollider() {
-		return collider;
+	public Rigidbody2D getRigidbody() {
+		return rigidbody;
 	}
 
 	/**

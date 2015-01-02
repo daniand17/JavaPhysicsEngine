@@ -11,7 +11,7 @@ public class Utility {
 	 */
 	public static float roundToThousandth(double num) {
 
-		return (float) ((int) (num * 1000)) / 1000f;
+		return ((int) (num * 1000)) / 1000f;
 	}
 
 	/**
@@ -22,6 +22,6 @@ public class Utility {
 	 * @return the rounded number
 	 */
 	public static float roundToTenth(double num) {
-		return (float) ((int) (num * 10)) / 10f;
+		return ((int) (num * 10)) / 10f;
 	}
 }

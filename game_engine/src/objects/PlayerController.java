@@ -49,7 +49,6 @@ public class PlayerController extends GameObject {
 	 * events on W, A, S, and D.
 	 */
 	public void physicsUpdate() {
-		getRigidbody().setForce(xVec, 0d);
 		if ( Input.getKeyDown(KeyEvent.VK_W) ) {
 			getRigidbody().addForce(yVec, -gain);
 		}
@@ -62,7 +61,6 @@ public class PlayerController extends GameObject {
 		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
 			getRigidbody().addForce(xVec, -gain);
 		}
-		
 	}
 
 	@Override
@@ -86,6 +84,7 @@ public class PlayerController extends GameObject {
 		}
 	}
 
+	@Override
 	public void onCollision(Collider other) {
 		Debug.log(name, "Collided with: " + other.getGameObject().name);
 	}

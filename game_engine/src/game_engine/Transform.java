@@ -3,20 +3,20 @@ package game_engine;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Transform {
+public class Transform extends Component {
 
-	public double rotation;
-
-	public GameObject gameObject;
+	private double rotation;
 	public Vector2 position;
 	private List<Transform> children;
 
 	public Transform() {
 		this(new Vector2(0f, 0f));
+
 	}
 
-	public Transform(Vector2 pos) {
+	Transform(Vector2 pos) {
 		position = pos;
+		rotation = 0;
 		children = new LinkedList<Transform>();
 	}
 
@@ -30,5 +30,26 @@ public class Transform {
 
 	public int getChildCount() {
 		return children.size();
+	}
+
+	/**
+	 * Return the double representation of the rotation of this transform
+	 * 
+	 * @return the rotation
+	 */
+	public double getRotation() {
+		return rotation;
+	}
+
+	/**
+	 * Sets the rotation of this transform in radians
+	 * 
+	 * @param rotation
+	 *            the rotation to set
+	 */
+	public void setRotation(double rotation) {
+		this.rotation = rotation;
+
+		this.rotation = this.rotation - (this.rotation % 2 * Math.PI);
 	}
 }

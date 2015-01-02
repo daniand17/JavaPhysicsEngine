@@ -15,6 +15,7 @@ public interface Vector<T> {
 	/**
 	 * Returns the string representation of this vector for debugging purposes
 	 */
+	@Override
 	public String toString();
 	
 	/**
