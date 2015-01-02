@@ -8,6 +8,7 @@ public class Debug {
 
 	private static File debugOutput;
 	private static PrintWriter out;
+	private static final String format = "%-20s>%s%n";
 
 	// A constant to call the generic files
 	private final static String genFilename = "debugOut";
@@ -31,9 +32,11 @@ public class Debug {
 			return;
 		}
 
-		Debug.log("Remember to close the debugger with Debug.close()if you aren't \nreceiving output to a file when calling Debug.logF()!");
-		Debug.log("\nAlso bear in mind that you can only write out to 1 file at a time.");
-		Debug.log("\nDebugger ready to accept input.");
+		Debug.log(
+				"Debug",
+				"Remember to close the debugger with Debug.close()if you aren't \nreceiving output to a file when calling Debug.logF()!");
+		Debug.log("Debug", "Also bear in mind that you can only write out to 1 file at a time.");
+		Debug.log("Debug", "Debugger ready to accept input.");
 
 	}
 
@@ -52,10 +55,8 @@ public class Debug {
 					+ "messages not printing to file " + logName);
 			return;
 		}
-
-		Debug.log("Remember to close the debugger with Debug.close()"
+		Debug.log("Debug:", "Remember to close the debugger with Debug.close()"
 				+ "\nif you aren't receiving output to a file when calling Debug.logF!");
-
 	}
 
 	/**
@@ -64,13 +65,16 @@ public class Debug {
 	 * @param msg
 	 *            the message to print out.
 	 */
-	public static void log(String message) {
-		System.out.println(message);
+	public static void log(String tag, String msg) {
+
+		if ( tag != null && msg != null )
+			System.out.printf(format, tag, msg);
 	}
 
 	/**
-	 * Prints the message to the file specified in the constructor. If no file was specified in the
-	 * constructor, then it will be some generic debug output file name.
+	 * Prints the message to the file specified in the constructor. If no file
+	 * was specified in the constructor, then it will be some generic debug
+	 * output file name.
 	 */
 	public static void logF(String message) {
 
@@ -87,8 +91,8 @@ public class Debug {
 	}
 
 	/**
-	 * Closes the printwriter and flushes the buffer. Call this method if you want your debug
-	 * information saved to the file.
+	 * Closes the printwriter and flushes the buffer. Call this method if you
+	 * want your debug information saved to the file.
 	 */
 	public static void close() {
 		out.close();

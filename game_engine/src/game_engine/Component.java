@@ -10,9 +10,10 @@ package game_engine;
  */
 public abstract class Component {
 
+	public String className = "Component";
 	public GameObject gameObject;
 	public Transform transform;
-	
+
 	void initializeComponentReferences(GameObject gameObj, Transform trans) {
 		gameObject = gameObj;
 		transform = trans;

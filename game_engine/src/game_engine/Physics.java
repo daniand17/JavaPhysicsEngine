@@ -1,7 +1,5 @@
 package game_engine;
 
-import java.awt.Rectangle;
-
 public class Physics {
 
 	private static double gravity = 9.81d;
@@ -61,35 +59,43 @@ public class Physics {
 	 * console.
 	 * 
 	 */
-
-	/*
 	@SuppressWarnings("unused")
 	private void DOPRI5(RigidBody RB) {
-		// TODO: Put these constants somewhere they don't get defined at each
+		// TODO: * Put these constants somewhere they don't get defined at each
 		// integration call
 
 		double b1 = 35d / 384d, b2 = 0d, b3 = 500d / 1113d, b4 = 125d / 192d, b5 = -2187d / 684d, b6 = 11d / 84d;
 		double c2 = 1d / 5d, c3 = 3d / 10d, c4 = 4d / 5d, c5 = 8d / 9d, c6 = 1d, c7 = 1d;
 		double a21 = 1d / 5d, a31 = 3d / 40d, a32 = 9d / 40d, a41 = 44d / 45d, a42 = -56d / 15d, a43 = 32d / 9d, a51 = 19372d / 6561d, a52 = -25360d / 2187d, a53 = 64448d / 6561d, a54 = -212d / 729d, a61 = 9017d / 3168d, a62 = -355d / 33d, a63 = 46732d / 5247d, a64 = 49d / 176d, a65 = -5103d / 18656d;
 		double b1s = 5179d / 57600d, b2s = 0, b3s = 7571d / 16695d, b4s = 393d / 640d, b5s = -92097d / 339200d, b6s = 187d / 2100d;
-		Vector2[] k1 = evaluatePosition(0d, RB.position, RB.velocity);
-		Vector2[] k2 = evaluatePosition(c2, RB.position + k1[0].scale(a21),
-				RB.velocity + k1[1].scale(a21));
-		Vector2[] k3 = evaluatePosition(c3, RB.position + a31 * k1[0] + a32 * k2[0], RB.velocity
-				+ a21 * k1[1] + a32 * k2[1]);
-		Vector2[] k4 = evaluatePosition(c4, RB.position + a41 * k1[0] + a42 * k2[0] + a43 * k3[0],
-				RB.velocity + a41 * k1[1] + a42 * k2[1] + a43 * k3[1]);
-		Vector2[] k5 = evaluatePosition(c5, RB.position + a51 * k1[0] + a52 * k2[0] + a53 * k3[0]
-				+ a54 * k4[0], RB.velocity + a51 * k1[1] + a52 * k2[1] + a53 * k3[1] + a54 * k4[1]);
-		Vector2[] k6 = evaluatePosition(c6, RB.position + a61 * k1[0] + a62 * k2[0] + a63 * k3[0]
-				+ a64 * k4[0] + a65 * k5[0], RB.velocity + a61 * k1[1] + a62 * k2[1] + a63 * k3[1]
-				+ a64 * k4[1] + a65 * k5[0]);
+		// Vector2[] k1 = evaluatePosition(0d, RB.transform.position,
+		// RB.velocity);
+		// Vector2[] k2 = evaluatePosition(c2, RB.transform.position +
+		// k1[0].scale(a21), RB.velocity
+		// + k1[1].scale(a21));
+		// Vector2[] k3 = evaluatePosition(c3, RB.transform.position + a31 *
+		// k1[0] + a32 * k2[0],
+		// RB.velocity + a21 * k1[1] + a32 * k2[1]);
+		// Vector2[] k4 = evaluatePosition(c4, RB.transform.position + a41 *
+		// k1[0] + a42 * k2[0] + a43
+		// * k3[0], RB.velocity + a41 * k1[1] + a42 * k2[1] + a43 * k3[1]);
+		// Vector2[] k5 = evaluatePosition(c5, RB.transform.position + a51 *
+		// k1[0] + a52 * k2[0] + a53
+		// * k3[0] + a54 * k4[0], RB.velocity + a51 * k1[1] + a52 * k2[1] + a53
+		// * k3[1] + a54
+		// * k4[1]);
+		// Vector2[] k6 = evaluatePosition(c6, RB.transform.position + a61 *
+		// k1[0] + a62 * k2[0] + a63
+		// * k3[0] + a64 * k4[0] + a65 * k5[0], RB.velocity + a61 * k1[1] + a62
+		// * k2[1] + a63
+		// * k3[1] + a64 * k4[1] + a65 * k5[0]);
 
-		// Evaluate the new position vector RB.position.x += RB.position.y +=
+		// Evaluate the new position vector
+		// RB.position.x += RB.position.y +=
 
-		// Evaluate the new velocity vector RB.velocity.x += RB.velocity.y += }
+		// Evaluate the new velocity vector
+		// RB.velocity.x += RB.velocity.y +=
 	}
-	*/
 
 	/**
 	 * 
@@ -113,12 +119,10 @@ public class Physics {
 		/*
 		 * pos = pos.add(vel.scale(dt*factor));
 		 * 
-		 * Vector2 acc = vel.scale(-RB.zeta/RB.mass); acc = acc.add(RB.force.scale(1/RB.mass));
-		 * acc = acc.add(gravityVector);
-		 * 
+		 * Vector2 acc = vel.scale(-RB.zeta/RB.mass); acc =
+		 * acc.add(RB.force.scale(1/RB.mass)); acc = acc.add(gravityVector);
 		 */
-		//Add in gravity vector vel = vel.add(acc.scale(dt*factor));
-		 
+		// Add in gravity vector vel = vel.add(acc.scale(dt*factor));
 
 		// Method 2 //
 		// This feels faster and is more concise, but reflects "poor" OOD
@@ -153,24 +157,39 @@ public class Physics {
 		// object. Once I get the quadtree going, this bottleneck would be
 		// removed.
 
-		// The positions of the colliders can be gotten as:
-		Vector2 pos1 = col1.getPosition();
-		Vector2 pos2 = col2.getPosition();
+		// Simple rectangular collision (naive implementation)
+		boolean collided = false;
 
-		// Their bounding boxes gotten as:
-		Rectangle col1_bounds = col1.getBounds();
-		Rectangle col2_bounds = col2.getBounds();
-
-		// To do simple rectangular collision detection I believe we can do:
-		if ( col1_bounds.intersects(col2_bounds) )
-			return true;
-		else
-			return false;
+		if ( col1 instanceof BoxCollider2D ) {
+			// If col2 is a BoxCollider
+			if ( col2 instanceof BoxCollider2D ) {
+				if ( col1.getBoundedArea().intersects(col2.getPosition().x, col2.getPosition().y,
+						col2.size.x, col2.size.y) )
+					collided = true;
+				else
+					collided = false;
+			}
+			else if ( col2 instanceof CircleCollider2D ) {
+				// TODO col1 is a BoxCollider and col2 is a CircleCollider
+			}
+		}
+		else if ( col1 instanceof CircleCollider2D ) {
+			// If col2 is a box collider
+			if ( col2 instanceof BoxCollider2D ) {
+				// TODO col1 is a CircleCollider and col2 is a BoxCollider
+			}
+			else if ( col2 instanceof CircleCollider2D ) {
+				// TODO Both Colliders are CircleColliders
+			}
+		}
+		return collided;
 	}
 
 	public static void resolveCollision(Collider col1, Collider col2) {
 		// TODO implement this method
 		// The rigidbodies can be gotten as follows:
+
+		Debug.log("Physics", "resolveCollision");
 		RigidBody col1_rb = col1.gameObject.rigidbody;
 		RigidBody col2_rb = col2.gameObject.rigidbody;
 

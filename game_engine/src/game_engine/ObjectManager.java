@@ -25,6 +25,18 @@ public class ObjectManager {
 	}
 
 	/**
+	 * Gets from the quadtree the objects nearby to the object specified in the
+	 * parameter
+	 * 
+	 * @param objToCheck
+	 *            the object to check collisions against
+	 * @return the list of objects that might collide with the object specified
+	 */
+	public static List<GameObject> getNearbyObjects(GameObject objToCheck) {
+		return quadtree.retrieve(objToCheck);
+	}
+
+	/**
 	 * Instantiates the object provided in the first argument at the 2D location
 	 * specified in the second argument
 	 * 
@@ -46,26 +58,35 @@ public class ObjectManager {
 
 		for (int i = 0; i < ObjectManager.startObjects.size(); i++) {
 			GameObject obj = ObjectManager.startObjects.remove(i);
-			// Initialize the references for the game object so transform,
-			// gameobject etc can get referenced from any component
 
-			obj.initializeComponentReferences();
 			// Call the start function of the object
 			obj.start();
 
+			// Initialize the references for the game object so transform,
+			// gameobject etc can get referenced from any component
+			obj.initializeComponentReferences();
+
 			allObjects.add((GameObject) obj);
 
-			// Do physics based parsing
+			// Subject to physics updates if object has a rigidbody
 			if ( obj.rigidbody != null )
 				physicsObjects.add(obj);
 
-			// Do collision based parsing
-			if ( obj.collider != null ) {
+			// Add to the list of collidable objects if object has a collider
+			if ( obj.collider != null )
 				colliderObjects.add(obj);
 
-				// TODO Insert object into quadtree (not used yet)
-				quadtree.insert(obj);
-			}
 		}
+
+		for (GameObject obj : colliderObjects)
+			quadtree.insert(obj);
+
+	}
+
+	public static synchronized void clearQuadtreeAndResetColliders() {
+		quadtree.clear();
+		for (GameObject obj : colliderObjects)
+			obj.collider.collisionsResolvedThisFrame = false;
+
 	}
 }
