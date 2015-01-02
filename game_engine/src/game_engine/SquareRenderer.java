@@ -2,9 +2,7 @@ package game_engine;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
 public class SquareRenderer extends Renderer {
 
@@ -21,17 +19,13 @@ public class SquareRenderer extends Renderer {
 
 	@Override
 	void render(Graphics2D g2d, Vector2 renderPos) {
-		AffineTransform start = g2d.getTransform();
-		// Get the rotation of the transform
-		double rotation = this.getTransform().getRotation();
-		// Translate the entire context to the render position such that the
-		// shape to render is at 0,0
+		// Translate the object to its new position
 		g2d.translate(renderPos.x, renderPos.y);
-		// Rotate the context
+		// Rotate the object
+		double rotation = this.getTransform().getRotation();
 		g2d.rotate(rotation);
 		g2d.setColor(Color.BLUE);
 		g2d.draw(shape);
-		g2d.setTransform(start);
 	}
 
 	/**

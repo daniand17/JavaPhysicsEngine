@@ -1,7 +1,7 @@
 package game_engine;
 
 import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public abstract class Renderer extends Component {
@@ -22,7 +22,13 @@ public abstract class Renderer extends Component {
 			Vector2 pRenderPos = new Vector2(previous.x * (1 - alpha), previous.y * (1 - alpha));
 			Vector2 interpPos = cRenderPos.add(pRenderPos);
 			// Call the implementing class' render function
+
+			// Get the affine transform of this context
+			AffineTransform start = g2d.getTransform();
+			// Render the object
 			render(g2d, interpPos);
+			// Return the context to its starting position
+			g2d.setTransform(start);
 		}
 	}
 
@@ -36,10 +42,6 @@ public abstract class Renderer extends Component {
 	void updateRendererPositions(Vector2 prevPos, Vector2 position) {
 		previous = prevPos;
 		current = position;
-	}
-
-	void drawShape(Shape circle) {
-
 	}
 
 	/**
