@@ -37,8 +37,8 @@ public class PlayerController extends GameObject {
 		// The name of this game object
 		this.name = "PlayerController";
 		rigidbody = new Rigidbody2D();
-		renderer = new SquareRenderer(new Vector2(64f, 64f));
-		collider = new BoxCollider2D(new Vector2(64f, 64f));
+		renderer = new SquareRenderer(new Vector2(64d, 64d));
+		collider = new BoxCollider2D(new Vector2(64d, 64d));
 	}
 
 	@Override
@@ -58,6 +58,12 @@ public class PlayerController extends GameObject {
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
 			getRigidbody().addForce(Vector2.left(), gain);
+		}
+		if ( Input.getKeyDown(KeyEvent.VK_Q) ) {
+			getRigidbody().addTorque(-gain);
+		}
+		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
+			getRigidbody().addTorque(gain);
 		}
 	}
 

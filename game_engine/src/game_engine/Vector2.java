@@ -49,7 +49,7 @@ public class Vector2 implements Vector<Vector2> {
 	 * Returns a Vector2 that points up in world space
 	 */
 	public static Vector2 up() {
-		return new Vector2(0, 1);
+		return new Vector2(0, -1);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class Vector2 implements Vector<Vector2> {
 	 * @return
 	 */
 	public static Vector2 down() {
-		return new Vector2(0, -1);
+		return new Vector2(0, 1);
 	}
 
 	// ////// METHODS SPECIFIC TO VECTOR2 ////////
