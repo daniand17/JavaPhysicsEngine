@@ -63,4 +63,34 @@ public class Transform extends Component {
 		this.rotation = rotation;
 		this.rotation = this.rotation % (2 * Math.PI);
 	}
+
+	/**
+	 * Returns a Vector2 which points up in the transform space. If the
+	 * transform does not have any rotation then this is equivalent to
+	 * Vector2.up()
+	 * 
+	 * @return
+	 */
+	public Vector2 up() {
+		return transformVector(Vector2.up());
+	}
+
+	public Vector2 down() {
+		return transformVector(Vector2.down());
+	}
+
+	public Vector2 right() {
+		return transformVector(Vector2.right());
+	}
+
+	public Vector2 left() {
+		return transformVector(Vector2.left());
+	}
+
+	private Vector2 transformVector(Vector2 vec) {
+		double cs = Math.cos(rotation);
+		double sn = Math.sin(rotation);
+		return new Vector2(vec.x * cs - vec.y * sn, vec.x * sn + vec.y * cs);
+
+	}
 }

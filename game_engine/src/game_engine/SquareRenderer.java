@@ -12,39 +12,26 @@ public class SquareRenderer extends Renderer {
 	private Rectangle2D.Double shape;
 
 	public SquareRenderer(Vector2 sizeDimensions) {
-		// Calls the Renderer constructor
-		super();
 		setSize(sizeDimensions);
 
 		// Create the shape that will be rendered
-		shape = new Rectangle2D.Double();
-		shape.width = sizeDimensions.x;
-		shape.height = sizeDimensions.y;
-
-		imageToRender = makeImageFromShape();
+		shape = new Rectangle2D.Double(-sizeDimensions.x * 0.5, -sizeDimensions.y * 0.5,
+				sizeDimensions.x, sizeDimensions.y);
 	}
 
 	@Override
 	void render(Graphics2D g2d, Vector2 renderPos) {
-		AffineTransform aT = g2d.getTransform();
-
-		// Get the shape
-		shape.x = renderPos.x;
-		shape.y = renderPos.y;
-
+		AffineTransform start = g2d.getTransform();
 		// Get the rotation of the transform
 		double rotation = this.getTransform().getRotation();
-
-		affineTransform.rotate(rotation);
-		affineTransform.translate(renderPos.x, renderPos.y);
-
+		// Translate the entire context to the render position such that the
+		// shape to render is at 0,0
+		g2d.translate(renderPos.x, renderPos.y);
+		// Rotate the context
+		g2d.rotate(rotation);
 		g2d.setColor(Color.BLUE);
-
-		g2d.drawImage(imageToRender, affineTransform, null);
 		g2d.draw(shape);
-
-		g2d.setTransform(aT);
-
+		g2d.setTransform(start);
 	}
 
 	/**
@@ -71,11 +58,5 @@ public class SquareRenderer extends Renderer {
 			size.y = 0;
 
 		this.size = size;
-	}
-
-	@Override
-	protected BufferedImage makeImageFromShape() {
-
-		return null;
 	}
 }
