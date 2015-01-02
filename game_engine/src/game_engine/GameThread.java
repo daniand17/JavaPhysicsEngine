@@ -1,8 +1,5 @@
 package game_engine;
 
-import interfaces_abstracts.GameEntity;
-import interfaces_abstracts.PhysicsEntity;
-
 public class GameThread implements Runnable {
 
 	private final Display display;
@@ -76,13 +73,13 @@ public class GameThread implements Runnable {
 	}
 
 	private void update() {
-		for (GameEntity currEnt : ObjectManager.getObjects())
+		for (GameObject currEnt : ObjectManager.getAllObjects())
 			currEnt.update();
 	}
 
 	private void fixedUpdate(double t, double dt) {
 		// Update the screen logic
-		for (PhysicsEntity ent : ObjectManager.getPhysicsObjects())
+		for (GameObject ent : ObjectManager.getPhysicsObjects())
 			if ( ent != null )
 				ent.updatePhysics(t, dt);
 	}

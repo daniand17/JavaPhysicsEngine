@@ -1,7 +1,4 @@
-package components;
-
-import game_engine.Vector2;
-import interfaces_abstracts.GameEntity;
+package game_engine;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +7,7 @@ public class Transform {
 
 	public double rotation;
 
-	public GameEntity gameEntity;
+	public GameObject gameEntity;
 	public Vector2 position;
 	private List<Transform> children;
 

@@ -1,6 +1,7 @@
 package game_engine;
 
-import interfaces_abstracts.Vector;
+import interfaces.Vector;
+
 
 public class Vector2 implements Vector<Vector2> {
 

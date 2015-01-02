@@ -1,15 +1,13 @@
 package objects;
 
 import game_engine.Display;
+import game_engine.GameObject;
 import game_engine.Input;
-import game_engine.ObjectManager;
+import game_engine.RigidBody;
+import game_engine.SquareRenderer;
 import game_engine.Vector2;
-import interfaces_abstracts.GameEntity;
 
 import java.awt.event.KeyEvent;
-
-import components.RigidBody;
-import components.SquareRenderer;
 /**
  * 
  * Basic player controller class for initial testing. 
@@ -22,7 +20,7 @@ import components.SquareRenderer;
  * 
  * @field yVec: Control direction associated with up/down movement
  */
-public class PlayerController extends GameEntity {
+public class PlayerController extends GameObject {
 
 	boolean debug = true;
 	double gain = 100.0d;
@@ -43,7 +41,7 @@ public class PlayerController extends GameEntity {
 	 * Check for control inputs. Currently monitors for "key down"
 	 * events on W, A, S, and D.
 	 */
-	public void fixedUpdate() {
+	public void physicsUpdate() {
 		rigidbody.setForce(xVec, 0d);
 		if ( Input.getKeyDown(KeyEvent.VK_W) ){
 			rigidbody.addForce(yVec, -gain);
@@ -56,8 +54,7 @@ public class PlayerController extends GameEntity {
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_A) ){
 			rigidbody.addForce(xVec, -gain);
-		}
-		
+		}		
 	}
 	
 	@Override
@@ -67,14 +64,14 @@ public class PlayerController extends GameEntity {
 	public void update() {
 		
 		if ( transform.position.y > Display.SIZE.height ){
-			rigidbody.position.y = 0;}
+			transform.position.y = 0;}
 		else if ( transform.position.y < 0 ){
-			rigidbody.position.y = Display.SIZE.height;}
+			transform.position.y = Display.SIZE.height;}
 		
 		if ( transform.position.x > Display.SIZE.width ){
-			rigidbody.position.x = 0;}
+			transform.position.x = 0;}
 		else if ( transform.position.x < 0 ){
-			rigidbody.position.x = Display.SIZE.width;}
+			transform.position.x = Display.SIZE.width;}
 		}		
 }
 
