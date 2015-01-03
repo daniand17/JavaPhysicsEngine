@@ -231,10 +231,12 @@ public class Physics {
 		//boolean nonContactCondition3 = (Math.signum(r1.dot(rho)) == Math.signum(r2.dot(rho))) 
 		//		&& (r1.dot(rho) > r2.dot(rho));
 		//boolean nonContactCondition1 = (r1.dot(rho) < 0) && (r2.dot(rho) > 0);
-		System.out.println("Rho = " + rho + ", theta = " + theta + ", " + nonContactCondition1 + ", " + nonContactCondition2);
+		
+		//System.out.println("Rho = " + rho + ", theta = " + theta + ", " + nonContactCondition1 + ", " + nonContactCondition2);
 		if (!(nonContactCondition1 || nonContactCondition2)) {
 			
 			// 2) Transform the velocities to a coordinate system with the X-axis aligned on the LOC
+			//FIXME commented out this line because it was flushing out other stuff I wanted to see
 			//System.out.println("(original) v1pre = " + v1pre + ", v2pre = " + v2pre);
 			v1pre = v1pre.rotate(theta); v2pre = v2pre.rotate(theta);
 			//System.out.println("(rotated)  v1pre = " + v1pre + ", v2pre = " + v2pre);

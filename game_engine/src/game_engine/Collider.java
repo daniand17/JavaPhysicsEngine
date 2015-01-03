@@ -1,9 +1,12 @@
 package game_engine;
 
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
 public abstract class Collider extends Component {
 
+	protected Shape collider;
 	// Whether this collider should is a trigger instead of a physical object
 	public boolean isTrigger = false;
 	boolean collisionsResolvedThisFrame = false;
@@ -17,7 +20,26 @@ public abstract class Collider extends Component {
 	 * 
 	 * @return
 	 */
-	abstract Area getBoundedArea();
+	Area getBoundedArea() {
+		// Update this colliders position
+		Vector2 pos = getPositionInWorldSpace();
+
+		// Convert the collider shape to an area for collision detection
+		Area collArea = new Area(collider);
+
+		// Create an affine transform to operate on the area of the collider
+		AffineTransform transf = new AffineTransform();
+		// TODO this doesn't work perfectly currently. After so many rotations
+		// the collider becomes desynced with where it is rendered
+
+		transf.translate(pos.x, pos.y);
+		collArea = collArea.createTransformedArea(transf);
+		transf.setToIdentity();
+		transf.rotate(getTransform().getRotation(), pos.x, pos.y);
+		collArea = collArea.createTransformedArea(transf);
+
+		return new Area(collArea);
+	}
 
 	/**
 	 * Package-access method that gets the coordinates of this collider adjusted

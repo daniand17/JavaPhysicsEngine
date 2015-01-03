@@ -22,6 +22,7 @@ public class TestRect extends GameObject {
 		rigidbody = new Rigidbody2D();
 		renderer = new SquareRenderer(new Vector2(64f, 64f));
 		collider = new BoxCollider2D(new Vector2(64f, 64f));
+		rigidbody.gravityScale = 0;
 	}
 
 	@Override
