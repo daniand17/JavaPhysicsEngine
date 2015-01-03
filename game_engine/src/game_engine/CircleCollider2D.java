@@ -9,5 +9,4 @@ public class CircleCollider2D extends Collider {
 
 		return null;
 	}
-
 }

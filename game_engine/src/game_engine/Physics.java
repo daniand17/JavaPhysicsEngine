@@ -240,8 +240,8 @@ public class Physics {
 			System.out.println(" Yes," + nonContactCondition1 + ", " + nonContactCondition2);
 			// 2) Transform the velocities to a coordinate system with the
 			// X-axis aligned on the LOC
-			v1pre = v1pre.transform(theta);
-			v2pre = v2pre.transform(theta);
+			v1pre = v1pre.rotate(theta);
+			v2pre = v2pre.rotate(theta);
 
 			// 3) Conserve momentum and energy to obtain the post-impact
 			// velocities.
@@ -259,8 +259,8 @@ public class Physics {
 			Vector2 v2post = new Vector2(v2x, v2pre.y);
 			// v1post = v1post.transform(-theta); v2post =
 			// v2post.transform(-theta);
-			col1_rb.velocity = v1post.transform(-theta);
-			col2_rb.velocity = v2post.transform(-theta);
+			col1_rb.velocity = v1post.rotate(-theta);
+			col2_rb.velocity = v2post.rotate(-theta);
 			// col1_rb.addForce(v1post, v1post.norm());
 			// col2_rb.addForce(v2post, v2post.norm());
 			col1_rb.setForce(v1post, 0d);
