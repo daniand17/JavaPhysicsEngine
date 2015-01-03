@@ -8,8 +8,7 @@ public class Physics {
 
 	private static double gravity = 9.81d;
 	private static Vector2 gravityVector = new Vector2(0d, gravity);
-	private static double dt = 0.01; // FIXME - this needs to be the same as the
-										// dt
+	private static double dt = 0.01;
 
 	// being passed to the integrateState() method, because I am also using it
 	// in the
@@ -205,8 +204,6 @@ public class Physics {
 		col1.getGameObject().onCollision(col2);
 		col2.getGameObject().onCollision(col1);
 
-		// TODO (Joe) Implement the remainder of this method
-		// The rigidbodies can be gotten as follows:
 		Rigidbody2D col1_rb = col1.getGameObject().getRigidbody();
 		Rigidbody2D col2_rb = col2.getGameObject().getRigidbody();
 
