@@ -1,12 +1,14 @@
 package game_engine;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
 public abstract class Collider extends Component {
 
-	protected Shape collider;
+	public Shape collider;
 	// Whether this collider should is a trigger instead of a physical object
 	public boolean isTrigger = false;
 	boolean collisionsResolvedThisFrame = false;
@@ -24,21 +26,21 @@ public abstract class Collider extends Component {
 		// Update this colliders position
 		Vector2 pos = getPositionInWorldSpace();
 
-		// Convert the collider shape to an area for collision detection
-		Area collArea = new Area(collider);
-
 		// Create an affine transform to operate on the area of the collider
 		AffineTransform transf = new AffineTransform();
 		// TODO this doesn't work perfectly currently. After so many rotations
 		// the collider becomes desynced with where it is rendered
 
-		transf.translate(pos.x, pos.y);
-		collArea = collArea.createTransformedArea(transf);
-		transf.setToIdentity();
-		transf.rotate(getTransform().getRotation(), pos.x, pos.y);
-		collArea = collArea.createTransformedArea(transf);
+		transf.rotate(getTransform().getRotation(), size.x * 0.5, size.y * 0.5);
 
-		return new Area(collArea);
+		Shape temp = transf.createTransformedShape(collider);
+
+		AffineTransform translationMatrix = AffineTransform.getTranslateInstance(pos.x, pos.y);
+		temp = translationMatrix.createTransformedShape(temp);
+
+		Area collArea = new Area(temp);
+
+		return collArea;
 	}
 
 	/**
@@ -86,6 +88,11 @@ public abstract class Collider extends Component {
 		// for collision detection once transforms are figured out.
 
 		return getPosition();
+	}
+
+	void renderCollider(Graphics2D g2d, double alpha) {
+		g2d.setColor(Color.GREEN);
+		g2d.draw(this.getBoundedArea());
 	}
 
 }
