@@ -2,7 +2,6 @@ package objects;
 
 import game_engine.BoxCollider2D;
 import game_engine.Collider;
-import game_engine.Debug;
 import game_engine.Display;
 import game_engine.GameObject;
 import game_engine.Input;
@@ -39,7 +38,7 @@ public class PlayerController extends GameObject {
 		renderer = new SquareRenderer(new Vector2(64d, 64d));
 		collider = new BoxCollider2D(new Vector2(64d, 64d));
 		// Sets initial rotational characteristics
-		//rigidbody.setAngularDrag(1);
+		// rigidbody.setAngularDrag(1);
 		rigidbody.setInertia(1000d);
 		rigidbody.gravityScale = 0;
 	}
@@ -63,10 +62,10 @@ public class PlayerController extends GameObject {
 			getRigidbody().addForce(Vector2.left(), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_Q) ) {
-			getRigidbody().addTorque(-5*gain);
+			getRigidbody().addTorque(-5 * gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
-			getRigidbody().addTorque(5*gain);
+			getRigidbody().addTorque(5 * gain);
 		}
 	}
 
@@ -75,20 +74,14 @@ public class PlayerController extends GameObject {
 	 * Performs screen wraparound operations for the associated rigidbody.
 	 */
 	public void update() {
+		Rigidbody2D rigidbody = getTransform().getGameObject().getRigidbody();
 
-		if ( getTransform().position.y > Display.SIZE.height ) {
-			getTransform().position.y = 0;
-		}
-		else if ( getTransform().position.y < 0 ) {
-			getTransform().position.y = Display.SIZE.height;
-		}
+		if ( getTransform().position.y > Display.SIZE.height || getTransform().position.y < 0 )
+			rigidbody.velocity.y = -rigidbody.velocity.y;
 
-		if ( getTransform().position.x > Display.SIZE.width ) {
-			getTransform().position.x = 0;
-		}
-		else if ( getTransform().position.x < 0 ) {
-			getTransform().position.x = Display.SIZE.width;
-		}
+		if ( getTransform().position.x > Display.SIZE.width || getTransform().position.x < 0 )
+			rigidbody.velocity.x = -rigidbody.velocity.x;
+
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class Rigidbody2D extends Component {
 			velocity = new Vector2();
 		setMass(1d);
 		setInertia(1000d);
-		setDrag(0.1d);
+		setDrag(1);
 		setAngularDrag(5d);
 		setForce(new Vector2(1d, 0d), 0d);
 	}

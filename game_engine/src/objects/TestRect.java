@@ -27,18 +27,12 @@ public class TestRect extends GameObject {
 
 	@Override
 	public void update() {
-		if ( getTransform().position.y > Display.SIZE.height ) {
-			getTransform().position.y = 0;
-		}
-		else if ( getTransform().position.y < 0 ) {
-			getTransform().position.y = Display.SIZE.height;
-		}
+		Rigidbody2D rigidbody = getTransform().getGameObject().getRigidbody();
 
-		if ( getTransform().position.x > Display.SIZE.width ) {
-			getTransform().position.x = 0;
-		}
-		else if ( getTransform().position.x < 0 ) {
-			getTransform().position.x = Display.SIZE.width;
-		}
+		if ( getTransform().position.y > Display.SIZE.height || getTransform().position.y < 0 )
+			rigidbody.velocity.y = -rigidbody.velocity.y;
+
+		if ( getTransform().position.x > Display.SIZE.width || getTransform().position.x < 0 )
+			rigidbody.velocity.x = -rigidbody.velocity.x;
 	}
 }
