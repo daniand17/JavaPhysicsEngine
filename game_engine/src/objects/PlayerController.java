@@ -52,16 +52,16 @@ public class PlayerController extends GameObject {
 	 */
 	public void physicsUpdate() {
 		if ( Input.getKeyDown(KeyEvent.VK_W) ) {
-			getRigidbody().addForce(getTransform().up(), gain);
+			getRigidbody().addForce(getTransform().up().rotate(getTransform().getRotation()), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_S) ) {
-			getRigidbody().addForce(getTransform().down(), gain);
+			getRigidbody().addForce(getTransform().down().rotate(getTransform().getRotation()), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_D) ) {
-			getRigidbody().addForce(getTransform().right(), gain);
+			getRigidbody().addForce(getTransform().right().rotate(getTransform().getRotation()), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
-			getRigidbody().addForce(getTransform().left(), gain);
+			getRigidbody().addForce(getTransform().left().rotate(getTransform().getRotation()), gain);
 		}
 		if ( Input.getKeyDown(KeyEvent.VK_Q) ) {
 			getRigidbody().addTorque(-gain * .1);
