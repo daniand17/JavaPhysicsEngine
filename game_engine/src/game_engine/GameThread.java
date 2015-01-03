@@ -55,18 +55,14 @@ public class GameThread implements Runnable {
 			mtPeriod = then * 1000;
 
 			// Sleeps the thread for just a bit to save on CPU
-			
+
 			/*
 			 * 
-			 * TODO Commented this out in order to see the impact of changes on the raw framerate
-			if ( mtPeriod < 10 )
-				try {
-					Thread.sleep((long) (12 - mtPeriod));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				*/
+			 * TODO Commented this out in order to see the impact of changes on
+			 * the raw framerate if ( mtPeriod < 10 ) try { Thread.sleep((long)
+			 * (12 - mtPeriod)); } catch (InterruptedException e) {
+			 * e.printStackTrace(); }
+			 */
 
 			// Updates the length the main thread took for info purposes
 			then = System.nanoTime() * NANO_CONV - now;
