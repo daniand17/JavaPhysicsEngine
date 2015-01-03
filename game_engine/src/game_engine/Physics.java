@@ -234,15 +234,16 @@ public class Physics {
 		boolean nonContactCondition1 = (v1pre.dot(rho) < 0) && (v2pre.dot(rho) > 0);
 		boolean nonContactCondition2 = (Math.signum(v1pre.dot(rho)) == Math.signum(v2pre.dot(rho))) 
 				&& (v1pre.dot(rho) < v2pre.dot(rho));
-		boolean nonContactCondition3 = (Math.signum(r1.dot(rho)) == Math.signum(r2.dot(rho))) 
-				&& (r1.dot(rho) > r2.dot(rho));
+		//boolean nonContactCondition3 = (Math.signum(r1.dot(rho)) == Math.signum(r2.dot(rho))) 
+		//		&& (r1.dot(rho) > r2.dot(rho));
 		//boolean nonContactCondition1 = (r1.dot(rho) < 0) && (r2.dot(rho) > 0);
-		System.out.print("Rho = " + rho);
+		System.out.println("Rho = " + rho + ", theta = " + theta + ", " + nonContactCondition1 + ", " + nonContactCondition2);
 		if (!(nonContactCondition1 || nonContactCondition2)) {
-			System.out.println(" Yes," + nonContactCondition1 + ", " + nonContactCondition2);
-			// 2) Transform the velocities to a coordinate system with the X-axis aligned on the LOC
-			v1pre = v1pre.transform(theta); v2pre = v2pre.transform(theta);
 			
+			// 2) Transform the velocities to a coordinate system with the X-axis aligned on the LOC
+			System.out.println("(original) v1pre = " + v1pre + ", v2pre = " + v2pre);
+			v1pre = v1pre.rotate(theta); v2pre = v2pre.rotate(theta);
+			System.out.println("(rotated)  v1pre = " + v1pre + ", v2pre = " + v2pre);
 			// 3) Conserve momentum and energy to obtain the post-impact velocities.
 			// The y-direction velocities are not modified. The x-direction velocities must
 			// be determined by solving a system of 2 equations to conserve momentum and restitution
@@ -254,15 +255,15 @@ public class Physics {
 			
 			Vector2 v1post = new Vector2(v1x, v1pre.y);
 			Vector2 v2post = new Vector2(v2x, v2pre.y);
-			//v1post = v1post.transform(-theta); v2post = v2post.transform(-theta);
-			col1_rb.velocity = v1post.transform(-theta);
-			col2_rb.velocity = v2post.transform(-theta);
-			//col1_rb.addForce(v1post, v1post.norm());
-			//col2_rb.addForce(v2post, v2post.norm());
-			col1_rb.setForce(v1post, 0d);
-			col1_rb.setForce(v2post, 0d);	
+			System.out.println("(rotated)  v1post = " + v1post + ", v2post = " + v2post);
+			col1_rb.velocity = v1post.rotate(-theta);
+			col2_rb.velocity = v2post.rotate(-theta);
+			//col1_rb.setForce(v1post, 0d);
+			//col1_rb.setForce(v2post, 0d);	
+			System.out.println("(original)	v1post = " + v1post.transform(-theta) + 
+					", v2post = " + v2post.transform(-theta));
 		}
-		System.out.println("");
+		
 	}
 	
 	static void resolveGravity(GameObject obj1, GameObject obj2) {
