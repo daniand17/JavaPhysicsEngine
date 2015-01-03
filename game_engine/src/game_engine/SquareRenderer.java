@@ -1,5 +1,6 @@
 package game_engine;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -25,7 +26,8 @@ public class SquareRenderer extends Renderer {
 		// Rotate the object
 		double rotation = this.getTransform().getRotation();
 		g2d.rotate(rotation);
-		g2d.setColor(Color.BLUE);
+		g2d.setColor(Color.GREEN);
+		g2d.setStroke(new BasicStroke(BasicStroke.CAP_SQUARE));
 		g2d.draw(shape);
 	}
 
