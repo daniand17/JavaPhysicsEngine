@@ -25,22 +25,21 @@ public abstract class Collider extends Component {
 	Area getBoundedArea() {
 		// Update this colliders position
 		Vector2 pos = getPositionInWorldSpace();
+		Vector2 relPos = getRelativePosition();
+		// The rotation transformation
+		AffineTransform transf = AffineTransform.getRotateInstance(getTransform().getRotation(),
+				-relPos.x, -relPos.y);
+		// TODO may need to generalize this further-need to think about the
+		// pivot point
 
-		// Create an affine transform to operate on the area of the collider
-		AffineTransform transf = new AffineTransform();
-		// TODO this doesn't work perfectly currently. After so many rotations
-		// the collider becomes desynced with where it is rendered
-
-		transf.rotate(getTransform().getRotation(), size.x * 0.5, size.y * 0.5);
-
-		Shape temp = transf.createTransformedShape(collider);
-
+		// The translation transformation
 		AffineTransform translationMatrix = AffineTransform.getTranslateInstance(pos.x, pos.y);
+		// Create the transformed shape from the collider
+		Shape temp = transf.createTransformedShape(collider);
+		// Translate the new shape using the translation matrix
 		temp = translationMatrix.createTransformedShape(temp);
-
-		Area collArea = new Area(temp);
-
-		return collArea;
+		// Get the area of the shape to send for collision detection
+		return new Area(temp);
 	}
 
 	/**

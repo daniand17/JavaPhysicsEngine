@@ -8,7 +8,6 @@ import java.awt.geom.Rectangle2D;
 public class SquareRenderer extends Renderer {
 
 	private Vector2 size; // The size of this SquareRenderer
-	private Rectangle2D.Double shape;
 
 	public SquareRenderer(Vector2 sizeDimensions) {
 		setSize(sizeDimensions);
@@ -21,15 +20,8 @@ public class SquareRenderer extends Renderer {
 
 	@Override
 	void render(Graphics2D g2d, Vector2 renderPos) {
-		// Translate the object to its new position
-		g2d.translate(renderPos.x, renderPos.y);
-		// Rotate the object
-		double rotation = this.getTransform().getRotation();
-		g2d.rotate(rotation);
-
 		g2d.setColor(Color.BLUE);
 		g2d.setStroke(new BasicStroke(BasicStroke.CAP_SQUARE));
-		g2d.draw(shape);
 	}
 
 	/**
