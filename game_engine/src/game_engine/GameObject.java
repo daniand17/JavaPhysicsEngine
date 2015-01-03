@@ -72,8 +72,9 @@ public abstract class GameObject implements IGameObject {
 		for (GameObject obj : collidingObjects)
 			// Checks to see if this collisions was already resolved
 			if ( !obj.getCollider().collisionsResolvedThisFrame ) {
-				if ( Physics.collided(this.getCollider(), obj.getCollider()) )
-					Physics.resolveCollision(this.getCollider(), obj.getCollider());
+				Physics.resolveCollision(this.getCollider(), obj.getCollider());
+				//if ( Physics.collided(this.getCollider(), obj.getCollider()) )
+					
 			}
 	}
 

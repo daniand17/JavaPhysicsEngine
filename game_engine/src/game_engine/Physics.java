@@ -145,7 +145,7 @@ public class Physics {
 				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y
 						* rigidbody.gravityScale);
 		rot.y += dt * factor
-				* (rigidbody.torque / rigidbody.getInertia() - rigidbody.getAngularDrag() * rot.y);
+				* (rigidbody.torque - rigidbody.getAngularDrag() * rot.y)/ rigidbody.getInertia();
 
 		Vector2[] retVals = { pos, vel, rot };
 		return retVals;
@@ -170,8 +170,7 @@ public class Physics {
 		col1_area.intersect(col2_area);
 		// Not sure how accurate of a solution this is in finding the impact
 		// point
-		Vector2 impactPoint = new Vector2(col1_area.getBounds2D().getCenterX(), col1_area
-				.getBounds2D().getCenterY());
+
 
 		// If the intersection area is empty, then colliders are not touching
 		if ( !col1_area.isEmpty() )
@@ -195,67 +194,87 @@ public class Physics {
 
 		double e = 0.85; // Basic default value, this should later depend
 		// on the RB's in collision
+		
+		// Get the areas of the shapes defining the colliders
+		Area col1_area = col1.getBoundedArea();
+		Area col2_area = col2.getBoundedArea();
+		
+		// Turn col1_area into area of intersection between the two objects
+		col1_area.intersect(col2_area);
 
-		// These methods are called so that certain high-level scripting
-		// behaviors can be obtained by knowing when a collision has occured
-		// with another collider, and performing actions as a result of that
-		// collision (ie destroying an object when it has been hit--user
-		// determined)
-		col1.getGameObject().onCollision(col2);
-		col2.getGameObject().onCollision(col1);
+		// Collision check 1: If the intersection area is empty, no collision takes place
+		if ( col1_area.isEmpty() ) {return;}
 
+		// Collision check 2: If the area is intersected but the bodies are headed "away" 
+		// from each other, no collision takes place. Otherwise, they will stick together or worse.
 		Rigidbody2D col1_rb = col1.getGameObject().getRigidbody();
 		Rigidbody2D col2_rb = col2.getGameObject().getRigidbody();
+		
+		Vector2 v1pre = col1_rb.velocity; Vector2 v2pre = col2_rb.velocity;
+		Vector2 r1 = col1.getPositionInWorldSpace(); Vector2 r2 = col2.getPositionInWorldSpace();
 
-		// The code below will directly modify the velocities of the two rigid
-		// bodies. It must
-		// occur prior to the integration call
-		Vector2 v1pre = col1_rb.velocity;
-		Vector2 v2pre = col2_rb.velocity;
-		Vector2 r1 = col1.getPositionInWorldSpace();
-		Vector2 r2 = col2.getPositionInWorldSpace();
-
-		// 1) Determine the line of contact using the relative position between
-		// the two objects
+		// Determine the line of contact using the relative position between the two objects
 		Vector2 rho = r2.sub(r1); // Line of contact
-		double theta = rho.angle(); // Angle from x-axis to line of contact
-
-		// 2) Determine if this is a "first contact" situation, i.e. if the
-		// velocities
-		// are oriented towards each other in a situation that could cause
-		// contact
-		// the condition is:
+		
+		// These are the non-contact conditions:
+		// 1) The velocity vectors are headed away from each other
 		boolean nonContactCondition1 = (v1pre.dot(rho) < 0) && (v2pre.dot(rho) > 0);
+		// 2) The velocity vectors are in the same direction, but the one in the lead is moving away
+		// more quickly than the other
 		boolean nonContactCondition2 = (Math.signum(v1pre.dot(rho)) == Math.signum(v2pre.dot(rho)))
 				&& (v1pre.dot(rho) < v2pre.dot(rho));
-		//boolean nonContactCondition3 = (Math.signum(r1.dot(rho)) == Math.signum(r2.dot(rho))) 
-		//		&& (r1.dot(rho) > r2.dot(rho));
-		//boolean nonContactCondition1 = (r1.dot(rho) < 0) && (r2.dot(rho) > 0);
 		
-		//System.out.println("Rho = " + rho + ", theta = " + theta + ", " + nonContactCondition1 + ", " + nonContactCondition2);
-		if (!(nonContactCondition1 || nonContactCondition2)) {
-			
-			// 2) Transform the velocities to a coordinate system with the X-axis aligned on the LOC
-			//FIXME commented out this line because it was flushing out other stuff I wanted to see
-			//System.out.println("(original) v1pre = " + v1pre + ", v2pre = " + v2pre);
-			v1pre = v1pre.rotate(theta); v2pre = v2pre.rotate(theta);
-			//System.out.println("(rotated)  v1pre = " + v1pre + ", v2pre = " + v2pre);
-			// 3) Conserve momentum and energy to obtain the post-impact velocities.
-			// The y-direction velocities are not modified. The x-direction velocities must
-			// be determined by solving a system of 2 equations to conserve momentum and restitution
-			double gamma = 1 + e; 
-			double lambda = col2_rb.getMass()/col1_rb.getMass();
-			double v2x = (gamma*v1pre.x + v2pre.x*(lambda - e))/(1 + lambda);
-			double v1x = v2x + e*(v2pre.x - v1pre.x);
-
-			Vector2 v1post = new Vector2(v1x, v1pre.y);
-			Vector2 v2post = new Vector2(v2x, v2pre.y);
-
-			col1_rb.velocity = v1post.rotate(-theta);
-			col2_rb.velocity = v2post.rotate(-theta);
-		}
+		// If either condition is true, return
+		if (nonContactCondition1 || nonContactCondition2) {return; }
 		
+		// Now we've verified contact, so call the onCollission() methods of each object
+		col1.getGameObject().onCollision(col2);
+		col2.getGameObject().onCollision(col1);
+		
+		//Obtain other useful quantities
+		
+		Vector2 impactPoint = new Vector2(col1_area.getBounds2D().getCenterX(), col1_area
+				.getBounds2D().getCenterY());
+		
+		// Call the appropriate math-handling method (this allows more flexibility if we add
+		// different collision types).
+		rigidBodyCollision(col1_rb, col2_rb, r1, r2, rho, v1pre, v2pre, impactPoint);
 	}
+	
+	private static void rigidBodyCollision(Rigidbody2D col1_rb, Rigidbody2D col2_rb, Vector2 r1, Vector2 r2,
+		Vector2 rho, Vector2 v1pre, Vector2 v2pre, Vector2 impactPoint) {
+		
+		double e = 0.85d;
+		// 1) Transform the velocities to a coordinate system with the X-axis aligned on the LOC
+		double theta = rho.angle(); // Angle from x-axis to line of contact
+		v1pre = v1pre.rotate(theta); v2pre = v2pre.rotate(theta);
+		
+		// 2) Conserve momentum and energy to obtain the post-impact velocities.
+		// The y-direction velocities are not modified. The x-direction velocities must
+		// be determined by solving a system of 2 equations to conserve momentum and restitution
+		double gamma = 1 + e; 
+		double lambda = col2_rb.getMass()/col1_rb.getMass();
+		double v2x = (gamma*v1pre.x + v2pre.x*(lambda - e))/(1 + lambda);
+		double v1x = v2x + e*(v2pre.x - v1pre.x);
+		
+		Vector2 v1post = new Vector2(v1x, v1pre.y).rotate(-theta);
+		Vector2 v2post = new Vector2(v2x, v2pre.y).rotate(-theta);
+		
+		col1_rb.velocity = v1post;
+		col2_rb.velocity = v2post;
+		
+		// 4) Use the velocities and the prior angular velocity to compute the new angular velocity
+		System.out.println("Object 1 Position: " + r1);
+		System.out.println("Object 2 Position: " + r2);
+		System.out.println("Midpoint between 2 objects: " + r1.add(rho.scale(0.5d)));
+		System.out.println("Reported impact Point: " + impactPoint);
+		v1pre = v1pre.rotate(-theta); v2pre = v2pre.rotate(-theta); // Need these back
+		//System.out.println(rho + "," + v1pre + ", " + v1post + ", " + col1_rb.getMass() / (2d*col1_rb.getInertia()) *rho.cross(v1pre.sub(v1post)));
+		Vector2 rho1 = r1.sub(impactPoint); Vector2 rho2 = r2.sub(impactPoint); 
+		col1_rb.angularSpeed += col1_rb.getMass() / (2d*col1_rb.getInertia()) * (rho1.cross(v1pre.sub(v1post)));
+		col2_rb.angularSpeed += col2_rb.getMass() / (2d*col2_rb.getInertia()) * (rho2.cross(v2pre.sub(v2post)));
+		//System.out.println(col1_rb.angularSpeed);
+		}
 
 	static void resolveGravity(GameObject obj1, GameObject obj2) {
 		// TODO this method will behave similar to resolveCollision, calculating
