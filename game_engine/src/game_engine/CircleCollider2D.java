@@ -1,13 +1,12 @@
 package game_engine;
 
-import java.awt.Shape;
+import java.awt.geom.Area;
 
 public class CircleCollider2D extends Collider {
 
 	@Override
-	Shape getBoundedArea() {
-		// TODO Auto-generated method stub
+	Area getBoundedArea() {
+
 		return null;
 	}
-
 }

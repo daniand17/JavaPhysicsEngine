@@ -69,6 +69,7 @@ public class PlayerController extends GameObject {
 		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
 			getRigidbody().addTorque(gain * .1);
 		}
+
 	}
 
 	@Override
@@ -94,6 +95,6 @@ public class PlayerController extends GameObject {
 
 	@Override
 	public void onCollision(Collider other) {
-		//Debug.log(name, "Collided with: " + other.getGameObject().name);
+		// Debug.log(name, "Collided with: " + other.getGameObject().name);
 	}
 }

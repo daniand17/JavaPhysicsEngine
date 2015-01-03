@@ -65,6 +65,9 @@ public abstract class GameObject implements IGameObject {
 	void resolveCollisions(List<GameObject> collidingObjects) {
 		getCollider().collisionsResolvedThisFrame = true;
 
+		if ( collidingObjects.size() == 0 )
+			return;
+
 		// Iterate through the list of colliding objects
 		for (GameObject obj : collidingObjects)
 			// Checks to see if this collisions was already resolved

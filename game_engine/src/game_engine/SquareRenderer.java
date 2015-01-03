@@ -11,6 +11,7 @@ public class SquareRenderer extends Renderer {
 
 	public SquareRenderer(Vector2 sizeDimensions) {
 		setSize(sizeDimensions);
+		this.className = "SquareRenderer";
 
 		// Create the shape that will be rendered
 		shape = new Rectangle2D.Double(-sizeDimensions.x * 0.5, -sizeDimensions.y * 0.5,
