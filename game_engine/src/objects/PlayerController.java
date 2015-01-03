@@ -26,7 +26,6 @@ import java.awt.event.KeyEvent;
  */
 public class PlayerController extends GameObject {
 
-	private boolean debug = true;
 	private double gain = 100.0d;
 
 	@Override
@@ -94,6 +93,6 @@ public class PlayerController extends GameObject {
 
 	@Override
 	public void onCollision(Collider other) {
-		// Debug.log(name, "Collided with: " + other.getGameObject().name);
+
 	}
 }

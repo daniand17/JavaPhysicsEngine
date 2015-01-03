@@ -63,13 +63,13 @@ public class Display extends Canvas {
 		// Fills the rectangle corresponding to the background
 		g2d.fillRect(0, 0, SIZE.width, SIZE.height);
 
-		// TODO renders each game object by calling the renderer of that object
 		// TODO (Andy) Set this to draw only objects that are visible
 		for (GameObject ent : ObjectManager.getAllObjects())
 			if ( ent != null && ent.getRenderer() != null )
 				ent.getRenderer().renderObject(g2d, alpha);
 
-		renderDebugGizmos(g2d, alpha);
+		if ( Debug.debugModeEnabled() )
+			renderDebugGizmos(g2d, alpha);
 		// Renders the GUI
 		renderGUI(g2d);
 
@@ -98,6 +98,7 @@ public class Display extends Canvas {
 
 	void renderDebugGizmos(Graphics2D g2d, double alpha) {
 
+		// Render the collider of each object
 		for (GameObject obj : ObjectManager.getColliderObjects())
 			obj.collider.renderCollider(g2d, alpha);
 	}

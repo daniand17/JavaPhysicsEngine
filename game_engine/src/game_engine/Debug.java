@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 
 public class Debug {
 
+	private static boolean debugMode = false;
 	private static File debugOutput;
 	private static PrintWriter out;
 	private static final String format = "%-20s>%s%n";
@@ -67,7 +68,7 @@ public class Debug {
 	 */
 	public static void log(String tag, String msg) {
 
-		if ( tag != null && msg != null )
+		if ( tag != null && msg != null && debugMode )
 			System.out.printf(format, tag, msg);
 	}
 
@@ -95,6 +96,27 @@ public class Debug {
 	 * want your debug information saved to the file.
 	 */
 	public static void close() {
-		out.close();
+		if ( out != null )
+			out.close();
 	}
+
+	/**
+	 * Toggles the debugger to output debug messages or not. Default is off.
+	 * Call this in your code if you want to turn the debug mode on, and call it
+	 * again if you want to turn it off.
+	 */
+	public static void toggleDebugMode() {
+		debugMode = !debugMode;
+	}
+
+	/**
+	 * This method returns whether the engine is in debug mode. Generally called
+	 * in a conditional statement to print out a debug message.
+	 * 
+	 * @return
+	 */
+	public static boolean debugModeEnabled() {
+		return debugMode;
+	}
+
 }
