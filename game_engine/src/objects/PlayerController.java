@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
  */
 public class PlayerController extends GameObject {
 
-	private double gain = 100.0d;
+	private double gain = 250;
 
 	@Override
 	/**

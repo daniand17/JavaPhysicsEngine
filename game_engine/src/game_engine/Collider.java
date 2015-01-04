@@ -1,5 +1,6 @@
 package game_engine;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -91,6 +92,7 @@ public abstract class Collider extends Component {
 
 	void renderCollider(Graphics2D g2d, double alpha) {
 		g2d.setColor(Color.GREEN);
+		g2d.setStroke(new BasicStroke());
 		g2d.draw(this.getBoundedArea());
 	}
 
