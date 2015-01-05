@@ -100,6 +100,9 @@ public class Display extends Canvas {
 
 		// Render the collider of each object
 		for (GameObject obj : ObjectManager.getColliderObjects())
-			obj.collider.renderCollider(g2d, alpha);
+			obj.collider.renderCollider(g2d);
+
+		for (GameObject obj : ObjectManager.getAllObjects())
+			obj.getTransform().renderTransform(g2d);
 	}
 }

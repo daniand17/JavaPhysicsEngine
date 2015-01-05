@@ -28,6 +28,15 @@ public class Vector2 implements Vector<Vector2> {
 	}
 
 	/**
+	 * Returns the zero vector
+	 * 
+	 * @return the vector with components x and y set to 0
+	 */
+	public static Vector2 zero() {
+		return new Vector2(0, 0);
+	}
+
+	/**
 	 * Returns a vector2 that points to the left in world space
 	 * 
 	 * @return
@@ -95,11 +104,11 @@ public class Vector2 implements Vector<Vector2> {
 		return new Vector2((Math.cos(theta) * x + Math.sin(theta) * this.y), -Math.sin(theta) * x
 				+ Math.cos(theta) * y);
 	}
-	
+
 	public Vector2 transform(double theta) {
 		return this.rotate(-theta);
 	}
-	
+
 	public double angle() {
 		return Math.atan2(y, x);
 	}

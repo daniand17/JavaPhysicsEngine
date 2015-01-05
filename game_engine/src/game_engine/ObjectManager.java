@@ -48,7 +48,7 @@ public class ObjectManager {
 	 */
 	public static synchronized GameObject instantiate(GameObject newObj, Vector2 location) {
 		if ( newObj != null ) {
-			newObj.getTransform().position = location;
+			newObj.getTransform().setPosition(location);
 			startObjects.add(newObj);
 		}
 		return newObj;

@@ -9,19 +9,13 @@ public class SquareRenderer extends Renderer {
 
 	private Vector2 size; // The size of this SquareRenderer
 
-	public SquareRenderer(Vector2 sizeDimensions) {
-		setSize(sizeDimensions);
+	public SquareRenderer(Vector2 size) {
 		this.className = "SquareRenderer";
+		setSize(size);
+		offset = new Vector2(size.x * 0.5, size.y * 0.5);
 
 		// Create the shape that will be rendered
-		shape = new Rectangle2D.Double(-sizeDimensions.x * 0.5, -sizeDimensions.y * 0.5,
-				sizeDimensions.x, sizeDimensions.y);
-	}
-
-	@Override
-	void render(Graphics2D g2d, Vector2 renderPos) {
-		g2d.setColor(Color.BLUE);
-		g2d.setStroke(new BasicStroke(BasicStroke.CAP_SQUARE));
+		shape = new Rectangle2D.Double(0, 0, size.x, size.y);
 	}
 
 	/**
@@ -29,8 +23,15 @@ public class SquareRenderer extends Renderer {
 	 * 
 	 * @return the size
 	 */
+	@Override
 	public Vector2 getSize() {
-		return size;
+		return new Vector2(size.x, size.y);
+	}
+
+	@Override
+	void render(Graphics2D g2d, Vector2 renderPos) {
+		g2d.setColor(Color.BLUE);
+		g2d.setStroke(new BasicStroke(BasicStroke.CAP_SQUARE));
 	}
 
 	/**

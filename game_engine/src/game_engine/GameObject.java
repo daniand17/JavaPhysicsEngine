@@ -20,8 +20,8 @@ public abstract class GameObject implements IGameObject {
 			this.rigidbody = (Rigidbody2D) newComponent;
 		else if ( newComponent instanceof BoxCollider2D )
 			this.collider = (BoxCollider2D) newComponent;
-		else if ( newComponent instanceof CircleCollider2D )
-			this.collider = (CircleCollider2D) newComponent;
+		else if ( newComponent instanceof EllipseCollider2D )
+			this.collider = (EllipseCollider2D) newComponent;
 		else if ( newComponent instanceof SquareRenderer )
 			this.renderer = (SquareRenderer) newComponent;
 	}
@@ -115,7 +115,7 @@ public abstract class GameObject implements IGameObject {
 	void updatePhysics(double t, double dt) {
 
 		// Obtain prior position and rotation
-		Vector2 prevPos = getTransform().position;
+		Vector2 prevPos = getTransform().getPosition();
 		double prevTheta = getTransform().getRotation();
 
 		physicsUpdate(); // Check for control inputs, gravity, collisions
@@ -125,13 +125,13 @@ public abstract class GameObject implements IGameObject {
 				.integrateState(t, dt, prevPos, prevTheta, getRigidbody());
 
 		// Update transform position and rotation
-		transform.position = physicsResults[0];
+		transform.setPosition(physicsResults[0]);
 		transform.setRotation(physicsResults[1].x);
 
 		// Update renderer position and rotation
 		if ( renderer != null )
 			// FIXME turn on rotations
-			renderer.updateRendererPositions(prevPos, getTransform().position);
+			renderer.updateRendererPositions(prevPos, getTransform().getPosition());
 		// render.updateRendererRotation(prevTheta,
 		// getTransform().getRotation());
 

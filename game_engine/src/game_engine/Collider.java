@@ -9,6 +9,10 @@ import java.awt.geom.Area;
 
 public abstract class Collider extends Component {
 
+	public enum ColliderTypes {
+		CIRCLE_2D, RECTANGLE_2D
+	}
+
 	public Shape collider;
 	// Whether this collider should is a trigger instead of a physical object
 	public boolean isTrigger = false;
@@ -16,7 +20,8 @@ public abstract class Collider extends Component {
 	// The 2 dimensional size of this collider
 	public Vector2 size;
 	// Position relative to the transform of the attached GameObject
-	private Vector2 relativePosition = new Vector2(0f, 0f);
+	public Vector2 relativePosition = new Vector2(0f, 0f);
+	protected Vector2 offset;
 
 	/**
 	 * This method is used to get the area of the collider in world space.
@@ -29,12 +34,11 @@ public abstract class Collider extends Component {
 		Vector2 relPos = getRelativePosition();
 		// The rotation transformation
 		AffineTransform transf = AffineTransform.getRotateInstance(getTransform().getRotation(),
-				-relPos.x, -relPos.y);
-		// TODO may need to generalize this further-need to think about the
-		// pivot point
+				offset.x - relPos.x, offset.y - relPos.y);
 
 		// The translation transformation
-		AffineTransform translationMatrix = AffineTransform.getTranslateInstance(pos.x, pos.y);
+		AffineTransform translationMatrix = AffineTransform.getTranslateInstance(pos.x - offset.x,
+				pos.y - offset.y);
 		// Create the transformed shape from the collider
 		Shape temp = transf.createTransformedShape(collider);
 		// Translate the new shape using the translation matrix
@@ -54,7 +58,7 @@ public abstract class Collider extends Component {
 	 */
 	Vector2 getPosition() {
 
-		return relativePosition.add(getTransform().position);
+		return relativePosition.add(getTransform().getPosition());
 	}
 
 	/**
@@ -90,10 +94,41 @@ public abstract class Collider extends Component {
 		return getPosition();
 	}
 
-	void renderCollider(Graphics2D g2d, double alpha) {
+	void renderCollider(Graphics2D g2d) {
 		g2d.setColor(Color.GREEN);
 		g2d.setStroke(new BasicStroke());
 		g2d.draw(this.getBoundedArea());
 	}
 
+	/**
+	 * This method will set the size of the collider to be the specified new
+	 * size.
+	 * 
+	 * @param size
+	 *            the size of the new vector
+	 */
+	public abstract void setSize(Vector2 size);
+
+	/**
+	 * This method creates a new collider
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public static Collider createCollider(ColliderTypes type, Vector2 size) {
+
+		switch (type) {
+		case CIRCLE_2D:
+			return new EllipseCollider2D(size);
+		case RECTANGLE_2D:
+			return new BoxCollider2D(size);
+		default:
+			return new BoxCollider2D(size);
+		}
+	}
+
+	protected static Shape generateColliderFromShape(Shape shape) {
+		AffineTransform convTransf = new AffineTransform();
+		return convTransf.createTransformedShape(shape);
+	}
 }

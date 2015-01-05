@@ -1,12 +1,12 @@
 package objects;
 
-import game_engine.BoxCollider2D;
+import game_engine.CircleRenderer;
 import game_engine.Collider;
+import game_engine.Collider.ColliderTypes;
 import game_engine.Display;
 import game_engine.GameObject;
 import game_engine.Input;
 import game_engine.Rigidbody2D;
-import game_engine.SquareRenderer;
 import game_engine.Vector2;
 
 import java.awt.event.KeyEvent;
@@ -35,10 +35,11 @@ public class PlayerController extends GameObject {
 		// The name of this game object
 		this.name = "PlayerController";
 		rigidbody = new Rigidbody2D();
-		renderer = new SquareRenderer(new Vector2(64d, 64d));
-		collider = new BoxCollider2D(new Vector2(64d, 64d));
+		renderer = new CircleRenderer(new Vector2(32, 64));
+
+		collider = Collider.createCollider(ColliderTypes.CIRCLE_2D, renderer.getSize());
 		// Sets initial rotational characteristics
-		// rigidbody.setAngularDrag(1);
+		rigidbody.setAngularDrag(1);
 		rigidbody.setInertia(1000d);
 		rigidbody.gravityScale = 0;
 	}
@@ -74,13 +75,16 @@ public class PlayerController extends GameObject {
 	 * Performs screen wraparound operations for the associated rigidbody.
 	 */
 	public void update() {
-		Rigidbody2D rigidbody = getTransform().getGameObject().getRigidbody();
+		Vector2 pos = getTransform().getPosition();
 
-		if ( getTransform().position.y > Display.SIZE.height || getTransform().position.y < 0 )
-			rigidbody.velocity.y = -rigidbody.velocity.y;
-
-		if ( getTransform().position.x > Display.SIZE.width || getTransform().position.x < 0 )
-			rigidbody.velocity.x = -rigidbody.velocity.x;
+		if ( pos.y > Display.SIZE.height )
+			pos.y = 0;
+		if ( pos.x > Display.SIZE.width )
+			pos.x = 0;
+		if ( pos.x < 0 )
+			pos.x = Display.SIZE.width;
+		if ( pos.y < 0 )
+			pos.y = Display.SIZE.height;
 
 	}
 
