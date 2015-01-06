@@ -5,7 +5,7 @@ import java.awt.geom.Ellipse2D;
 class EllipseCollider2D extends Collider {
 
 	EllipseCollider2D(Vector2 size) {
-		this.className = "EllipseCollider2D";
+		this.name = "EllipseCollider2D";
 		this.size = size;
 		offset = new Vector2(size.x * 0.5, size.y * 0.5);
 		setRelativePosition(Vector2.zero());

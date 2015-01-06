@@ -1,8 +1,9 @@
 package objects;
 
-import game_engine.CircleRenderer;
+import game_engine.EllipseRenderer;
 import game_engine.Collider;
 import game_engine.Collider.ColliderTypes;
+import game_engine.Debug;
 import game_engine.Display;
 import game_engine.GameObject;
 import game_engine.Input;
@@ -35,12 +36,15 @@ public class PlayerController extends GameObject {
 		// The name of this game object
 		this.name = "PlayerController";
 		rigidbody = new Rigidbody2D();
-		renderer = new CircleRenderer(new Vector2(32, 64));
+		renderer = new EllipseRenderer(new Vector2(32, 64));
 
 		collider = Collider.createCollider(ColliderTypes.CIRCLE_2D, renderer.getSize());
 		// Sets initial rotational characteristics
 		rigidbody.setAngularDrag(1);
 		rigidbody.setInertia(1000d);
+		
+		Debug.log(name, "" + rigidbody.getDrag());
+		
 		rigidbody.gravityScale = 0;
 	}
 

@@ -69,7 +69,7 @@ public class Display extends Canvas {
 				ent.getRenderer().renderObject(g2d, alpha);
 
 		if ( Debug.debugModeEnabled() )
-			renderDebugGizmos(g2d, alpha);
+			Debug.renderDebugGizmos(g2d);
 		// Renders the GUI
 		renderGUI(g2d);
 
@@ -94,15 +94,5 @@ public class Display extends Canvas {
 
 		double amt = GameThread.getMTInfo();
 		g2d.drawString("FPS: " + Utility.roundToTenth((1 / amt) * 1000), leftmargin, 40);
-	}
-
-	void renderDebugGizmos(Graphics2D g2d, double alpha) {
-
-		// Render the collider of each object
-		for (GameObject obj : ObjectManager.getColliderObjects())
-			obj.collider.renderCollider(g2d);
-
-		for (GameObject obj : ObjectManager.getAllObjects())
-			obj.getTransform().renderTransform(g2d);
 	}
 }

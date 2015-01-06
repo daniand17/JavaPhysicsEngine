@@ -10,7 +10,7 @@ public class SquareRenderer extends Renderer {
 	private Vector2 size; // The size of this SquareRenderer
 
 	public SquareRenderer(Vector2 size) {
-		this.className = "SquareRenderer";
+		this.name = "SquareRenderer";
 		setSize(size);
 		offset = new Vector2(size.x * 0.5, size.y * 0.5);
 

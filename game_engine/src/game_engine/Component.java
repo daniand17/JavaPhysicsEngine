@@ -10,7 +10,7 @@ package game_engine;
  */
 public abstract class Component {
 
-	public String className = "Component";
+	public String name = "Component";
 	private GameObject gameObject;
 	private Transform transform;
 

@@ -6,8 +6,8 @@ import objects.TestRect;
 
 public class Physics {
 
-	private static double gravity = 9.81d;
-	private static Vector2 gravityVector = new Vector2(0d, gravity);
+	private static final double GRAVITY = 9.81d;
+	private static Vector2 gravityVector = new Vector2(0d, GRAVITY);
 	private static double dt = 0.01;
 	private static double b1 = 35d / 384d, b2 = 0d, b3 = 500d / 1113d, b4 = 125d / 192d,
 			b5 = -2187d / 684d, b6 = 11d / 84d;
@@ -19,6 +19,8 @@ public class Physics {
 			a63 = 46732d / 5247d, a64 = 49d / 176d, a65 = -5103d / 18656d;
 	private static double b1s = 5179d / 57600d, b2s = 0, b3s = 7571d / 16695d, b4s = 393d / 640d,
 			b5s = -92097d / 339200d, b6s = 187d / 2100d;
+	// The name of this class
+	public static final String NAME = "Physics";
 
 	// being passed to the integrateState() method, because I am also using it
 	// in the
@@ -287,10 +289,10 @@ public class Physics {
 
 		// 4) Use the velocities and the prior angular velocity to compute the
 		// new angular velocity
-		System.out.println("Object 1 Position: " + r1);
-		System.out.println("Object 2 Position: " + r2);
-		System.out.println("Midpoint between 2 objects: " + r1.add(rho.scale(0.5d)));
-		System.out.println("Reported impact Point: " + impactPoint);
+		Debug.log(NAME, "Object 1 Position: " + r1);
+		Debug.log(NAME, "Object 2 Position: " + r2);
+		Debug.log(NAME, "Midpoint between 2 objects: " + r1.add(rho.scale(0.5d)));
+		Debug.log(NAME, "Reported impact Point: " + impactPoint);
 		v1pre = v1pre.rotate(-theta);
 		v2pre = v2pre.rotate(-theta); // Need these back
 		// System.out.println(rho + "," + v1pre + ", " + v1post + ", " +

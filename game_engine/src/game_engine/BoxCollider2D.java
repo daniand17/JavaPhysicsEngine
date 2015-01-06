@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 class BoxCollider2D extends Collider {
 
 	BoxCollider2D(Vector2 size) {
-		this.className = "BoxCollider2D";
+		this.name = "BoxCollider2D";
 		this.size = size;
 		offset = new Vector2(size.x * 0.5, size.y * 0.5);
 		setRelativePosition(Vector2.zero());
@@ -16,7 +16,6 @@ class BoxCollider2D extends Collider {
 		Rectangle2D.Double temp = new Rectangle2D.Double();
 		temp.width = size.x;
 		temp.height = size.y;
-
 		collider = generateColliderFromShape(temp);
 	}
 }
