@@ -1,5 +1,7 @@
 package game_engine;
 
+import graphics.Display;
+
 import javax.swing.JFrame;
 
 /**

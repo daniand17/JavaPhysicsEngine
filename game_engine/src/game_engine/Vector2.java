@@ -1,6 +1,5 @@
 package game_engine;
 
-import interfaces.Vector;
 
 public class Vector2 implements Vector<Vector2> {
 

@@ -1,23 +1,21 @@
-package game_engine;
+package physics;
 
-import java.awt.geom.Ellipse2D;
+import game_engine.Vector2;
 
-class EllipseCollider2D extends Collider {
+import java.awt.geom.Rectangle2D;
 
-	EllipseCollider2D(Vector2 size) {
-		this.name = "EllipseCollider2D";
+class BoxCollider2D extends Collider {
+
+	BoxCollider2D(Vector2 size) {
+		this.name = "BoxCollider2D";
 		this.size = size;
 		offset = new Vector2(size.x * 0.5, size.y * 0.5);
 		setRelativePosition(Vector2.zero());
 		setSize(size);
 	}
 
-	/**
-	 * Sets the size of this collider
-	 */
-	@Override
 	public void setSize(Vector2 size) {
-		Ellipse2D.Double temp = new Ellipse2D.Double();
+		Rectangle2D.Double temp = new Rectangle2D.Double();
 		temp.width = size.x;
 		temp.height = size.y;
 		collider = generateColliderFromShape(temp);

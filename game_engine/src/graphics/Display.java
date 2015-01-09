@@ -1,4 +1,10 @@
-package game_engine;
+package graphics;
+
+import game_engine.Debug;
+import game_engine.GameObject;
+import game_engine.GameThread;
+import game_engine.ObjectManager;
+import game_engine.Utility;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -30,7 +36,7 @@ public class Display extends Canvas {
 		SIZE = dims;
 	}
 
-	void setupWindow() {
+	public void setupWindow() {
 
 		// Uses a double buffer, and ignores repaint requests since we are
 		// handling the graphics
@@ -55,7 +61,8 @@ public class Display extends Canvas {
 	 * @param alpha
 	 *            the interpolation value
 	 */
-	void render(double alpha) {
+	public void render(double alpha) {
+		// TODO Fix so this isn't public
 		// Gets the graphics strategy and sets the background to the one defined
 		// by backgroundGradient
 		Graphics2D g2d = (Graphics2D) strategy.getDrawGraphics();

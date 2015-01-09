@@ -1,6 +1,12 @@
 package game_engine;
 
+import graphics.Renderer;
+
 import java.util.List;
+
+import physics.Collider;
+import physics.Physics;
+import physics.Rigidbody2D;
 
 public abstract class GameObject implements IGameObject {
 
@@ -12,30 +18,6 @@ public abstract class GameObject implements IGameObject {
 	// This object will be rendered if this is not null
 	protected Renderer renderer;
 	protected Collider collider;
-
-	@Override
-	public void addComponent(Component newComponent) {
-
-		if ( newComponent instanceof Rigidbody2D )
-			this.rigidbody = (Rigidbody2D) newComponent;
-		else if ( newComponent instanceof BoxCollider2D )
-			this.collider = (BoxCollider2D) newComponent;
-		else if ( newComponent instanceof EllipseCollider2D )
-			this.collider = (EllipseCollider2D) newComponent;
-		else if ( newComponent instanceof SquareRenderer )
-			this.renderer = (SquareRenderer) newComponent;
-	}
-
-	void initializeComponentReferences() {
-		if ( transform != null )
-			transform.initializeComponentReferences(this, transform);
-		if ( rigidbody != null )
-			rigidbody.initializeComponentReferences(this, getTransform());
-		if ( renderer != null )
-			renderer.initializeComponentReferences(this, getTransform());
-		if ( collider != null )
-			collider.initializeComponentReferences(this, getTransform());
-	}
 
 	@Override
 	public void onCollision(Collider other) {
@@ -63,7 +45,7 @@ public abstract class GameObject implements IGameObject {
 	 *            the list of objects that MIGHT collide with this game object
 	 */
 	void resolveCollisions(List<GameObject> collidingObjects) {
-		getCollider().collisionsResolvedThisFrame = true;
+		getCollider().setCollisionsResolved(true);
 
 		if ( collidingObjects.size() == 0 )
 			return;
@@ -71,12 +53,8 @@ public abstract class GameObject implements IGameObject {
 		// Iterate through the list of colliding objects
 		for (GameObject obj : collidingObjects)
 			// Checks to see if this collisions was already resolved
-			if ( !obj.getCollider().collisionsResolvedThisFrame ) {
+			if ( !obj.getCollider().getCollisionsResolved() )
 				Physics.resolveCollision(this.getCollider(), obj.getCollider());
-				// if ( Physics.collided(this.getCollider(), obj.getCollider())
-				// )
-
-			}
 	}
 
 	/**

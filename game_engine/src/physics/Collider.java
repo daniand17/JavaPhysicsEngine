@@ -1,4 +1,9 @@
-package game_engine;
+package physics;
+
+import game_engine.Component;
+import game_engine.GameObject;
+import game_engine.Transform;
+import game_engine.Vector2;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -8,20 +13,35 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
 public abstract class Collider extends Component {
-
-	public enum ColliderTypes {
-		CIRCLE_2D, RECTANGLE_2D
+	/**
+	 * Constants which correspond to the types of colliders that can be made by
+	 * this factory.
+	 * 
+	 * @author andrew
+	 *
+	 */
+	public enum Colliders {
+		ELLIPSE_2D, RECTANGLE_2D
 	}
 
 	public Shape collider;
 	// Whether this collider should is a trigger instead of a physical object
 	public boolean isTrigger = false;
-	boolean collisionsResolvedThisFrame = false;
+	private boolean collisionsResolvedThisFrame = false;
 	// The 2 dimensional size of this collider
 	public Vector2 size;
 	// Position relative to the transform of the attached GameObject
 	public Vector2 relativePosition = new Vector2(0f, 0f);
 	protected Vector2 offset;
+
+	/**
+	 * This method will set the size of the collider to be the specified new
+	 * size.
+	 * 
+	 * @param size
+	 *            the size of the new vector
+	 */
+	public abstract void setSize(Vector2 size);
 
 	/**
 	 * This method is used to get the area of the collider in world space.
@@ -30,7 +50,7 @@ public abstract class Collider extends Component {
 	 */
 	Area getBoundedArea() {
 		// Update this colliders position
-		Vector2 pos = getPositionInWorldSpace();
+		Vector2 pos = positionInWorldSpace();
 		Vector2 relPos = getRelativePosition();
 		// The rotation transformation
 		AffineTransform transf = AffineTransform.getRotateInstance(getTransform().getRotation(),
@@ -47,6 +67,14 @@ public abstract class Collider extends Component {
 		return new Area(temp);
 	}
 
+	void attachTransform(Transform transform) {
+		this.setTransform(transform);
+	}
+
+	void attachGameObject(GameObject gameObject) {
+		this.setGameObject(gameObject);
+	}
+
 	/**
 	 * Package-access method that gets the coordinates of this collider adjusted
 	 * for the transform of the GameObject it is attached to. If the transform
@@ -58,6 +86,7 @@ public abstract class Collider extends Component {
 	 */
 	Vector2 getPosition() {
 
+		// FIXME the transform is null
 		return relativePosition.add(getTransform().getPosition());
 	}
 
@@ -85,50 +114,78 @@ public abstract class Collider extends Component {
 			this.relativePosition = newRelativePosition;
 	}
 
-	Vector2 getPositionInWorldSpace() {
+	/**
+	 * This method gets the position of the collider in world space
+	 * 
+	 * @return
+	 */
+	public Vector2 positionInWorldSpace() {
 		// TODO Implement this method once we figure out how to do the
 		// transforms and conversion from transform local space to world space.
 		// Not crucial yet but this should eventually be the defacto method used
 		// for collision detection once transforms are figured out.
-
 		return getPosition();
 	}
 
-	void renderCollider(Graphics2D g2d) {
+	/**
+	 * Calls the method to render the collider on the graphics context when
+	 * called.
+	 * 
+	 * @param g2d
+	 *            the graphics context to render this collider on
+	 */
+	public void renderCollider(Graphics2D g2d) {
 		g2d.setColor(Color.GREEN);
 		g2d.setStroke(new BasicStroke());
 		g2d.draw(this.getBoundedArea());
 	}
 
-	/**
-	 * This method will set the size of the collider to be the specified new
-	 * size.
-	 * 
-	 * @param size
-	 *            the size of the new vector
-	 */
-	public abstract void setSize(Vector2 size);
-
-	/**
-	 * This method creates a new collider
-	 * 
-	 * @param type
-	 * @return
-	 */
-	public static Collider createCollider(ColliderTypes type, Vector2 size) {
-
-		switch (type) {
-		case CIRCLE_2D:
-			return new EllipseCollider2D(size);
-		case RECTANGLE_2D:
-			return new BoxCollider2D(size);
-		default:
-			return new BoxCollider2D(size);
-		}
-	}
-
 	protected static Shape generateColliderFromShape(Shape shape) {
 		AffineTransform convTransf = new AffineTransform();
 		return convTransf.createTransformedShape(shape);
+	}
+
+	/**
+	 * @return the collisionsResolvedThisFrame
+	 */
+	public boolean getCollisionsResolved() {
+		return collisionsResolvedThisFrame;
+	}
+
+	/**
+	 * @param collisionsResolvedThisFrame
+	 *            the collisionsResolvedThisFrame to set
+	 */
+	public void setCollisionsResolved(boolean collisionsResolvedThisFrame) {
+		this.collisionsResolvedThisFrame = collisionsResolvedThisFrame;
+	}
+
+	/**
+	 * This method creates a new collider of the given type with a standard size
+	 * given by the Vector2 (64,64).
+	 * 
+	 * @param type
+	 *            the type of collider to make
+	 * @return the new collider
+	 */
+	public static Collider createCollider(Colliders type, GameObject attachedGO,
+			Transform attachedTransform) {
+
+		Vector2 size = new Vector2(64f, 64f); // TODO make std size 1 when ortho
+												// camera is implemented
+		switch (type) {
+		case ELLIPSE_2D:
+			EllipseCollider2D newEllipseCol = new EllipseCollider2D(size);
+			newEllipseCol.attachTransform(attachedTransform);
+			newEllipseCol.attachGameObject(attachedGO);
+			return newEllipseCol;
+		case RECTANGLE_2D:
+			BoxCollider2D newBoxColl = new BoxCollider2D(size);
+			newBoxColl.attachTransform(attachedTransform);
+			newBoxColl.attachGameObject(attachedGO);
+			return newBoxColl;
+		}
+		// If no valid collider type is specified return null
+		return null;
 	}
 }

@@ -1,4 +1,7 @@
-package game_engine;
+package physics;
+
+import game_engine.GameObject;
+import game_engine.Vector2;
 
 import java.awt.Rectangle;
 import java.util.LinkedList;
@@ -75,8 +78,8 @@ public class Quadtree {
 	private int getIndex(GameObject ent) {
 		// TODO eventually use collider.getPositionInWorldSpace() when it is
 		// implemented
-		Vector2 objLocation = ent.getCollider().getPosition();
-		
+		Vector2 objLocation = ent.getCollider().positionInWorldSpace();
+
 		int index = -1;
 		double verticalMidpoint = bounds.getX() + (bounds.getWidth() / 2);
 		double horizontalMidpoint = bounds.getY() + (bounds.getHeight() / 2);
@@ -90,11 +93,13 @@ public class Quadtree {
 		// Object can completely fit within the left quadrants
 		// TODO not sure if this is completely right with the
 		// getBounds().width...will only know once we are doing collisions
-		if ( ent.getCollider().getPosition().x < verticalMidpoint
-				&& ent.getCollider().getPosition().y + ent.getCollider().getBoundedArea().getBounds().width < verticalMidpoint ) {
+		if ( ent.getCollider().positionInWorldSpace().x < verticalMidpoint
+				&& ent.getCollider().positionInWorldSpace().y
+						+ ent.getCollider().getBoundedArea().getBounds().width < verticalMidpoint ) {
 			if ( topQuadrant ) {
 				index = 1;
-			} else if ( bottomQuadrant ) {
+			}
+			else if ( bottomQuadrant ) {
 				index = 2;
 			}
 		}
@@ -102,7 +107,8 @@ public class Quadtree {
 		else if ( objLocation.x > verticalMidpoint ) {
 			if ( topQuadrant ) {
 				index = 0;
-			} else if ( bottomQuadrant ) {
+			}
+			else if ( bottomQuadrant ) {
 				index = 3;
 			}
 		}

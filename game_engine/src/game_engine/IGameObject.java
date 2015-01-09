@@ -1,5 +1,8 @@
 package game_engine;
 
+import physics.Collider;
+
+
 public interface IGameObject {
 	
 	public void start();
@@ -9,7 +12,5 @@ public interface IGameObject {
 	public void physicsUpdate();
 	
 	public void update();
-	
-	public void addComponent(Component newComponent);
 
 }

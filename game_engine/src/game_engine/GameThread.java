@@ -1,5 +1,9 @@
 package game_engine;
 
+import graphics.Display;
+
+
+
 public class GameThread implements Runnable {
 
 	private final Display display;

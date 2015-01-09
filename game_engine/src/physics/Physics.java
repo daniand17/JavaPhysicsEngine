@@ -1,4 +1,8 @@
-package game_engine;
+package physics;
+
+import game_engine.Debug;
+import game_engine.GameObject;
+import game_engine.Vector2;
 
 import java.awt.geom.Area;
 
@@ -37,7 +41,7 @@ public class Physics {
 	 *            drag, position, and velocity information
 	 */
 
-	static Vector2[] integrateState(double t, double dt, Vector2 position, double theta,
+	public static Vector2[] integrateState(double t, double dt, Vector2 position, double theta,
 			Rigidbody2D rigidbody) {
 		Physics.dt = dt;
 		return rk4Integration(t, dt, position, theta, rigidbody);
@@ -197,7 +201,7 @@ public class Physics {
 	 * @param col1
 	 * @param col2
 	 */
-	static void resolveCollision(Collider col1, Collider col2) {
+	public static void resolveCollision(Collider col1, Collider col2) {
 
 		double e = 0.85; // Basic default value, this should later depend
 		// on the RB's in collision
@@ -224,8 +228,8 @@ public class Physics {
 
 		Vector2 v1pre = col1_rb.velocity;
 		Vector2 v2pre = col2_rb.velocity;
-		Vector2 r1 = col1.getPositionInWorldSpace();
-		Vector2 r2 = col2.getPositionInWorldSpace();
+		Vector2 r1 = col1.positionInWorldSpace();
+		Vector2 r2 = col2.positionInWorldSpace();
 
 		// Determine the line of contact using the relative position between the
 		// two objects

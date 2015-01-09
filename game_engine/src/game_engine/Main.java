@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		//Debug.toggleDebugMode();
+		Debug.toggleDebugMode();
 
 		if ( Debug.debugModeEnabled() )
 			Vector2.test();

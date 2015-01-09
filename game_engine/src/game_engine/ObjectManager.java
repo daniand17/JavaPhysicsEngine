@@ -1,8 +1,12 @@
 package game_engine;
 
+import graphics.Display;
+
 import java.awt.Rectangle;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import physics.Quadtree;
 
 public class ObjectManager {
 	public static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
@@ -33,6 +37,7 @@ public class ObjectManager {
 	 * @return the list of objects that might collide with the object specified
 	 */
 	public static List<GameObject> getNearbyObjects(GameObject objToCheck) {
+
 		return quadtree.retrieve(objToCheck);
 	}
 
@@ -62,17 +67,14 @@ public class ObjectManager {
 			// Call the start function of the object
 			obj.start();
 
-			// Initialize the references for the game object so transform,
-			// gameobject etc can get referenced from any component
-			obj.initializeComponentReferences();
-
 			allObjects.add(obj);
 
 			// Subject to physics updates if object has a rigidbody
 			if ( obj.getRigidbody() != null )
 				physicsObjects.add(obj);
 
-			// Add to the list of collidable objects if object has a collider
+			// Add to the list of collidable objects if object has a
+			// collider
 			if ( obj.getCollider() != null )
 				colliderObjects.add(obj);
 
@@ -86,7 +88,7 @@ public class ObjectManager {
 	public static synchronized void clearQuadtreeAndResetColliders() {
 		quadtree.clear();
 		for (GameObject obj : colliderObjects)
-			obj.getCollider().collisionsResolvedThisFrame = false;
+			obj.getCollider().setCollisionsResolved(false);
 
 	}
 }

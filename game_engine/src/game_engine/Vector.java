@@ -1,4 +1,4 @@
-package interfaces;
+package game_engine;
 
 /** This is the interface used for all Vector-type classes. 
  * Only methods which are general enough for N-dimensional vectors are specified through 

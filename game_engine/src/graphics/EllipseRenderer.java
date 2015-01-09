@@ -1,4 +1,6 @@
-package game_engine;
+package graphics;
+
+import game_engine.Vector2;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

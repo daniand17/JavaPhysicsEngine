@@ -1,4 +1,8 @@
-package game_engine;
+package physics;
+
+import game_engine.Component;
+import game_engine.Vector2;
+import game_engine.VectorN;
 
 public class Rigidbody2D extends Component {
 
@@ -28,6 +32,7 @@ public class Rigidbody2D extends Component {
 		setAngularDrag(5d);
 		setForce(new Vector2(1d, 0d), 0d);
 	}
+
 	/**
 	 * Paramaterized public constructor. Creates a new rigid body with specified
 	 * mass and drag
@@ -56,7 +61,7 @@ public class Rigidbody2D extends Component {
 	 * @param amount
 	 *            Magnitude of the desired force.
 	 */
-	void setForce(Vector2 direction, double amount) {
+	public void setForce(Vector2 direction, double amount) {
 		// Don't supply a zero value for direction
 		force = direction.scale(amount / direction.norm());
 	}
@@ -68,7 +73,7 @@ public class Rigidbody2D extends Component {
 	 *            Magnitude of desired torque. Positive CW.
 	 * 
 	 */
-	void setTorque(double torque) {
+	public void setTorque(double torque) {
 		this.torque = torque;
 	}
 

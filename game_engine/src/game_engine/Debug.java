@@ -134,6 +134,8 @@ public class Debug {
 	 */
 	public static void renderDebugGizmos(Graphics2D g2d) {
 
+		// TODO separate the rendering into a separate class for rendering all
+		// objects (maybe)
 		// Render the collider of each object
 		for (GameObject obj : ObjectManager.getColliderObjects())
 			obj.collider.renderCollider(g2d);

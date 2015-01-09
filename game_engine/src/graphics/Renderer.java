@@ -1,10 +1,19 @@
-package game_engine;
+package graphics;
+
+import game_engine.Component;
+import game_engine.GameObject;
+import game_engine.Transform;
+import game_engine.Vector2;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
 public abstract class Renderer extends Component {
+
+	public enum Renderers {
+		SQUARE_2D, ELLIPSE_2D
+	}
 
 	private Vector2 previous;
 	private Vector2 current;
@@ -55,9 +64,28 @@ public abstract class Renderer extends Component {
 	 * @param prevPos
 	 * @param position
 	 */
-	void updateRendererPositions(Vector2 prevPos, Vector2 position) {
+	public void updateRendererPositions(Vector2 prevPos, Vector2 position) {
+		// TODO fix so this isn't public
 		previous = prevPos;
 		current = position;
 	}
 
+	public static Renderer createRenderer(Renderers rendererType, GameObject attachedGO,
+			Transform attachedTransform) {
+
+		Vector2 size = new Vector2(64, 64);
+		switch (rendererType) {
+		case SQUARE_2D:
+			SquareRenderer sqr = new SquareRenderer(size);
+			sqr.transform = attachedTransform;
+			sqr.setGameObject(attachedGO);
+			return sqr;
+		case ELLIPSE_2D:
+			EllipseRenderer ell = new EllipseRenderer(size);
+			ell.transform = attachedTransform;
+			ell.setGameObject(attachedGO);
+			return ell;
+		}
+		return null;
+	}
 }

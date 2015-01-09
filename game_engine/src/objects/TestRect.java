@@ -1,12 +1,14 @@
 package objects;
 
-import game_engine.Collider;
-import game_engine.Collider.ColliderTypes;
-import game_engine.Display;
 import game_engine.GameObject;
-import game_engine.Rigidbody2D;
-import game_engine.SquareRenderer;
 import game_engine.Vector2;
+import graphics.Display;
+import graphics.Renderer;
+import graphics.SquareRenderer;
+import graphics.Renderer.Renderers;
+import physics.Collider;
+import physics.Collider.Colliders;
+import physics.Rigidbody2D;
 
 public class TestRect extends GameObject {
 
@@ -21,8 +23,8 @@ public class TestRect extends GameObject {
 		this.name = "TestRect";
 		// Sets up the rigidbody and renderer for this component
 		rigidbody = new Rigidbody2D();
-		renderer = new SquareRenderer(new Vector2(64f, 64f));
-		collider = Collider.createCollider(ColliderTypes.RECTANGLE_2D, new Vector2(64, 64));
+		renderer = Renderer.createRenderer(Renderers.SQUARE_2D, this, getTransform());
+		collider = Collider.createCollider(Colliders.RECTANGLE_2D, this, getTransform());
 		rigidbody.gravityScale = 0;
 	}
 
