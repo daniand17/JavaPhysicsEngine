@@ -1,6 +1,7 @@
 package physics;
 
 import game_engine.Component;
+import game_engine.Transform;
 import game_engine.Vector2;
 import game_engine.VectorN;
 
@@ -11,19 +12,23 @@ public class Rigidbody2D extends Component {
 	private double inertia = 1; // The inertia of this Rigidbody
 	private double drag; // The linear, viscous drag coefficient of this
 							// Rigidbody
-	public Vector2 force; // Force acting on the RigidBody for the next physics
-	// update
-	public double angularSpeed; // Rotational speed; positive CW
 	private double angularDrag; // Viscous angular drag coefficient (linear)
-	public double torque; // Angular force component acting on this RigidBody
-	public double gravityScale = 1;
+
+	// Package access fields used in the physics class
+	Vector2 force; // Force acting on the RigidBody for the next physics
+	double torque; // Angular force component acting on this RigidBody
+	// update
+	private double angularSpeed; // Rotational speed; positive CW
+	private double gravityScale = 1;
 
 	/**
 	 * Default public constructor. Creates a new velocity vector with no
 	 * velocity, initializes the mass to 5 (kg), the drag to 0.1, and the
 	 * gravity scale as defined in the Physics class.
 	 */
-	public Rigidbody2D() {
+	public Rigidbody2D(Transform trans) {
+
+		this.transform = trans;
 		if ( velocity == null )
 			velocity = new Vector2();
 		setMass(1d);
@@ -31,6 +36,23 @@ public class Rigidbody2D extends Component {
 		setDrag(1);
 		setAngularDrag(5d);
 		setForce(new Vector2(1d, 0d), 0d);
+	}
+
+	public void updatePhysics(double t, double dt) {
+
+		// Obtain prior position and rotation
+		Vector2 prevPos = getTransform().getPosition();
+		double prevTheta = getTransform().getRotation();
+
+		Vector2[] physicsResults = Physics.integrateState(t, dt, prevPos, prevTheta, this);
+
+		// Update transform position and rotation
+		transform.setPosition(physicsResults[0]);
+		transform.setRotation(physicsResults[1].x);
+
+		// Reset the forces on the object
+		setForce(Vector2.right(), 0);
+		setTorque(0);
 	}
 
 	/**
@@ -61,9 +83,10 @@ public class Rigidbody2D extends Component {
 	 * @param amount
 	 *            Magnitude of the desired force.
 	 */
-	public void setForce(Vector2 direction, double amount) {
+	private void setForce(Vector2 direction, double amount) {
 		// Don't supply a zero value for direction
 		force = direction.scale(amount / direction.norm());
+
 	}
 
 	/**
@@ -73,7 +96,7 @@ public class Rigidbody2D extends Component {
 	 *            Magnitude of desired torque. Positive CW.
 	 * 
 	 */
-	public void setTorque(double torque) {
+	private void setTorque(double torque) {
 		this.torque = torque;
 	}
 
@@ -89,7 +112,10 @@ public class Rigidbody2D extends Component {
 	 *            Magnitude of the desired force.
 	 */
 	public void addForce(Vector2 direction, double amount) {
-		// Don't supply a zero value for direction
+
+		// Checks for zero vector and returns without adding force
+		if ( direction.x == 0 && direction.y == 0 )
+			return;
 		force = force.add(direction.scale(amount / direction.norm()));
 	}
 
@@ -102,16 +128,6 @@ public class Rigidbody2D extends Component {
 	 */
 	public void addTorque(double torque) {
 		this.torque += torque;
-	}
-
-	public void addTorque(VectorN axis) {
-		// TODO (Joe) implement this method
-
-		// use transform.rotation = result of physics integration called in this
-		// method
-		// We will likely need to discuss some more architectural aspects of
-		// this since I'm not sure yet how we should be doing integration for
-		// this
 	}
 
 	/**
@@ -202,5 +218,35 @@ public class Rigidbody2D extends Component {
 			this.angularDrag = angularDrag;
 		else
 			angularDrag = 0;
+	}
+
+	/**
+	 * @return the angularSpeed
+	 */
+	public double getAngularSpeed() {
+		return angularSpeed;
+	}
+
+	/**
+	 * @param angularSpeed
+	 *            the angularSpeed to set
+	 */
+	public void setAngularSpeed(double angularSpeed) {
+		this.angularSpeed = angularSpeed;
+	}
+
+	/**
+	 * @return the gravityScale
+	 */
+	public double getGravityScale() {
+		return gravityScale;
+	}
+
+	/**
+	 * @param gravityScale
+	 *            the gravityScale to set
+	 */
+	public void setGravityScale(double gravityScale) {
+		this.gravityScale = gravityScale;
 	}
 }

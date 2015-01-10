@@ -38,7 +38,7 @@ public class PlayerController extends GameObject {
 	public void start() {
 		// The name of this game object
 		this.name = "PlayerController";
-		rigidbody = new Rigidbody2D();
+		rigidbody = new Rigidbody2D(getTransform());
 		renderer = Renderer.createRenderer(Renderers.ELLIPSE_2D, this, getTransform());
 
 		collider = Collider.createCollider(Colliders.ELLIPSE_2D, this, this.getTransform());
@@ -47,7 +47,7 @@ public class PlayerController extends GameObject {
 		rigidbody.setAngularDrag(1);
 		rigidbody.setInertia(1000d);
 
-		rigidbody.gravityScale = 0;
+		rigidbody.setGravityScale(0);
 	}
 
 	@Override
@@ -56,9 +56,11 @@ public class PlayerController extends GameObject {
 	 * events on W, A, S, and D.
 	 */
 	public void physicsUpdate() {
+
 		if ( Input.getKeyDown(KeyEvent.VK_W) ) {
 			getRigidbody().addForce(Vector2.up(), gain);
 		}
+
 		if ( Input.getKeyDown(KeyEvent.VK_S) ) {
 			getRigidbody().addForce(Vector2.down(), gain);
 		}

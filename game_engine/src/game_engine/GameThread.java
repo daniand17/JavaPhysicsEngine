@@ -1,8 +1,7 @@
 package game_engine;
 
 import graphics.Display;
-
-
+import physics.Rigidbody2D;
 
 public class GameThread implements Runnable {
 
@@ -86,16 +85,20 @@ public class GameThread implements Runnable {
 
 	private void fixedUpdate(double t, double dt) {
 
-		// Update physics logic for motion etc
-		for (GameObject obj : ObjectManager.getPhysicsObjects())
-			if ( obj != null )
-				obj.updatePhysics(t, dt);
+		// Do the physics updates for each game object
+		for (GameObject obj : ObjectManager.getAllObjects())
+			obj.physicsUpdate();
 
-		// Resolve any collisions from the last physics update
+		// Resolve any collisions from this physics step
 		for (GameObject obj : ObjectManager.getColliderObjects()) {
 			if ( obj != null )
 				obj.resolveCollisions(ObjectManager.getNearbyObjects(obj));
 		}
+
+		// Update all the rigidbodies
+		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects())
+			if ( rb != null )
+				rb.updatePhysics(t, dt);
 
 		// At this point all collisions are resolved so we can kill the quadtree
 		// and prep for the next frame

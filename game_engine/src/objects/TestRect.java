@@ -22,10 +22,10 @@ public class TestRect extends GameObject {
 		// The name of this game object
 		this.name = "TestRect";
 		// Sets up the rigidbody and renderer for this component
-		rigidbody = new Rigidbody2D();
+		rigidbody = new Rigidbody2D(getTransform());
 		renderer = Renderer.createRenderer(Renderers.SQUARE_2D, this, getTransform());
 		collider = Collider.createCollider(Colliders.RECTANGLE_2D, this, getTransform());
-		rigidbody.gravityScale = 0;
+		rigidbody.setGravityScale(0);
 	}
 
 	@Override

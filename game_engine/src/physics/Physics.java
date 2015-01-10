@@ -56,7 +56,7 @@ public class Physics {
 
 	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, double theta,
 			Rigidbody2D rigidbody) {
-		Vector2 rot = new Vector2(theta, rigidbody.angularSpeed);
+		Vector2 rot = new Vector2(theta, rigidbody.getAngularSpeed());
 		Vector2[] a = evaluatePosition(0d, position, rigidbody.velocity, rot, rigidbody);
 		Vector2[] b = evaluatePosition(0.5d, a[0], a[1], a[2], rigidbody);
 		Vector2[] c = evaluatePosition(0.5d, b[0], b[1], b[2], rigidbody);
@@ -72,7 +72,7 @@ public class Physics {
 
 		// Evaluate the new rotation vector
 		rot.x = 1.0d / 6.0d * (a[2].x + 2.0d * (b[2].x + c[2].x) + d[2].x);
-		rigidbody.angularSpeed = 1.0d / 6.0d * (a[2].y + 2.0d * (b[2].y + c[2].y) + d[2].y);
+		rigidbody.setAngularSpeed(1.0d / 6.0d * (a[2].y + 2.0d * (b[2].y + c[2].y) + d[2].y));
 
 		// The x field of rot contains the updated rotation
 		Vector2[] retVals = { position, rot };
@@ -151,11 +151,11 @@ public class Physics {
 		vel.x += dt
 				* factor
 				* ((rigidbody.force.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x
-						* rigidbody.gravityScale);
+						* rigidbody.getGravityScale());
 		vel.y += dt
 				* factor
 				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y
-						* rigidbody.gravityScale);
+						* rigidbody.getGravityScale());
 		rot.y += dt * factor * (rigidbody.torque - rigidbody.getAngularDrag() * rot.y)
 				/ rigidbody.getInertia();
 
@@ -304,10 +304,10 @@ public class Physics {
 		// *rho.cross(v1pre.sub(v1post)));
 		Vector2 rho1 = r1.sub(impactPoint);
 		Vector2 rho2 = r2.sub(impactPoint);
-		col1_rb.angularSpeed += col1_rb.getMass() / (2d * col1_rb.getInertia())
-				* (rho1.cross(v1pre.sub(v1post)));
-		col2_rb.angularSpeed += col2_rb.getMass() / (2d * col2_rb.getInertia())
-				* (rho2.cross(v2pre.sub(v2post)));
+		col1_rb.setAngularSpeed(col1_rb.getAngularSpeed() + col1_rb.getMass() / (2d * col1_rb.getInertia())
+				* (rho1.cross(v1pre.sub(v1post))));
+		col2_rb.setAngularSpeed(col2_rb.getAngularSpeed() + col2_rb.getMass() / (2d * col2_rb.getInertia())
+				* (rho2.cross(v2pre.sub(v2post))));
 		// System.out.println(col1_rb.angularSpeed);
 	}
 

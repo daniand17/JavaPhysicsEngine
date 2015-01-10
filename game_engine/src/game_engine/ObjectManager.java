@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import physics.Quadtree;
+import physics.Rigidbody2D;
 
 public class ObjectManager {
 	public static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<GameObject> allObjects = new CopyOnWriteArrayList<GameObject>();
-	private static List<GameObject> physicsObjects = new CopyOnWriteArrayList<GameObject>();
+	private static List<Rigidbody2D> physicsObjects = new CopyOnWriteArrayList<Rigidbody2D>();
 	private static List<GameObject> colliderObjects = new CopyOnWriteArrayList<GameObject>();
 
 	private static Quadtree quadtree = new Quadtree(0, new Rectangle(Display.WIDTH, Display.HEIGHT));
@@ -20,7 +21,7 @@ public class ObjectManager {
 		return allObjects;
 	}
 
-	public static synchronized List<GameObject> getPhysicsObjects() {
+	public static synchronized List<Rigidbody2D> getPhysicsObjects() {
 		return physicsObjects;
 	}
 
@@ -71,7 +72,7 @@ public class ObjectManager {
 
 			// Subject to physics updates if object has a rigidbody
 			if ( obj.getRigidbody() != null )
-				physicsObjects.add(obj);
+				physicsObjects.add(obj.getRigidbody());
 
 			// Add to the list of collidable objects if object has a
 			// collider

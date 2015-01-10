@@ -14,7 +14,7 @@ public abstract class GameObject implements IGameObject {
 	// All game objects have a transform starting at 0, 0
 	private Transform transform = new Transform();
 	// If this object has a rigidbody, it will partake in physics updates.
-	protected Rigidbody2D rigidbody;
+	public Rigidbody2D rigidbody;
 	// This object will be rendered if this is not null
 	protected Renderer renderer;
 	protected Collider collider;
@@ -93,30 +93,16 @@ public abstract class GameObject implements IGameObject {
 	 */
 	void updatePhysics(double t, double dt) {
 
-		// Obtain prior position and rotation
-		Vector2 prevPos = getTransform().getPosition();
-		double prevTheta = getTransform().getRotation();
-
 		physicsUpdate(); // Check for control inputs, gravity, collisions
 
 		// Perform integration from current to updates state
-		Vector2[] physicsResults = Physics
-				.integrateState(t, dt, prevPos, prevTheta, getRigidbody());
-
-		// Update transform position and rotation
-		transform.setPosition(physicsResults[0]);
-		transform.setRotation(physicsResults[1].x);
 
 		// Update renderer position and rotation
 		if ( renderer != null )
-			// FIXME turn on rotations
-			renderer.updateRendererPositions(prevPos, getTransform().getPosition());
-		// render.updateRendererRotation(prevTheta,
-		// getTransform().getRotation());
-
-		// Reset the forces on the object
-		rigidbody.setForce(Vector2.right(), 0);
-		rigidbody.setTorque(0);
+			;
+		// FIXME turn on rotations
+		// renderer.updateRendererPositions(prevPos,
+		// getTransform().getPosition());
 	}
 
 	/**

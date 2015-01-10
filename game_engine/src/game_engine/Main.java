@@ -15,6 +15,6 @@ public class Main {
 		new Engine(800, 600, "Game Engine Test");
 
 		ObjectManager.instantiate(new PlayerController(), new Vector2(300, 300));
-		ObjectManager.instantiate(new TestRect(), new Vector2(600, 300));
+		//ObjectManager.instantiate(new TestRect(), new Vector2(600, 300));
 	}
 }
