@@ -39,6 +39,7 @@ public class Display extends Canvas {
 
 	public void setupWindow() {
 
+		setBounds(0, 0, SIZE.width, SIZE.height);
 		// Uses a double buffer, and ignores repaint requests since we are
 		// handling the graphics
 		this.createBufferStrategy(2);
