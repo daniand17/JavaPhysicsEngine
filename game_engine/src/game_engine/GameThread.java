@@ -89,16 +89,16 @@ public class GameThread implements Runnable {
 		for (GameObject obj : ObjectManager.getAllObjects())
 			obj.physicsUpdate();
 
+		// Update all the rigidbodies
+		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects())
+			if ( rb != null )
+				rb.updatePhysics(t, dt);
+
 		// Resolve any collisions from this physics step
 		for (GameObject obj : ObjectManager.getColliderObjects()) {
 			if ( obj != null )
 				obj.resolveCollisions(ObjectManager.getNearbyObjects(obj));
 		}
-
-		// Update all the rigidbodies
-		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects())
-			if ( rb != null )
-				rb.updatePhysics(t, dt);
 
 		// At this point all collisions are resolved so we can kill the quadtree
 		// and prep for the next frame

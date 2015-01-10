@@ -71,9 +71,10 @@ public class Display extends Canvas {
 		g2d.fillRect(0, 0, SIZE.width, SIZE.height);
 
 		// TODO (Andy) Set this to draw only objects that are visible
-		for (GameObject ent : ObjectManager.getAllObjects())
+		for (GameObject ent : ObjectManager.getAllObjects()) {
 			if ( ent != null && ent.getRenderer() != null )
 				ent.getRenderer().renderObject(g2d, alpha);
+		}
 
 		if ( Debug.debugModeEnabled() )
 			Debug.renderDebugGizmos(g2d);

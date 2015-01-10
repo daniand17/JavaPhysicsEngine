@@ -35,6 +35,9 @@ public abstract class Renderer extends Component {
 	 * render method to render the object.
 	 */
 	void renderObject(Graphics2D g2d, double alpha) {
+
+		current = this.transform.getPosition();
+
 		if ( previous != null && current != null ) {
 			// Calculate the vector to render at by taking the current pos and
 			// the previous pos
@@ -55,19 +58,9 @@ public abstract class Renderer extends Component {
 			render(g2d, interpPos);
 			g2d.draw(temp);
 		}
-	}
 
-	/**
-	 * This method is used to update the position of an object for interpolation
-	 * between two points
-	 * 
-	 * @param prevPos
-	 * @param position
-	 */
-	public void updateRendererPositions(Vector2 prevPos, Vector2 position) {
-		// TODO fix so this isn't public
-		previous = prevPos;
-		current = position;
+		previous = this.transform.getPosition();
+
 	}
 
 	public static Renderer createRenderer(Renderers rendererType, GameObject attachedGO,

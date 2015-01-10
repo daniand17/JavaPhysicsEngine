@@ -3,7 +3,6 @@ package physics;
 import game_engine.Component;
 import game_engine.Transform;
 import game_engine.Vector2;
-import game_engine.VectorN;
 
 public class Rigidbody2D extends Component {
 
@@ -30,7 +29,7 @@ public class Rigidbody2D extends Component {
 
 		this.transform = trans;
 		if ( velocity == null )
-			velocity = new Vector2();
+			velocity = Vector2.zero();
 		setMass(1d);
 		setInertia(1000d);
 		setDrag(1);

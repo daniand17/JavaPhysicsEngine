@@ -12,7 +12,7 @@ public class EllipseRenderer extends Renderer {
 	private Vector2 size;
 
 	public EllipseRenderer(Vector2 size) {
-		this.name = "CircleRenderer";
+		this.name = "EllipseRenderer";
 		setSize(size);
 		offset = new Vector2(size.x * 0.5, size.y * 0.5);
 		// Create the shape that will be rendered

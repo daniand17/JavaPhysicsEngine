@@ -79,33 +79,6 @@ public abstract class GameObject implements IGameObject {
 	}
 
 	/**
-	 * This method is called by the game thread only if there is a rigidbody
-	 * attached. It is used to update the position of the GameObject using
-	 * physics by passing the position of the transform and the rigidbody to the
-	 * Physics class for integration. The rigidbody is a necessary parameter to
-	 * pass because it contains both the mass and drag of the object, in
-	 * addition to velocity.
-	 * 
-	 * @param t
-	 *            the current time
-	 * @param dt
-	 *            the time step to integrate over
-	 */
-	void updatePhysics(double t, double dt) {
-
-		physicsUpdate(); // Check for control inputs, gravity, collisions
-
-		// Perform integration from current to updates state
-
-		// Update renderer position and rotation
-		if ( renderer != null )
-			;
-		// FIXME turn on rotations
-		// renderer.updateRendererPositions(prevPos,
-		// getTransform().getPosition());
-	}
-
-	/**
 	 * Returns the collider attached to this object
 	 * 
 	 * @return the collider

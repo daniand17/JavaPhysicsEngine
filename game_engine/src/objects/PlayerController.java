@@ -29,7 +29,7 @@ import physics.Rigidbody2D;
  */
 public class PlayerController extends GameObject {
 
-	private double gain = 250;
+	private double gain = 500;
 
 	@Override
 	/**
@@ -40,6 +40,7 @@ public class PlayerController extends GameObject {
 		this.name = "PlayerController";
 		rigidbody = new Rigidbody2D(getTransform());
 		renderer = Renderer.createRenderer(Renderers.ELLIPSE_2D, this, getTransform());
+		Debug.log(name, renderer.getSize().toString());
 
 		collider = Collider.createCollider(Colliders.ELLIPSE_2D, this, this.getTransform());
 
@@ -93,6 +94,8 @@ public class PlayerController extends GameObject {
 			pos.x = Display.SIZE.width;
 		if ( pos.y < 0 )
 			pos.y = Display.SIZE.height;
+
+		getTransform().setPosition(pos);
 
 	}
 
