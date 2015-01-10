@@ -1,6 +1,7 @@
 package game_engine;
 
-import interfaces.Vector;
+import utility.Utility;
+
 
 
 public class VectorN implements Vector<VectorN> {

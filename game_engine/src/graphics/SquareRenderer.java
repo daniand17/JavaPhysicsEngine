@@ -1,4 +1,6 @@
-package game_engine;
+package graphics;
+
+import game_engine.Vector2;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -8,27 +10,14 @@ import java.awt.geom.Rectangle2D;
 public class SquareRenderer extends Renderer {
 
 	private Vector2 size; // The size of this SquareRenderer
-	private Rectangle2D.Double shape;
 
-	public SquareRenderer(Vector2 sizeDimensions) {
-		setSize(sizeDimensions);
-		this.className = "SquareRenderer";
+	public SquareRenderer(Vector2 size) {
+		this.name = "SquareRenderer";
+		setSize(size);
+		offset = new Vector2(size.x * 0.5, size.y * 0.5);
 
 		// Create the shape that will be rendered
-		shape = new Rectangle2D.Double(-sizeDimensions.x * 0.5, -sizeDimensions.y * 0.5,
-				sizeDimensions.x, sizeDimensions.y);
-	}
-
-	@Override
-	void render(Graphics2D g2d, Vector2 renderPos) {
-		// Translate the object to its new position
-		g2d.translate(renderPos.x, renderPos.y);
-		// Rotate the object
-		double rotation = this.getTransform().getRotation();
-		g2d.rotate(rotation);
-		g2d.setColor(Color.GREEN);
-		g2d.setStroke(new BasicStroke(BasicStroke.CAP_SQUARE));
-		g2d.draw(shape);
+		shape = new Rectangle2D.Double(0, 0, size.x, size.y);
 	}
 
 	/**
@@ -36,8 +25,15 @@ public class SquareRenderer extends Renderer {
 	 * 
 	 * @return the size
 	 */
+	@Override
 	public Vector2 getSize() {
-		return size;
+		return new Vector2(size.x, size.y);
+	}
+
+	@Override
+	void render(Graphics2D g2d, Vector2 renderPos) {
+		g2d.setColor(Color.BLUE);
+		g2d.setStroke(new BasicStroke(BasicStroke.CAP_SQUARE));
 	}
 
 	/**

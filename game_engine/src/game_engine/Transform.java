@@ -1,12 +1,15 @@
 package game_engine;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Transform extends Component {
 
 	private double rotation;
-	public Vector2 position;
+	private Vector2 position;
 	private List<Transform> children;
 
 	public Transform() {
@@ -15,7 +18,7 @@ public class Transform extends Component {
 	}
 
 	Transform(Vector2 pos) {
-		position = pos;
+		setPosition(pos);
 		rotation = 0;
 		children = new LinkedList<Transform>();
 	}
@@ -92,5 +95,33 @@ public class Transform extends Component {
 		double sn = Math.sin(rotation);
 		return new Vector2(vec.x * cs - vec.y * sn, vec.x * sn + vec.y * cs);
 
+	}
+
+	/**
+	 * This method is called by the Debug class to render the transform if Debug
+	 * mode is enabled. This method should not be called by any implementing
+	 * class as it is already called automatically in debug mode.
+	 * 
+	 * @param g2d
+	 */
+	public void renderTransform(Graphics2D g2d) {
+		g2d.setColor(Color.red);
+		g2d.setStroke(new BasicStroke(BasicStroke.JOIN_BEVEL));
+		g2d.drawString("x", (int) getPosition().x, (int) getPosition().y);
+	}
+
+	/**
+	 * @return the position
+	 */
+	public Vector2 getPosition() {
+		return position;
+	}
+
+	/**
+	 * @param position
+	 *            the position to set
+	 */
+	public void setPosition(Vector2 position) {
+		this.position = position;
 	}
 }

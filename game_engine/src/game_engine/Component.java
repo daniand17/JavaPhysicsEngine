@@ -10,9 +10,9 @@ package game_engine;
  */
 public abstract class Component {
 
-	public String className = "Component";
+	public String name = "Component";
 	private GameObject gameObject;
-	private Transform transform;
+	protected Transform transform;
 
 	void initializeComponentReferences(GameObject gameObj, Transform trans) {
 		this.gameObject = gameObj;
@@ -31,5 +31,22 @@ public abstract class Component {
 	 */
 	public Transform getTransform() {
 		return transform;
+	}
+
+	/**
+	 * This is a protected-level method used to set the transform of a component
+	 * to the attached game object. This method should not be used to
+	 * arbitrarily change the transform of a component. Used only at
+	 * initialization of the component when attached to a game object for the
+	 * first time.
+	 * 
+	 * @param transform
+	 */
+	protected void setTransform(Transform transform) {
+		this.transform = transform;
+	}
+
+	protected void setGameObject(GameObject gameObject) {
+		this.gameObject = gameObject;
 	}
 }

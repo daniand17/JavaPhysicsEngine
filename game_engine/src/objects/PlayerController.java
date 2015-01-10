@@ -1,16 +1,18 @@
 package objects;
 
-import game_engine.BoxCollider2D;
-import game_engine.Collider;
-import game_engine.Debug;
-import game_engine.Display;
 import game_engine.GameObject;
 import game_engine.Input;
-import game_engine.Rigidbody2D;
-import game_engine.SquareRenderer;
 import game_engine.Vector2;
+import graphics.Display;
+import graphics.Renderer;
+import graphics.Renderer.Renderers;
 
 import java.awt.event.KeyEvent;
+
+import physics.Collider;
+import physics.Collider.Colliders;
+import physics.Rigidbody2D;
+import utility.Debug;
 
 /**
  * 
@@ -26,8 +28,7 @@ import java.awt.event.KeyEvent;
  */
 public class PlayerController extends GameObject {
 
-	private boolean debug = true;
-	private double gain = 100.0d;
+	private double gain = 300;
 
 	@Override
 	/**
@@ -36,13 +37,17 @@ public class PlayerController extends GameObject {
 	public void start() {
 		// The name of this game object
 		this.name = "PlayerController";
-		rigidbody = new Rigidbody2D();
-		renderer = new SquareRenderer(new Vector2(64d, 64d));
-		collider = new BoxCollider2D(new Vector2(64d, 64d));
+		rigidbody = new Rigidbody2D(getTransform());
+		renderer = Renderer.createRenderer(Renderers.ELLIPSE_2D, this, getTransform());
+		Debug.log(name, renderer.getSize().toString());
+
+		collider = Collider.createCollider(Colliders.ELLIPSE_2D, this, this.getTransform());
+
 		// Sets initial rotational characteristics
 		rigidbody.setAngularDrag(1);
-		rigidbody.setInertia(1);
-		rigidbody.gravityScale = 0;
+		rigidbody.setInertia(1000d);
+
+		rigidbody.setGravityScale(0);
 	}
 
 	@Override
@@ -51,25 +56,26 @@ public class PlayerController extends GameObject {
 	 * events on W, A, S, and D.
 	 */
 	public void physicsUpdate() {
+
 		if ( Input.getKeyDown(KeyEvent.VK_W) ) {
-			getRigidbody().addForce(getTransform().up(), gain);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_S) ) {
-			getRigidbody().addForce(getTransform().down(), gain);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_D) ) {
-			getRigidbody().addForce(getTransform().right(), gain);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
-			getRigidbody().addForce(getTransform().left(), gain);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_Q) ) {
-			getRigidbody().addTorque(-gain * .1);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
-			getRigidbody().addTorque(gain * .1);
+			getRigidbody().addForce(Vector2.up(), gain);
 		}
 
+		if ( Input.getKeyDown(KeyEvent.VK_S) ) {
+			getRigidbody().addForce(Vector2.down(), gain);
+		}
+		if ( Input.getKeyDown(KeyEvent.VK_D) ) {
+			getRigidbody().addForce(Vector2.right(), gain);
+		}
+		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
+			getRigidbody().addForce(Vector2.left(), gain);
+		}
+		if ( Input.getKeyDown(KeyEvent.VK_Q) ) {
+			getRigidbody().addTorque(-5 * gain);
+		}
+		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
+			getRigidbody().addTorque(5 * gain);
+		}
 	}
 
 	@Override
@@ -77,24 +83,23 @@ public class PlayerController extends GameObject {
 	 * Performs screen wraparound operations for the associated rigidbody.
 	 */
 	public void update() {
+		Vector2 pos = getTransform().getPosition();
 
-		if ( getTransform().position.y > Display.SIZE.height ) {
-			getTransform().position.y = 0;
-		}
-		else if ( getTransform().position.y < 0 ) {
-			getTransform().position.y = Display.SIZE.height;
-		}
+		if ( pos.y > Display.SIZE.height )
+			pos.y = 0;
+		if ( pos.x > Display.SIZE.width )
+			pos.x = 0;
+		if ( pos.x < 0 )
+			pos.x = Display.SIZE.width;
+		if ( pos.y < 0 )
+			pos.y = Display.SIZE.height;
 
-		if ( getTransform().position.x > Display.SIZE.width ) {
-			getTransform().position.x = 0;
-		}
-		else if ( getTransform().position.x < 0 ) {
-			getTransform().position.x = Display.SIZE.width;
-		}
+		getTransform().setPosition(pos);
+
 	}
 
 	@Override
 	public void onCollision(Collider other) {
-		// Debug.log(name, "Collided with: " + other.getGameObject().name);
+
 	}
 }

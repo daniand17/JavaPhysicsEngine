@@ -1,4 +1,8 @@
-package game_engine;
+package graphics;
+
+import game_engine.GameObject;
+import game_engine.GameThread;
+import game_engine.ObjectManager;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -8,6 +12,9 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+
+import utility.Debug;
+import utility.Utility;
 
 public class Display extends Canvas {
 
@@ -30,7 +37,7 @@ public class Display extends Canvas {
 		SIZE = dims;
 	}
 
-	void setupWindow() {
+	public void setupWindow() {
 
 		// Uses a double buffer, and ignores repaint requests since we are
 		// handling the graphics
@@ -55,7 +62,8 @@ public class Display extends Canvas {
 	 * @param alpha
 	 *            the interpolation value
 	 */
-	void render(double alpha) {
+	public void render(double alpha) {
+		// TODO Fix so this isn't public
 		// Gets the graphics strategy and sets the background to the one defined
 		// by backgroundGradient
 		Graphics2D g2d = (Graphics2D) strategy.getDrawGraphics();
@@ -63,12 +71,14 @@ public class Display extends Canvas {
 		// Fills the rectangle corresponding to the background
 		g2d.fillRect(0, 0, SIZE.width, SIZE.height);
 
-		// TODO renders each game object by calling the renderer of that object
 		// TODO (Andy) Set this to draw only objects that are visible
-		for (GameObject ent : ObjectManager.getAllObjects())
+		for (GameObject ent : ObjectManager.getAllObjects()) {
 			if ( ent != null && ent.getRenderer() != null )
 				ent.getRenderer().renderObject(g2d, alpha);
+		}
 
+		if ( Debug.debugModeEnabled() )
+			Debug.renderDebugGizmos(g2d);
 		// Renders the GUI
 		renderGUI(g2d);
 
@@ -92,8 +102,6 @@ public class Display extends Canvas {
 		g2d.drawString("Objects on screen: " + ObjectManager.getAllObjects().size(), leftmargin, 20);
 
 		double amt = GameThread.getMTInfo();
-
 		g2d.drawString("FPS: " + Utility.roundToTenth((1 / amt) * 1000), leftmargin, 40);
-
 	}
 }

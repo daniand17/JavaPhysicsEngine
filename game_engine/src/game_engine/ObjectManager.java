@@ -1,14 +1,20 @@
 package game_engine;
 
+import graphics.Display;
+
 import java.awt.Rectangle;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import physics.Collider;
+import physics.Quadtree;
+import physics.Rigidbody2D;
+
 public class ObjectManager {
 	public static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<GameObject> allObjects = new CopyOnWriteArrayList<GameObject>();
-	private static List<GameObject> physicsObjects = new CopyOnWriteArrayList<GameObject>();
-	private static List<GameObject> colliderObjects = new CopyOnWriteArrayList<GameObject>();
+	private static List<Rigidbody2D> rigidbodies = new CopyOnWriteArrayList<Rigidbody2D>();
+	private static List<Collider> colliders = new CopyOnWriteArrayList<Collider>();
 
 	private static Quadtree quadtree = new Quadtree(0, new Rectangle(Display.WIDTH, Display.HEIGHT));
 
@@ -16,12 +22,12 @@ public class ObjectManager {
 		return allObjects;
 	}
 
-	public static synchronized List<GameObject> getPhysicsObjects() {
-		return physicsObjects;
+	public static synchronized List<Rigidbody2D> getPhysicsObjects() {
+		return rigidbodies;
 	}
 
-	public static synchronized List<GameObject> getColliderObjects() {
-		return colliderObjects;
+	public static synchronized List<Collider> getColliderObjects() {
+		return colliders;
 	}
 
 	/**
@@ -32,8 +38,9 @@ public class ObjectManager {
 	 *            the object to check collisions against
 	 * @return the list of objects that might collide with the object specified
 	 */
-	public static List<GameObject> getNearbyObjects(GameObject objToCheck) {
-		return quadtree.retrieve(objToCheck);
+	public static List<Collider> getNearbyObjects(Collider coll) {
+
+		return quadtree.retrieve(coll);
 	}
 
 	/**
@@ -48,7 +55,7 @@ public class ObjectManager {
 	 */
 	public static synchronized GameObject instantiate(GameObject newObj, Vector2 location) {
 		if ( newObj != null ) {
-			newObj.getTransform().position = location;
+			newObj.getTransform().setPosition(location);
 			startObjects.add(newObj);
 		}
 		return newObj;
@@ -62,31 +69,28 @@ public class ObjectManager {
 			// Call the start function of the object
 			obj.start();
 
-			// Initialize the references for the game object so transform,
-			// gameobject etc can get referenced from any component
-			obj.initializeComponentReferences();
-
 			allObjects.add(obj);
 
 			// Subject to physics updates if object has a rigidbody
 			if ( obj.getRigidbody() != null )
-				physicsObjects.add(obj);
+				rigidbodies.add(obj.getRigidbody());
 
-			// Add to the list of collidable objects if object has a collider
+			// Add to the list of collidable objects if object has a
+			// collider
 			if ( obj.getCollider() != null )
-				colliderObjects.add(obj);
+				colliders.add(obj.getCollider());
 
 		}
 
-		for (GameObject obj : colliderObjects)
-			quadtree.insert(obj);
+		for (Collider col : colliders)
+			quadtree.insert(col);
 
 	}
 
 	public static synchronized void clearQuadtreeAndResetColliders() {
 		quadtree.clear();
-		for (GameObject obj : colliderObjects)
-			obj.getCollider().collisionsResolvedThisFrame = false;
+		for (Collider obj : colliders)
+			obj.setCollisionsResolved(false);
 
 	}
 }

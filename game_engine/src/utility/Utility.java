@@ -1,4 +1,4 @@
-package game_engine;
+package utility;
 
 public class Utility {
 

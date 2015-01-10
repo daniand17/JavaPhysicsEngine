@@ -1,5 +1,9 @@
 package game_engine;
 
+import graphics.Display;
+import physics.Collider;
+import physics.Rigidbody2D;
+
 public class GameThread implements Runnable {
 
 	private final Display display;
@@ -55,15 +59,15 @@ public class GameThread implements Runnable {
 			mtPeriod = then * 1000;
 
 			// Sleeps the thread for just a bit to save on CPU
-			  
-			// TODO Commented this out in order to see the impact of changes on the raw framerate
+
+			// TODO Commented this out in order to see the impact of changes on
+			// the raw framerate
 			if ( mtPeriod < 10 )
 				try {
 					Thread.sleep((long) (12 - mtPeriod));
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				
 
 			// Updates the length the main thread took for info purposes
 			then = System.nanoTime() * NANO_CONV - now;
@@ -81,16 +85,21 @@ public class GameThread implements Runnable {
 	}
 
 	private void fixedUpdate(double t, double dt) {
-		// Resolve any collisions from the last physics update
-		for (GameObject obj : ObjectManager.getColliderObjects()) {
+
+		// Do the physics updates for each game object
+		for (GameObject obj : ObjectManager.getAllObjects())
+			obj.physicsUpdate();
+
+		// Update all the rigidbodies
+		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects())
+			if ( rb != null )
+				rb.updateRigidbodyPhysics(t, dt);
+
+		// Resolve any collisions from this physics step
+		for (Collider obj : ObjectManager.getColliderObjects()) {
 			if ( obj != null )
 				obj.resolveCollisions(ObjectManager.getNearbyObjects(obj));
 		}
-
-		// Update physics logic for motion etc
-		for (GameObject obj : ObjectManager.getPhysicsObjects())
-			if ( obj != null )
-				obj.updatePhysics(t, dt);
 
 		// At this point all collisions are resolved so we can kill the quadtree
 		// and prep for the next frame

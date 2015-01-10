@@ -1,11 +1,14 @@
 package objects;
 
-import game_engine.BoxCollider2D;
-import game_engine.Display;
 import game_engine.GameObject;
-import game_engine.Rigidbody2D;
-import game_engine.SquareRenderer;
 import game_engine.Vector2;
+import graphics.Display;
+import graphics.Renderer;
+import graphics.SquareRenderer;
+import graphics.Renderer.Renderers;
+import physics.Collider;
+import physics.Collider.Colliders;
+import physics.Rigidbody2D;
 
 public class TestRect extends GameObject {
 
@@ -19,25 +22,24 @@ public class TestRect extends GameObject {
 		// The name of this game object
 		this.name = "TestRect";
 		// Sets up the rigidbody and renderer for this component
-		rigidbody = new Rigidbody2D();
-		renderer = new SquareRenderer(new Vector2(64f, 64f));
-		collider = new BoxCollider2D(new Vector2(64f, 64f));
+		rigidbody = new Rigidbody2D(getTransform());
+		renderer = Renderer.createRenderer(Renderers.SQUARE_2D, this, getTransform());
+		collider = Collider.createCollider(Colliders.RECTANGLE_2D, this, getTransform());
+		rigidbody.setGravityScale(0);
 	}
 
 	@Override
 	public void update() {
-		if ( getTransform().position.y > Display.SIZE.height ) {
-			getTransform().position.y = 0;
-		}
-		else if ( getTransform().position.y < 0 ) {
-			getTransform().position.y = Display.SIZE.height;
-		}
+		Vector2 pos = getTransform().getPosition();
 
-		if ( getTransform().position.x > Display.SIZE.width ) {
-			getTransform().position.x = 0;
-		}
-		else if ( getTransform().position.x < 0 ) {
-			getTransform().position.x = Display.SIZE.width;
-		}
+		if ( pos.y > Display.SIZE.height )
+			pos.y = 0;
+		if ( pos.x > Display.SIZE.width )
+			pos.x = 0;
+		if ( pos.x < 0 )
+			pos.x = Display.SIZE.width;
+		if ( pos.y < 0 )
+			pos.y = Display.SIZE.height;
+
 	}
 }
