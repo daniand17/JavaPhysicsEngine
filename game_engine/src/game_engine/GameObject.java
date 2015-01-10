@@ -10,7 +10,7 @@ public abstract class GameObject implements IGameObject {
 	// All game objects have a transform starting at 0, 0
 	private Transform transform = new Transform();
 	// If this object has a rigidbody, it will partake in physics updates.
-	public Rigidbody2D rigidbody;
+	protected Rigidbody2D rigidbody;
 	// This object will be rendered if this is not null
 	protected Renderer renderer;
 	protected Collider collider;

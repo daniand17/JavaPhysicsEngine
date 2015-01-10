@@ -3,6 +3,7 @@ package objects;
 import game_engine.GameObject;
 import game_engine.Input;
 import game_engine.Vector2;
+import graphics.Camera;
 import graphics.Display;
 import graphics.Renderer;
 import graphics.Renderer.Renderers;
@@ -48,6 +49,11 @@ public class PlayerController extends GameObject {
 		rigidbody.setInertia(1000d);
 
 		rigidbody.setGravityScale(0);
+
+		// Test getting the main cameras position and setting it
+		System.out.println(Camera.main.getTransform().getPosition().toString());
+		Camera.main.getTransform().setPosition(getTransform().getPosition());
+		System.out.println(Camera.main.getTransform().getPosition().toString());
 	}
 
 	@Override
@@ -76,6 +82,7 @@ public class PlayerController extends GameObject {
 		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
 			getRigidbody().addTorque(5 * gain);
 		}
+
 	}
 
 	@Override

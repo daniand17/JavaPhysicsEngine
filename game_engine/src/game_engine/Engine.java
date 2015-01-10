@@ -1,5 +1,6 @@
 package game_engine;
 
+import graphics.Camera;
 import graphics.Display;
 
 import java.awt.event.WindowAdapter;
@@ -62,6 +63,8 @@ public class Engine {
 		// window.add(gameThread);
 		// Starts the game thread
 		new Thread(gameThread).start();
+		// Instantiates the main camera
+		ObjectManager.instantiate(Camera.main, Vector2.zero());
 	}
 
 	public JFrame getWindow() {
