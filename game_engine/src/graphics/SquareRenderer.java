@@ -1,6 +1,5 @@
 package graphics;
 
-import game_engine.Debug;
 import game_engine.Vector2;
 
 import java.awt.BasicStroke;
@@ -35,7 +34,6 @@ public class SquareRenderer extends Renderer {
 	void render(Graphics2D g2d, Vector2 renderPos) {
 		g2d.setColor(Color.BLUE);
 		g2d.setStroke(new BasicStroke(BasicStroke.CAP_SQUARE));
-		Debug.log(name, "in render");
 	}
 
 	/**

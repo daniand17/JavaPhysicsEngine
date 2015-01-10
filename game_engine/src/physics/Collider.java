@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.util.List;
 
 public abstract class Collider extends Component {
 	/**
@@ -158,6 +159,28 @@ public abstract class Collider extends Component {
 	 */
 	public void setCollisionsResolved(boolean collisionsResolvedThisFrame) {
 		this.collisionsResolvedThisFrame = collisionsResolvedThisFrame;
+	}
+
+	/**
+	 * This is a package-access method that is used to resolve collisions
+	 * involving this GameObject. It is called only if this object has a
+	 * collider attached to it. It is handed a list of objects in which
+	 * collisions may occur
+	 * 
+	 * @param list
+	 *            the list of objects that MIGHT collide with this game object
+	 */
+	public void resolveCollisions(List<Collider> list) {
+		this.collisionsResolvedThisFrame = true;
+
+		if ( list.size() == 0 )
+			return;
+
+		// Iterate through the list of colliding objects
+		for (Collider col : list)
+			// Checks to see if this collisions was already resolved
+			if ( !col.getCollisionsResolved() )
+				Physics.resolveCollision(this, col);
 	}
 
 	/**

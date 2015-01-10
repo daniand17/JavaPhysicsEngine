@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import physics.Collider;
+
 public class Debug {
 
 	private static boolean debugMode = false;
@@ -137,8 +139,8 @@ public class Debug {
 		// TODO separate the rendering into a separate class for rendering all
 		// objects (maybe)
 		// Render the collider of each object
-		for (GameObject obj : ObjectManager.getColliderObjects())
-			obj.collider.renderCollider(g2d);
+		for (Collider obj : ObjectManager.getColliderObjects())
+			obj.renderCollider(g2d);
 
 		for (GameObject obj : ObjectManager.getAllObjects())
 			obj.getTransform().renderTransform(g2d);

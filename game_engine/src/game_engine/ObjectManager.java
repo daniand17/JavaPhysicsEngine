@@ -6,14 +6,15 @@ import java.awt.Rectangle;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import physics.Collider;
 import physics.Quadtree;
 import physics.Rigidbody2D;
 
 public class ObjectManager {
 	public static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<GameObject> allObjects = new CopyOnWriteArrayList<GameObject>();
-	private static List<Rigidbody2D> physicsObjects = new CopyOnWriteArrayList<Rigidbody2D>();
-	private static List<GameObject> colliderObjects = new CopyOnWriteArrayList<GameObject>();
+	private static List<Rigidbody2D> rigidbodies = new CopyOnWriteArrayList<Rigidbody2D>();
+	private static List<Collider> colliders = new CopyOnWriteArrayList<Collider>();
 
 	private static Quadtree quadtree = new Quadtree(0, new Rectangle(Display.WIDTH, Display.HEIGHT));
 
@@ -22,11 +23,11 @@ public class ObjectManager {
 	}
 
 	public static synchronized List<Rigidbody2D> getPhysicsObjects() {
-		return physicsObjects;
+		return rigidbodies;
 	}
 
-	public static synchronized List<GameObject> getColliderObjects() {
-		return colliderObjects;
+	public static synchronized List<Collider> getColliderObjects() {
+		return colliders;
 	}
 
 	/**
@@ -37,9 +38,9 @@ public class ObjectManager {
 	 *            the object to check collisions against
 	 * @return the list of objects that might collide with the object specified
 	 */
-	public static List<GameObject> getNearbyObjects(GameObject objToCheck) {
+	public static List<Collider> getNearbyObjects(Collider coll) {
 
-		return quadtree.retrieve(objToCheck);
+		return quadtree.retrieve(coll);
 	}
 
 	/**
@@ -72,24 +73,24 @@ public class ObjectManager {
 
 			// Subject to physics updates if object has a rigidbody
 			if ( obj.getRigidbody() != null )
-				physicsObjects.add(obj.getRigidbody());
+				rigidbodies.add(obj.getRigidbody());
 
 			// Add to the list of collidable objects if object has a
 			// collider
 			if ( obj.getCollider() != null )
-				colliderObjects.add(obj);
+				colliders.add(obj.getCollider());
 
 		}
 
-		for (GameObject obj : colliderObjects)
-			quadtree.insert(obj);
+		for (Collider col : colliders)
+			quadtree.insert(col);
 
 	}
 
 	public static synchronized void clearQuadtreeAndResetColliders() {
 		quadtree.clear();
-		for (GameObject obj : colliderObjects)
-			obj.getCollider().setCollisionsResolved(false);
+		for (Collider obj : colliders)
+			obj.setCollisionsResolved(false);
 
 	}
 }

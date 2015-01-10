@@ -37,7 +37,7 @@ public class Rigidbody2D extends Component {
 		setForce(new Vector2(1d, 0d), 0d);
 	}
 
-	public void updatePhysics(double t, double dt) {
+	public void updateRigidbodyPhysics(double t, double dt) {
 
 		// Obtain prior position and rotation
 		Vector2 prevPos = getTransform().getPosition();

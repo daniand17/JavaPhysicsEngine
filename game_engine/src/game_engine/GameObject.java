@@ -1,11 +1,7 @@
 package game_engine;
 
 import graphics.Renderer;
-
-import java.util.List;
-
 import physics.Collider;
-import physics.Physics;
 import physics.Rigidbody2D;
 
 public abstract class GameObject implements IGameObject {
@@ -19,7 +15,6 @@ public abstract class GameObject implements IGameObject {
 	protected Renderer renderer;
 	protected Collider collider;
 
-	@Override
 	public void onCollision(Collider other) {
 		// This is called here so that this method doesn't need to be
 		// implemented in an inheriting class
@@ -29,32 +24,9 @@ public abstract class GameObject implements IGameObject {
 	 * This method is used primarily to do physics based things if you want them
 	 * to occur this physics update (ie adding forces etc)
 	 */
-	@Override
 	public void physicsUpdate() {
-		// TODO this is called here so that this method doesn't need to be
+		// This is called here so that this method doesn't need to be
 		// implemented in an inheriting class
-	}
-
-	/**
-	 * This is a package-access method that is used to resolve collisions
-	 * involving this GameObject. It is called only if this object has a
-	 * collider attached to it. It is handed a list of objects in which
-	 * collisions may occur
-	 * 
-	 * @param collidingObjects
-	 *            the list of objects that MIGHT collide with this game object
-	 */
-	void resolveCollisions(List<GameObject> collidingObjects) {
-		getCollider().setCollisionsResolved(true);
-
-		if ( collidingObjects.size() == 0 )
-			return;
-
-		// Iterate through the list of colliding objects
-		for (GameObject obj : collidingObjects)
-			// Checks to see if this collisions was already resolved
-			if ( !obj.getCollider().getCollisionsResolved() )
-				Physics.resolveCollision(this.getCollider(), obj.getCollider());
 	}
 
 	/**
@@ -72,9 +44,8 @@ public abstract class GameObject implements IGameObject {
 	 * This method is called right after the physics updates. Used for other
 	 * game logic based things once all collisions are resolved etc.
 	 */
-	@Override
 	public void update() {
-		// TODO this is called here so that this method doesn't need to be
+		// This is called here so that this method doesn't need to be
 		// implemented in an inheriting class
 	}
 

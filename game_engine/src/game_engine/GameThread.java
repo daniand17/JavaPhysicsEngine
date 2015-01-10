@@ -1,6 +1,7 @@
 package game_engine;
 
 import graphics.Display;
+import physics.Collider;
 import physics.Rigidbody2D;
 
 public class GameThread implements Runnable {
@@ -92,10 +93,10 @@ public class GameThread implements Runnable {
 		// Update all the rigidbodies
 		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects())
 			if ( rb != null )
-				rb.updatePhysics(t, dt);
+				rb.updateRigidbodyPhysics(t, dt);
 
 		// Resolve any collisions from this physics step
-		for (GameObject obj : ObjectManager.getColliderObjects()) {
+		for (Collider obj : ObjectManager.getColliderObjects()) {
 			if ( obj != null )
 				obj.resolveCollisions(ObjectManager.getNearbyObjects(obj));
 		}

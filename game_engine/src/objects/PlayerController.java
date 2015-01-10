@@ -5,7 +5,6 @@ import game_engine.GameObject;
 import game_engine.Input;
 import game_engine.Vector2;
 import graphics.Display;
-import graphics.EllipseRenderer;
 import graphics.Renderer;
 import graphics.Renderer.Renderers;
 
@@ -29,7 +28,7 @@ import physics.Rigidbody2D;
  */
 public class PlayerController extends GameObject {
 
-	private double gain = 500;
+	private double gain = 300;
 
 	@Override
 	/**
