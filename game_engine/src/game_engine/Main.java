@@ -2,6 +2,7 @@ package game_engine;
 
 import objects.PlayerController;
 import objects.TestRect;
+import utility.Debug;
 
 public class Main {
 

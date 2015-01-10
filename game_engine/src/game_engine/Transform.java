@@ -97,7 +97,14 @@ public class Transform extends Component {
 
 	}
 
-	void renderTransform(Graphics2D g2d) {
+	/**
+	 * This method is called by the Debug class to render the transform if Debug
+	 * mode is enabled. This method should not be called by any implementing
+	 * class as it is already called automatically in debug mode.
+	 * 
+	 * @param g2d
+	 */
+	public void renderTransform(Graphics2D g2d) {
 		g2d.setColor(Color.red);
 		g2d.setStroke(new BasicStroke(BasicStroke.JOIN_BEVEL));
 		g2d.drawString("x", (int) getPosition().x, (int) getPosition().y);

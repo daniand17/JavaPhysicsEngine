@@ -1,10 +1,8 @@
 package graphics;
 
-import game_engine.Debug;
 import game_engine.GameObject;
 import game_engine.GameThread;
 import game_engine.ObjectManager;
-import game_engine.Utility;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -14,6 +12,9 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+
+import utility.Debug;
+import utility.Utility;
 
 public class Display extends Canvas {
 

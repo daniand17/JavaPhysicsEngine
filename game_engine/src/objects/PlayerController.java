@@ -1,6 +1,5 @@
 package objects;
 
-import game_engine.Debug;
 import game_engine.GameObject;
 import game_engine.Input;
 import game_engine.Vector2;
@@ -13,6 +12,7 @@ import java.awt.event.KeyEvent;
 import physics.Collider;
 import physics.Collider.Colliders;
 import physics.Rigidbody2D;
+import utility.Debug;
 
 /**
  * 

@@ -1,5 +1,7 @@
 package game_engine;
 
+import utility.Utility;
+
 
 
 public class VectorN implements Vector<VectorN> {

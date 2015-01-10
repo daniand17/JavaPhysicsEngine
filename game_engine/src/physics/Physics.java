@@ -1,12 +1,12 @@
 package physics;
 
-import game_engine.Debug;
 import game_engine.GameObject;
 import game_engine.Vector2;
 
 import java.awt.geom.Area;
 
 import objects.TestRect;
+import utility.Debug;
 
 public class Physics {
 

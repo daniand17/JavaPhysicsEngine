@@ -1,5 +1,8 @@
 package game_engine;
 
+import utility.Debug;
+import utility.Utility;
+
 
 public class Vector2 implements Vector<Vector2> {
 

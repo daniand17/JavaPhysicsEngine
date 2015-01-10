@@ -1,4 +1,7 @@
-package game_engine;
+package utility;
+
+import game_engine.GameObject;
+import game_engine.ObjectManager;
 
 import java.awt.Graphics2D;
 import java.io.File;
