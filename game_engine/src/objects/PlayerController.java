@@ -42,8 +42,7 @@ public class PlayerController extends GameObject {
 		rigidbody = new Rigidbody2D(getTransform());
 		renderer = Renderer.createRenderer(Renderers.ELLIPSE_2D, this, getTransform());
 		collider = Collider.createCollider(Colliders.ELLIPSE_2D, this, this.getTransform());
-		// Sets initial rotational characteristics
-		rigidbody.setAngularDrag(1);
+		// Sets initial rotational characteristics		
 		rigidbody.setInertia(1000d);
 		rigidbody.setDrag(.1);
 

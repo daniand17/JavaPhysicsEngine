@@ -40,9 +40,7 @@ public class GameThread implements Runnable {
 
 			while (accumulator >= dt) {
 
-				PerformanceAnalysis.startTimer(3);
 				fixedUpdate(t, dt);
-				PerformanceAnalysis.stopTimer(3);
 				t += dt;
 				accumulator -= dt;
 			}
@@ -72,15 +70,13 @@ public class GameThread implements Runnable {
 	}
 
 	private void update() {
-		PerformanceAnalysis.startTimer(2);
-
 		for (GameObject currEnt : ObjectManager.getAllObjects())
 			currEnt.update();
-		PerformanceAnalysis.stopTimer(2);
 	}
 
 	private void fixedUpdate(double t, double dt) {
 
+		PerformanceAnalysis.startTimer(1);
 		// Do the physics updates for each game object
 		for (GameObject obj : ObjectManager.getAllObjects())
 			obj.physicsUpdate();
@@ -89,15 +85,16 @@ public class GameThread implements Runnable {
 			if ( rb != null )
 				rb.updateRigidbodyPhysics(t, dt);
 
-		PerformanceAnalysis.startTimer(1);
+		PerformanceAnalysis.startTimer(2);
 		// Resolve any collisions from this physics step
 		for (Collider obj : ObjectManager.getColliderObjects())
 			if ( obj != null )
 				obj.resolveCollisions(ObjectManager.getNearbyObjects(obj));
-		PerformanceAnalysis.stopTimer(1);
+		PerformanceAnalysis.stopTimer(2);
 
 		// At this point all collisions are resolved so we can kill the quadtree
 		// and prep for the next frame
 		ObjectManager.clearQuadtreeAndResetColliders();
+		PerformanceAnalysis.stopTimer(1);
 	}
 }

@@ -21,7 +21,7 @@ public class TestRect extends GameObject {
 		this.name = "TestRect";
 		// Sets up the rigidbody and renderer for this component
 		rigidbody = new Rigidbody2D(getTransform());
-		rigidbody.setAngularDrag(1);
+
 		rigidbody.setDrag(.1);
 		renderer = Renderer.createRenderer(Renderers.SQUARE_2D, this, getTransform());
 		collider = Collider.createCollider(Colliders.RECTANGLE_2D, this, getTransform());

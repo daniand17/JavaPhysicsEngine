@@ -16,7 +16,8 @@ public class ObjectManager {
 	private static List<Rigidbody2D> rigidbodies = new CopyOnWriteArrayList<Rigidbody2D>();
 	private static List<Collider> colliders = new CopyOnWriteArrayList<Collider>();
 
-	private static Quadtree quadtree = new Quadtree(0, new Rectangle(GraphicsThread.WIDTH, GraphicsThread.HEIGHT));
+	private static Quadtree quadtree = new Quadtree(0, new Rectangle(GraphicsThread.SIZE.width,
+			GraphicsThread.SIZE.height));
 
 	public static synchronized List<GameObject> getAllObjects() {
 		return allObjects;
@@ -82,6 +83,7 @@ public class ObjectManager {
 
 		}
 
+		// Insert all the colliders into the quadtree
 		for (Collider col : colliders)
 			quadtree.insert(col);
 

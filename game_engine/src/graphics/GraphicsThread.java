@@ -65,10 +65,10 @@ public class GraphicsThread extends Canvas implements Runnable {
 		// Sets up quality rendering
 		RenderingHints qualitySetting = new RenderingHints(RenderingHints.KEY_RENDERING,
 				RenderingHints.VALUE_RENDER_QUALITY);
-
+		// Sets up interpolation of colors and pixels
 		RenderingHints interpolation = new RenderingHints(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-
+		// Sets up the quality of the color rendering
 		RenderingHints colorRendering = new RenderingHints(RenderingHints.KEY_COLOR_RENDERING,
 				RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 

@@ -30,6 +30,7 @@ public class Quadtree {
 	 * @param pBounds
 	 */
 	public Quadtree(int pLevel, Rectangle pBounds) {
+
 		// sets the layer of this quadtree to the new layer
 		level = pLevel;
 		// the vector list of objects in this quadtree
@@ -75,26 +76,19 @@ public class Quadtree {
 	 * @return
 	 */
 	private int getIndex(Collider ent) {
-		// TODO eventually use collider.getPositionInWorldSpace() when it is
-		// implemented
 		Vector2 objLocation = ent.positionInWorldSpace();
 
 		int index = -1;
 		double verticalMidpoint = bounds.getX() + (bounds.getWidth() / 2);
 		double horizontalMidpoint = bounds.getY() + (bounds.getHeight() / 2);
 		// Object can completely fit within the top quadrants
-		// TODO not sure if this is completely right with the
-		// getBounds().height...will only know once we are doing collisions
 		boolean topQuadrant = (objLocation.y < horizontalMidpoint && objLocation.y
 				+ ent.getBoundedArea().getBounds().height < horizontalMidpoint);
 		// Object can completely fit within the bottom quadrants
 		boolean bottomQuadrant = (objLocation.y > horizontalMidpoint);
 		// Object can completely fit within the left quadrants
-		// TODO not sure if this is completely right with the
-		// getBounds().width...will only know once we are doing collisions
 		if ( ent.positionInWorldSpace().x < verticalMidpoint
-				&& ent.positionInWorldSpace().y
-						+ ent.getBoundedArea().getBounds().width < verticalMidpoint ) {
+				&& ent.positionInWorldSpace().y + ent.getBoundedArea().getBounds().width < verticalMidpoint ) {
 			if ( topQuadrant ) {
 				index = 1;
 			}

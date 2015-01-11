@@ -147,25 +147,10 @@ public abstract class Collider extends Component {
 	}
 
 	/**
-	 * @return the collisionsResolvedThisFrame
-	 */
-	public boolean getCollisionsResolved() {
-		return collisionsResolvedThisFrame;
-	}
-
-	/**
-	 * @param collisionsResolvedThisFrame
-	 *            the collisionsResolvedThisFrame to set
-	 */
-	public void setCollisionsResolved(boolean collisionsResolvedThisFrame) {
-		this.collisionsResolvedThisFrame = collisionsResolvedThisFrame;
-	}
-
-	/**
 	 * This is a package-access method that is used to resolve collisions
 	 * involving this GameObject. It is called only if this object has a
-	 * collider attached to it. It is handed a list of objects in which
-	 * collisions may occur
+	 * collider attached to it. It is handed a list of objects compiled from the
+	 * quadtree, in which collisions might occur due to spatial locality.
 	 * 
 	 * @param list
 	 *            the list of objects that MIGHT collide with this game object
@@ -179,8 +164,12 @@ public abstract class Collider extends Component {
 		// Iterate through the list of colliding objects
 		for (Collider col : list)
 			// Checks to see if this collisions was already resolved
-			if ( !col.getCollisionsResolved() )
+			if ( !col.collisionsResolvedThisFrame )
 				Physics.resolveCollision(this, col);
+	}
+
+	public void setCollisionsResolved(boolean bool) {
+		collisionsResolvedThisFrame = false;
 	}
 
 	/**
