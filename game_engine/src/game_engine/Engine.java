@@ -1,7 +1,7 @@
 package game_engine;
 
 import graphics.Camera;
-import graphics.Display;
+import graphics.GraphicsThread;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -19,7 +19,7 @@ import javax.swing.JFrame;
 public class Engine {
 
 	private final JFrame window;
-	private final Display display;
+	private final GraphicsThread graphicsThread;
 	private final GameThread gameThread;
 
 	/**
@@ -40,10 +40,10 @@ public class Engine {
 		window.setFocusable(true);
 		// Puts the window in the center of the screen
 		window.setLocationRelativeTo(null);
-
 		// The game window
-		display = new Display(window.getSize());
-		window.add(display);
+		graphicsThread = new GraphicsThread(window.getSize());
+
+		window.add(graphicsThread);
 		// Adds key and mouse listeners
 		window.addKeyListener(Input.getKeyboard());
 		window.addMouseListener(Input.getMouse());
@@ -53,21 +53,15 @@ public class Engine {
 				System.exit(0);
 			}
 		});
-
 		window.setVisible(true);
-
 		// Creates the game thread that will run the game loop and update logic
-		gameThread = new GameThread(display);
-
-		// Adds the thread to the window
-		// window.add(gameThread);
+		gameThread = new GameThread();
+		graphicsThread.setupWindow();
 		// Starts the game thread
 		new Thread(gameThread).start();
+		// Start the rendering
+		new Thread(graphicsThread).start();
 		// Instantiates the main camera
 		ObjectManager.instantiate(Camera.main, Vector2.zero());
-	}
-
-	public JFrame getWindow() {
-		return window;
 	}
 }

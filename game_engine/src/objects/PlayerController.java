@@ -4,11 +4,11 @@ import game_engine.GameObject;
 import game_engine.Input;
 import game_engine.ObjectManager;
 import game_engine.Vector2;
-import graphics.Camera;
-import graphics.Display;
+import graphics.GraphicsThread;
 import graphics.Renderer;
 import graphics.Renderer.Renderers;
 
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import physics.Collider;
@@ -84,14 +84,14 @@ public class PlayerController extends GameObject {
 	public void update() {
 		Vector2 pos = getTransform().getPosition();
 
-		if ( pos.y > Display.SIZE.height )
+		if ( pos.y > GraphicsThread.SIZE.height )
 			pos.y = 0;
-		if ( pos.x > Display.SIZE.width )
+		if ( pos.x > GraphicsThread.SIZE.width )
 			pos.x = 0;
 		if ( pos.x < 0 )
-			pos.x = Display.SIZE.width;
+			pos.x = GraphicsThread.SIZE.width;
 		if ( pos.y < 0 )
-			pos.y = Display.SIZE.height;
+			pos.y = GraphicsThread.SIZE.height;
 
 		Debug.drawRay(getTransform().getPosition(), rigidbody.velocity);
 
@@ -103,6 +103,12 @@ public class PlayerController extends GameObject {
 
 	@Override
 	public void onCollision(Collider other) {
+
+	}
+
+	public void onGUI(Graphics2D g2d) {
+		g2d.drawString("Player", (int) getTransform().getPosition().x, (int) getTransform()
+				.getPosition().y);
 
 	}
 }

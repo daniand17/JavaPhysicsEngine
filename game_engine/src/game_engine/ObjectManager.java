@@ -1,6 +1,6 @@
 package game_engine;
 
-import graphics.Display;
+import graphics.GraphicsThread;
 
 import java.awt.Rectangle;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ObjectManager {
 	private static List<Rigidbody2D> rigidbodies = new CopyOnWriteArrayList<Rigidbody2D>();
 	private static List<Collider> colliders = new CopyOnWriteArrayList<Collider>();
 
-	private static Quadtree quadtree = new Quadtree(0, new Rectangle(Display.WIDTH, Display.HEIGHT));
+	private static Quadtree quadtree = new Quadtree(0, new Rectangle(GraphicsThread.WIDTH, GraphicsThread.HEIGHT));
 
 	public static synchronized List<GameObject> getAllObjects() {
 		return allObjects;

@@ -60,7 +60,30 @@ public abstract class Renderer extends Component {
 		}
 
 		previous = this.transform.getPosition();
+	}
 
+	/**
+	 * This method is to be used only when the rendering loop is run separately
+	 * from the main game update logic loop
+	 * 
+	 * @param g2d
+	 *            the graphics context to draw to
+	 */
+	void renderObject(Graphics2D g2d) {
+		// The interpolated vector to render at
+		Vector2 interpPos = getTransform().getPosition();
+
+		// Get the rotation instance
+		AffineTransform rotateTransform = AffineTransform.getRotateInstance(getTransform()
+				.getRotation(), interpPos.x, interpPos.y);
+		AffineTransform translateTransform = AffineTransform.getTranslateInstance(interpPos.x
+				- offset.x, interpPos.y - offset.y);
+
+		Shape temp = translateTransform.createTransformedShape(shape);
+		temp = rotateTransform.createTransformedShape(temp);
+		// Render the object
+		render(g2d, interpPos);
+		g2d.draw(temp);
 	}
 
 	public static Renderer createRenderer(Renderers rendererType, GameObject attachedGO,

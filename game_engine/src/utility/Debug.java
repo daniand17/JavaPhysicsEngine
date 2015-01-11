@@ -16,7 +16,9 @@ import physics.Collider;
 
 public class Debug {
 
-	private static boolean debugMode = false;
+	private static boolean debugGizmos = false;
+	private static boolean debugMessages = false;
+
 	private static File debugOutput;
 	private static PrintWriter out;
 	private static final String format = "%-10s>%s%n";
@@ -112,7 +114,7 @@ public class Debug {
 	 */
 	public static void log(String tag, String message) {
 
-		if ( tag != null && message != null && debugMode )
+		if ( tag != null && message != null && debugMessages )
 			System.out.printf(format, tag, message);
 	}
 
@@ -136,7 +138,7 @@ public class Debug {
 	}
 
 	public static void err(String tag, String message) {
-		if ( tag != null && message != null && debugMode )
+		if ( tag != null && message != null && debugMessages )
 			System.err.printf(format, tag, message);
 	}
 
@@ -154,18 +156,32 @@ public class Debug {
 	 * Call this in your code if you want to turn the debug mode on, and call it
 	 * again if you want to turn it off.
 	 */
-	public static void toggleDebugMode() {
-		debugMode = !debugMode;
+	public static void toggleDebugGizmos() {
+		debugGizmos = !debugGizmos;
+	}
+
+	public static void toggleDebugMessages() {
+		debugMessages = !debugMessages;
 	}
 
 	/**
 	 * This method returns whether the engine is in debug mode. Generally called
 	 * in a conditional statement to print out a debug message.
 	 * 
-	 * @return
+	 * @return whether messages called using Debug.log() are enabled
 	 */
-	public static boolean debugModeEnabled() {
-		return debugMode;
+	public static boolean debugMessagesEnabled() {
+		return debugMessages;
+	}
+
+	/**
+	 * Returns whether the gizmos in debug mode are enabled (ie display
+	 * transforms, colliders etc)
+	 * 
+	 * @return whether gizmos are rendering
+	 */
+	public static boolean debugGizmosEnabled() {
+		return debugGizmos;
 	}
 
 	/**

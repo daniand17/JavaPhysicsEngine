@@ -1,6 +1,9 @@
 package game_engine;
 
 import graphics.Renderer;
+
+import java.awt.Graphics2D;
+
 import physics.Collider;
 import physics.Rigidbody2D;
 
@@ -47,6 +50,10 @@ public abstract class GameObject implements IGameObject {
 	public void update() {
 		// This is called here so that this method doesn't need to be
 		// implemented in an inheriting class
+	}
+
+	public void onGUI(Graphics2D g2d) {
+
 	}
 
 	/**

@@ -1,19 +1,15 @@
 package game_engine;
 
-import graphics.Display;
 import physics.Collider;
 import physics.Rigidbody2D;
 import utility.PerformanceAnalysis;
 
 public class GameThread implements Runnable {
 
-	private final Display display;
-
 	private static double mtPeriod = 0;
 
-	public GameThread(Display display) {
-		this.display = display;
-		display.setupWindow();
+	public GameThread() {
+
 	}
 
 	@Override
@@ -26,10 +22,6 @@ public class GameThread implements Runnable {
 
 		double currentTime = System.nanoTime() * NANO_CONV;
 		double accumulator = 0.0;
-
-		PerformanceAnalysis.getNewTimerNumber("GameThread", 1000);
-		PerformanceAnalysis.getNewTimerNumber("Collision Update", 1000);
-		PerformanceAnalysis.getNewTimerNumber("Update Cycle", 1000);
 
 		while (true) {
 
@@ -55,11 +47,11 @@ public class GameThread implements Runnable {
 
 			update();
 
+			// Old rendering stuff
 			// Used for interpolation
-			double alpha = accumulator / dt;
-
+			// double alpha = accumulator / dt;
 			// Renders the game state
-			display.render(alpha);
+			// TODO display.render(alpha);
 
 			double then = System.nanoTime() * NANO_CONV - now;
 
@@ -80,10 +72,6 @@ public class GameThread implements Runnable {
 			mtPeriod = then * 1000;
 
 		}
-	}
-
-	public static double getMTInfo() {
-		return mtPeriod;
 	}
 
 	private void update() {
