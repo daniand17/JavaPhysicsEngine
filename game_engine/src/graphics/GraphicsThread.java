@@ -1,6 +1,7 @@
 package graphics;
 
 import game_engine.GameObject;
+import game_engine.Input;
 import game_engine.ObjectManager;
 
 import java.awt.Canvas;
@@ -42,6 +43,10 @@ public class GraphicsThread extends Canvas implements Runnable {
 	public void setupWindow() {
 
 		setBounds(0, 0, SIZE.width, SIZE.height);
+
+		addKeyListener(Input.getKeyboard());
+		addMouseListener(Input.getMouse());
+		addMouseMotionListener(Input.getMouse());
 		// Uses a double buffer, and ignores repaint requests since we are
 		// handling the graphics
 		this.createBufferStrategy(2);

@@ -40,18 +40,15 @@ public class GameThread implements Runnable {
 
 			while (accumulator >= dt) {
 
+				PerformanceAnalysis.startTimer(3);
 				fixedUpdate(t, dt);
+				PerformanceAnalysis.stopTimer(3);
 				t += dt;
 				accumulator -= dt;
 			}
 
+			// Call the update methods for each game object
 			update();
-
-			// Old rendering stuff
-			// Used for interpolation
-			// double alpha = accumulator / dt;
-			// Renders the game state
-			// TODO display.render(alpha);
 
 			double then = System.nanoTime() * NANO_CONV - now;
 

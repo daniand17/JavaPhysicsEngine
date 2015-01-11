@@ -15,6 +15,7 @@ public class Main {
 		PerformanceAnalysis.getNewTimerNumber("GameThread", 1000);
 		PerformanceAnalysis.getNewTimerNumber("Collision Update", 1000);
 		PerformanceAnalysis.getNewTimerNumber("Update Cycle", 1000);
+		PerformanceAnalysis.getNewTimerNumber("Physics Update", 1000);
 
 		new Engine(1400, 900, "Game Engine Test");
 

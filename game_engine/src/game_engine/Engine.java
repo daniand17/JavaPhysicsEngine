@@ -54,6 +54,7 @@ public class Engine {
 			}
 		});
 		window.setVisible(true);
+		window.setFocusable(true);
 		// Creates the game thread that will run the game loop and update logic
 		gameThread = new GameThread();
 		graphicsThread.setupWindow();
