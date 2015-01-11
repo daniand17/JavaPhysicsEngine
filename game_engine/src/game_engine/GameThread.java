@@ -3,8 +3,7 @@ package game_engine;
 import graphics.Display;
 import physics.Collider;
 import physics.Rigidbody2D;
-import utility.Debug;
-import utility.PerformanceAnalyzer;
+import utility.PerformanceAnalysis;
 
 public class GameThread implements Runnable {
 
@@ -28,11 +27,13 @@ public class GameThread implements Runnable {
 		double currentTime = System.nanoTime() * NANO_CONV;
 		double accumulator = 0.0;
 
-		int timerNum = PerformanceAnalyzer.getNewTimerNumber();
+		PerformanceAnalysis.getNewTimerNumber("GameThread", 1000);
+		PerformanceAnalysis.getNewTimerNumber("Collision Update", 1000);
+		PerformanceAnalysis.getNewTimerNumber("Update Cycle", 1000);
 
 		while (true) {
 
-			PerformanceAnalyzer.startTimer(0);
+			PerformanceAnalysis.startTimer(0);
 
 			double now = System.nanoTime() * NANO_CONV;
 			double frameTime = now - currentTime;
@@ -64,9 +65,8 @@ public class GameThread implements Runnable {
 
 			mtPeriod = then * 1000;
 
-			double res = PerformanceAnalyzer.stopTimer(timerNum);
-			if ( res > 0 )
-				Debug.log("GameThread", "Update Cycle Average: " + res);
+			PerformanceAnalysis.stopTimer(0);
+
 			// Sleeps the thread for just a bit to save on CPU
 			if ( mtPeriod < 10 )
 				try {
@@ -87,8 +87,11 @@ public class GameThread implements Runnable {
 	}
 
 	private void update() {
+		PerformanceAnalysis.startTimer(2);
+
 		for (GameObject currEnt : ObjectManager.getAllObjects())
 			currEnt.update();
+		PerformanceAnalysis.stopTimer(2);
 	}
 
 	private void fixedUpdate(double t, double dt) {
@@ -96,17 +99,17 @@ public class GameThread implements Runnable {
 		// Do the physics updates for each game object
 		for (GameObject obj : ObjectManager.getAllObjects())
 			obj.physicsUpdate();
-
 		// Update all the rigidbodies
 		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects())
 			if ( rb != null )
 				rb.updateRigidbodyPhysics(t, dt);
 
+		PerformanceAnalysis.startTimer(1);
 		// Resolve any collisions from this physics step
-		for (Collider obj : ObjectManager.getColliderObjects()) {
+		for (Collider obj : ObjectManager.getColliderObjects())
 			if ( obj != null )
 				obj.resolveCollisions(ObjectManager.getNearbyObjects(obj));
-		}
+		PerformanceAnalysis.stopTimer(1);
 
 		// At this point all collisions are resolved so we can kill the quadtree
 		// and prep for the next frame

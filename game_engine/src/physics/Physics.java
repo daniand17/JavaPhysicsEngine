@@ -293,10 +293,10 @@ public class Physics {
 
 		// 4) Use the velocities and the prior angular velocity to compute the
 		// new angular velocity
-		Debug.log(NAME, "Object 1 Position: " + r1);
-		Debug.log(NAME, "Object 2 Position: " + r2);
-		Debug.log(NAME, "Midpoint between 2 objects: " + r1.add(rho.scale(0.5d)));
-		Debug.log(NAME, "Reported impact Point: " + impactPoint);
+		//Debug.log(NAME, "Object 1 Position: " + r1);
+		//Debug.log(NAME, "Object 2 Position: " + r2);
+		//Debug.log(NAME, "Midpoint between 2 objects: " + r1.add(rho.scale(0.5d)));
+		//Debug.log(NAME, "Reported impact Point: " + impactPoint);
 		v1pre = v1pre.rotate(-theta);
 		v2pre = v2pre.rotate(-theta); // Need these back
 		// System.out.println(rho + "," + v1pre + ", " + v1post + ", " +

@@ -11,7 +11,7 @@ import physics.Quadtree;
 import physics.Rigidbody2D;
 
 public class ObjectManager {
-	public static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
+	private static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<GameObject> allObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<Rigidbody2D> rigidbodies = new CopyOnWriteArrayList<Rigidbody2D>();
 	private static List<Collider> colliders = new CopyOnWriteArrayList<Collider>();

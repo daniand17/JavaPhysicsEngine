@@ -2,11 +2,15 @@ package utility;
 
 import game_engine.GameObject;
 import game_engine.ObjectManager;
+import game_engine.Vector2;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import physics.Collider;
 
@@ -23,6 +27,39 @@ public class Debug {
 	private static String logName;
 
 	private static int debugLogCount;
+
+	private static Queue<Ray> rays = new LinkedList<Ray>();
+
+	/**
+	 * This method draws a ray on the screen given an origin and destination,
+	 * and a color. This has the effect of drawing the ray starting at the
+	 * origin, and ending it at the destination RELATIVE to the origin. A
+	 * primary use of this method would be to display the velocity of a
+	 * rigidbody given a transforms position and rigidbody velocity
+	 * 
+	 * @param origin
+	 *            The point at which to start drawing the ray
+	 * @param destination
+	 *            the destination of the ray relative to the origin
+	 * @param color
+	 *            the color to draw the ray
+	 */
+	public static void drawRay(Vector2 origin, Vector2 destination, Color color) {
+		rays.add(new Ray(origin, origin.add(destination), color));
+	}
+
+	/**
+	 * This method draws a ray using the default color. Has the same behavior as
+	 * the method in which color is specified.
+	 * 
+	 * @param origin
+	 *            the origin of the ray
+	 * @param destination
+	 *            the destination of the ray relative to the origin.
+	 */
+	public static void drawRay(Vector2 origin, Vector2 destination) {
+		drawRay(origin, destination, Color.blue);
+	}
 
 	public static void setupDebugOutput(String filename) {
 		// Creates a generic debug output file
@@ -147,5 +184,26 @@ public class Debug {
 
 		for (GameObject obj : ObjectManager.getAllObjects())
 			obj.getTransform().renderTransform(g2d);
+
+		g2d.setColor(Color.blue);
+		while (!rays.isEmpty()) {
+			Ray ray = rays.remove();
+			g2d.drawLine((int) ray.start.x, (int) ray.start.y, (int) ray.end.x, (int) ray.end.y);
+		}
 	}
+}
+
+class Ray {
+
+	public Vector2 start;
+	public Vector2 end;
+	public Color rayColor;
+
+	public Ray(Vector2 start, Vector2 end, Color color) {
+		this.start = start;
+		this.end = end;
+		this.rayColor = color;
+
+	}
+
 }

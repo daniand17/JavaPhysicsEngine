@@ -2,6 +2,7 @@ package objects;
 
 import game_engine.GameObject;
 import game_engine.Input;
+import game_engine.ObjectManager;
 import game_engine.Vector2;
 import graphics.Camera;
 import graphics.Display;
@@ -40,20 +41,14 @@ public class PlayerController extends GameObject {
 		this.name = "PlayerController";
 		rigidbody = new Rigidbody2D(getTransform());
 		renderer = Renderer.createRenderer(Renderers.ELLIPSE_2D, this, getTransform());
-		Debug.log(name, renderer.getSize().toString());
-
 		collider = Collider.createCollider(Colliders.ELLIPSE_2D, this, this.getTransform());
-
 		// Sets initial rotational characteristics
 		rigidbody.setAngularDrag(1);
 		rigidbody.setInertia(1000d);
+		rigidbody.setDrag(.1);
 
 		rigidbody.setGravityScale(0);
 
-		// Test getting the main cameras position and setting it
-		System.out.println(Camera.main.getTransform().getPosition().toString());
-		Camera.main.getTransform().setPosition(getTransform().getPosition());
-		System.out.println(Camera.main.getTransform().getPosition().toString());
 	}
 
 	@Override
@@ -63,26 +58,23 @@ public class PlayerController extends GameObject {
 	 */
 	public void physicsUpdate() {
 
-		if ( Input.getKeyDown(KeyEvent.VK_W) ) {
+		if ( Input.getKeyDown(KeyEvent.VK_W) )
 			getRigidbody().addForce(Vector2.up(), gain);
-		}
 
-		if ( Input.getKeyDown(KeyEvent.VK_S) ) {
+		if ( Input.getKeyDown(KeyEvent.VK_S) )
 			getRigidbody().addForce(Vector2.down(), gain);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_D) ) {
-			getRigidbody().addForce(Vector2.right(), gain);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_A) ) {
-			getRigidbody().addForce(Vector2.left(), gain);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_Q) ) {
-			getRigidbody().addTorque(-5 * gain);
-		}
-		if ( Input.getKeyDown(KeyEvent.VK_E) ) {
-			getRigidbody().addTorque(5 * gain);
-		}
 
+		if ( Input.getKeyDown(KeyEvent.VK_D) )
+			getRigidbody().addForce(Vector2.right(), gain);
+
+		if ( Input.getKeyDown(KeyEvent.VK_A) )
+			getRigidbody().addForce(Vector2.left(), gain);
+
+		if ( Input.getKeyDown(KeyEvent.VK_Q) )
+			getRigidbody().addTorque(-5 * gain);
+
+		if ( Input.getKeyDown(KeyEvent.VK_E) )
+			getRigidbody().addTorque(5 * gain);
 	}
 
 	@Override
@@ -101,7 +93,11 @@ public class PlayerController extends GameObject {
 		if ( pos.y < 0 )
 			pos.y = Display.SIZE.height;
 
-		getTransform().setPosition(pos);
+		Debug.drawRay(getTransform().getPosition(), rigidbody.velocity);
+
+		if ( Input.getKeyDown(KeyEvent.VK_0) )
+			ObjectManager.instantiate(new TestRect(),
+					getTransform().getPosition().add(getRigidbody().velocity));
 
 	}
 
