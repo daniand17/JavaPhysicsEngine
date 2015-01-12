@@ -7,6 +7,7 @@ import java.awt.geom.Area;
 
 import objects.TestRect;
 import utility.Debug;
+import utility.PerformanceAnalysis;
 
 public class Physics {
 
@@ -164,33 +165,6 @@ public class Physics {
 	}
 
 	/**
-	 * Package-access method used to determine whether two objects have collided
-	 * with each other this frame.
-	 * 
-	 * @param col1
-	 *            the first collider
-	 * @param col2
-	 *            the second collider
-	 * @return boolean representing whether these objects have collided
-	 */
-	static boolean collided(Collider col1, Collider col2) {
-
-		// Gets the areas of the shapes defining the colliders
-		Area col1_area = col1.getBoundedArea();
-		Area col2_area = col2.getBoundedArea();
-		// This turns col1_area into area of interesection
-		col1_area.intersect(col2_area);
-		// Not sure how accurate of a solution this is in finding the impact
-		// point
-
-		// If the intersection area is empty, then colliders are not touching
-		if ( !col1_area.isEmpty() )
-			return true;
-		else
-			return false;
-	}
-
-	/**
 	 * This is a package-access method used to resolve a collision that has
 	 * occurred between two colliders. This method adjusts the rigidbody
 	 * velocity, adds an impulse force, spin, etc. It also calls the
@@ -293,10 +267,11 @@ public class Physics {
 
 		// 4) Use the velocities and the prior angular velocity to compute the
 		// new angular velocity
-		Debug.log(NAME, "Object 1 Position: " + r1);
-		Debug.log(NAME, "Object 2 Position: " + r2);
-		Debug.log(NAME, "Midpoint between 2 objects: " + r1.add(rho.scale(0.5d)));
-		Debug.log(NAME, "Reported impact Point: " + impactPoint);
+		// Debug.log(NAME, "Object 1 Position: " + r1);
+		// Debug.log(NAME, "Object 2 Position: " + r2);
+		// Debug.log(NAME, "Midpoint between 2 objects: " +
+		// r1.add(rho.scale(0.5d)));
+		// Debug.log(NAME, "Reported impact Point: " + impactPoint);
 		v1pre = v1pre.rotate(-theta);
 		v2pre = v2pre.rotate(-theta); // Need these back
 		// System.out.println(rho + "," + v1pre + ", " + v1post + ", " +
@@ -304,10 +279,10 @@ public class Physics {
 		// *rho.cross(v1pre.sub(v1post)));
 		Vector2 rho1 = r1.sub(impactPoint);
 		Vector2 rho2 = r2.sub(impactPoint);
-		col1_rb.setAngularSpeed(col1_rb.getAngularSpeed() + col1_rb.getMass() / (2d * col1_rb.getInertia())
-				* (rho1.cross(v1pre.sub(v1post))));
-		col2_rb.setAngularSpeed(col2_rb.getAngularSpeed() + col2_rb.getMass() / (2d * col2_rb.getInertia())
-				* (rho2.cross(v2pre.sub(v2post))));
+		col1_rb.setAngularSpeed(col1_rb.getAngularSpeed() + col1_rb.getMass()
+				/ (2d * col1_rb.getInertia()) * (rho1.cross(v1pre.sub(v1post))));
+		col2_rb.setAngularSpeed(col2_rb.getAngularSpeed() + col2_rb.getMass()
+				/ (2d * col2_rb.getInertia()) * (rho2.cross(v2pre.sub(v2post))));
 		// System.out.println(col1_rb.angularSpeed);
 	}
 

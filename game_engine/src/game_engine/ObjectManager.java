@@ -1,6 +1,6 @@
 package game_engine;
 
-import graphics.Display;
+import graphics.GraphicsThread;
 
 import java.awt.Rectangle;
 import java.util.List;
@@ -11,12 +11,13 @@ import physics.Quadtree;
 import physics.Rigidbody2D;
 
 public class ObjectManager {
-	public static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
+	private static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<GameObject> allObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<Rigidbody2D> rigidbodies = new CopyOnWriteArrayList<Rigidbody2D>();
 	private static List<Collider> colliders = new CopyOnWriteArrayList<Collider>();
 
-	private static Quadtree quadtree = new Quadtree(0, new Rectangle(Display.WIDTH, Display.HEIGHT));
+	private static Quadtree quadtree = new Quadtree(0, new Rectangle(GraphicsThread.SIZE.width,
+			GraphicsThread.SIZE.height));
 
 	public static synchronized List<GameObject> getAllObjects() {
 		return allObjects;
@@ -30,6 +31,10 @@ public class ObjectManager {
 		return colliders;
 	}
 
+	public static Quadtree getQuadtree() {
+		return quadtree;
+	}
+
 	/**
 	 * Gets from the quadtree the objects nearby to the object specified in the
 	 * parameter
@@ -38,7 +43,7 @@ public class ObjectManager {
 	 *            the object to check collisions against
 	 * @return the list of objects that might collide with the object specified
 	 */
-	public static List<Collider> getNearbyObjects(Collider coll) {
+	static List<Collider> getNearbyObjects(Collider coll) {
 
 		return quadtree.retrieve(coll);
 	}
@@ -61,7 +66,7 @@ public class ObjectManager {
 		return newObj;
 	}
 
-	public static synchronized void sortObjectsByComponents() {
+	static synchronized void sortObjectsByComponents() {
 
 		for (int i = 0; i < ObjectManager.startObjects.size(); i++) {
 			GameObject obj = ObjectManager.startObjects.remove(i);
@@ -82,6 +87,7 @@ public class ObjectManager {
 
 		}
 
+		// Insert all the colliders into the quadtree
 		for (Collider col : colliders)
 			quadtree.insert(col);
 
