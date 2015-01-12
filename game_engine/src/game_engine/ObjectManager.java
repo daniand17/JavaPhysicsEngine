@@ -31,6 +31,10 @@ public class ObjectManager {
 		return colliders;
 	}
 
+	public static Quadtree getQuadtree() {
+		return quadtree;
+	}
+
 	/**
 	 * Gets from the quadtree the objects nearby to the object specified in the
 	 * parameter
@@ -39,7 +43,7 @@ public class ObjectManager {
 	 *            the object to check collisions against
 	 * @return the list of objects that might collide with the object specified
 	 */
-	public static List<Collider> getNearbyObjects(Collider coll) {
+	static List<Collider> getNearbyObjects(Collider coll) {
 
 		return quadtree.retrieve(coll);
 	}
@@ -62,7 +66,7 @@ public class ObjectManager {
 		return newObj;
 	}
 
-	public static synchronized void sortObjectsByComponents() {
+	static synchronized void sortObjectsByComponents() {
 
 		for (int i = 0; i < ObjectManager.startObjects.size(); i++) {
 			GameObject obj = ObjectManager.startObjects.remove(i);

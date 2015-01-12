@@ -10,7 +10,7 @@ package game_engine;
  */
 public abstract class Component {
 
-	public String name = "Component";
+	protected String name = "Component";
 	private GameObject gameObject;
 	protected Transform transform;
 
@@ -48,5 +48,12 @@ public abstract class Component {
 
 	protected void setGameObject(GameObject gameObject) {
 		this.gameObject = gameObject;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 }

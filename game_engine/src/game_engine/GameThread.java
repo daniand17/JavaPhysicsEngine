@@ -65,7 +65,6 @@ public class GameThread implements Runnable {
 			// Updates the length the main thread took for info purposes
 			then = System.nanoTime() * NANO_CONV - now;
 			mtPeriod = then * 1000;
-
 		}
 	}
 

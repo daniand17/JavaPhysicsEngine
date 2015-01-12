@@ -183,7 +183,7 @@ public abstract class Collider extends Component {
 	public static Collider createCollider(Colliders type, GameObject attachedGO,
 			Transform attachedTransform) {
 
-		Vector2 size = new Vector2(64f, 64f); // TODO make std size 1 when ortho
+		Vector2 size = new Vector2(32, 32); // TODO make std size 1 when ortho
 												// camera is implemented
 		switch (type) {
 		case ELLIPSE_2D:

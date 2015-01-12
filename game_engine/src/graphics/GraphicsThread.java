@@ -98,6 +98,7 @@ public class GraphicsThread extends Canvas implements Runnable {
 		}
 		if ( Debug.debugGizmosEnabled() )
 			Debug.renderDebugGizmos(g2d);
+
 		// Renders the GUI
 		renderGUI(g2d);
 		// Dispose of the old buffer strategy
@@ -115,6 +116,7 @@ public class GraphicsThread extends Canvas implements Runnable {
 	 *            the graphics context to render to
 	 */
 	void renderGUI(Graphics2D g2d) {
+
 		int leftmargin = 12;
 		g2d.setColor(Color.green.brighter());
 		g2d.drawString("Objects on screen: " + ObjectManager.getAllObjects().size(), leftmargin, 20);

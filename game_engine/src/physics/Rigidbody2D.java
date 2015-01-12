@@ -27,6 +27,8 @@ public class Rigidbody2D extends Component {
 	 */
 	public Rigidbody2D(Transform trans) {
 
+		this.name = "Rigidbody2D";
+
 		this.transform = trans;
 		if ( velocity == null )
 			velocity = Vector2.zero();

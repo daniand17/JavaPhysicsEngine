@@ -15,12 +15,18 @@ public abstract class Renderer extends Component {
 		SQUARE_2D, ELLIPSE_2D
 	}
 
-	private Vector2 previous;
-	private Vector2 current;
 	protected Vector2 offset;
 	protected Shape shape;
 
+	private Vector2 size;
+
+	// Get the width and height dimensions of this renderer
 	public abstract Vector2 getSize();
+
+	// Set the width and height dimensions of this renderer
+	public Vector2 setSize() {
+		return size;
+	}
 
 	/**
 	 * The render method is called by the class implementing this abstract
@@ -28,39 +34,6 @@ public abstract class Renderer extends Component {
 	 * object.
 	 */
 	abstract void render(Graphics2D g2d, Vector2 renderPos);
-
-	/**
-	 * This method does the interpolation for the rendering of the object given
-	 * an alpha value, and a graphics2D object. Calls the implementing class'
-	 * render method to render the object.
-	 */
-	void renderObject(Graphics2D g2d, double alpha) {
-
-		current = this.transform.getPosition();
-
-		if ( previous != null && current != null ) {
-			// Calculate the vector to render at by taking the current pos and
-			// the previous pos
-			Vector2 cRenderPos = new Vector2(current.x * alpha, current.y * alpha);
-			Vector2 pRenderPos = new Vector2(previous.x * (1 - alpha), previous.y * (1 - alpha));
-			// The interpolated vector to render at
-			Vector2 interpPos = cRenderPos.add(pRenderPos);
-
-			// Get the rotation instance
-			AffineTransform rotateTransform = AffineTransform.getRotateInstance(getTransform()
-					.getRotation(), interpPos.x, interpPos.y);
-			AffineTransform translateTransform = AffineTransform.getTranslateInstance(interpPos.x
-					- offset.x, interpPos.y - offset.y);
-
-			Shape temp = translateTransform.createTransformedShape(shape);
-			temp = rotateTransform.createTransformedShape(temp);
-			// Render the object
-			render(g2d, interpPos);
-			g2d.draw(temp);
-		}
-
-		previous = this.transform.getPosition();
-	}
 
 	/**
 	 * This method is to be used only when the rendering loop is run separately
@@ -89,7 +62,8 @@ public abstract class Renderer extends Component {
 	public static Renderer createRenderer(Renderers rendererType, GameObject attachedGO,
 			Transform attachedTransform) {
 
-		Vector2 size = new Vector2(64, 64);
+		// The default size
+		Vector2 size = new Vector2(32, 32);
 		switch (rendererType) {
 		case SQUARE_2D:
 			SquareRenderer sqr = new SquareRenderer(size);
