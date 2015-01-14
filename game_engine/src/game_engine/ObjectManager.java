@@ -9,12 +9,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import physics.Collider;
 import physics.Quadtree;
 import physics.Rigidbody2D;
+import physics.GravityPoint;
 
 public class ObjectManager {
 	private static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<GameObject> allObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<Rigidbody2D> rigidbodies = new CopyOnWriteArrayList<Rigidbody2D>();
 	private static List<Collider> colliders = new CopyOnWriteArrayList<Collider>();
+	private static List<GravityPoint> gravitypoints = new CopyOnWriteArrayList<GravityPoint>();
 
 	private static Quadtree quadtree = new Quadtree(0, new Rectangle(GraphicsThread.SIZE.width,
 			GraphicsThread.SIZE.height));
@@ -29,6 +31,10 @@ public class ObjectManager {
 
 	public static synchronized List<Collider> getColliderObjects() {
 		return colliders;
+	}
+	
+	public static synchronized List<GravityPoint> getGravityPointObjects() {
+		return gravitypoints;
 	}
 
 	public static Quadtree getQuadtree() {
@@ -84,7 +90,10 @@ public class ObjectManager {
 			// collider
 			if ( obj.getCollider() != null )
 				colliders.add(obj.getCollider());
-
+			
+			// Add to the list of gravity objects
+			if (obj.getGravityPoint() != null)
+				gravitypoints.add(obj.getGravityPoint());
 		}
 
 		// Insert all the colliders into the quadtree

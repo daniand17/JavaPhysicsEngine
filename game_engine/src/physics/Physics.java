@@ -13,7 +13,7 @@ public class Physics {
 
 	private static final double GRAVITY = 9.81d;
 	private static Vector2 gravityVector = new Vector2(0d, GRAVITY);
-	private static double dt = 0.01;
+	private static double dt = 0.01d;
 	private static double b1 = 35d / 384d, b2 = 0d, b3 = 500d / 1113d, b4 = 125d / 192d,
 			b5 = -2187d / 684d, b6 = 11d / 84d;
 	private static double c2 = 1d / 5d, c3 = 3d / 10d, c4 = 4d / 5d, c5 = 8d / 9d, c6 = 1d,
@@ -286,11 +286,16 @@ public class Physics {
 		// System.out.println(col1_rb.angularSpeed);
 	}
 
-	static void resolveGravity(GameObject obj1, GameObject obj2) {
-		// TODO this method will behave similar to resolveCollision, calculating
-		// the gravitational
-		// force from one object to another. I'm not sure what type of object it
-		// will accept, however.
+	static void resolvePointGravity(GravityPoint point, GameObject go) {
+		Vector2 position = point.positionInWorldSpace().sub(go.getTransform().getPosition());
+		double distance = position.norm();
+		if (distance < 1E-6d) { // This is a hack to keep the object from "attracting" itself
+			return; }
+		if (distance < point.getMinRadius()) {
+			distance = point.getMinRadius();
+		}
+		double forceMag = point.getGravityConstant()*go.getRigidbody().getMass()/(distance*distance);
+		go.getRigidbody().addForce(position, forceMag); // Position will be scaled to a unit vector
 	}
 
 }

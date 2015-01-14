@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import physics.Collider;
 import physics.Rigidbody2D;
+import physics.GravityPoint;
 
 public abstract class GameObject implements IGameObject {
 
@@ -14,6 +15,7 @@ public abstract class GameObject implements IGameObject {
 	private Transform transform = new Transform();
 	// If this object has a rigidbody, it will partake in physics updates.
 	protected Rigidbody2D rigidbody;
+	protected GravityPoint gravitypoint;
 	// This object will be rendered if this is not null
 	protected Renderer renderer;
 	protected Collider collider;
@@ -88,5 +90,9 @@ public abstract class GameObject implements IGameObject {
 	 */
 	public Transform getTransform() {
 		return transform;
+	}
+	
+	public GravityPoint getGravityPoint() {
+		return gravitypoint;
 	}
 }

@@ -46,10 +46,9 @@ public class PlayerController extends GameObject {
 		collider = Collider.createCollider(Colliders.ELLIPSE_2D, this, this.getTransform());
 		// Sets initial rotational characteristics		
 		rigidbody.setInertia(1000d);
-		rigidbody.setDrag(.1);
-
-		rigidbody.setGravityScale(0);
-
+		rigidbody.setDrag(0d);
+		rigidbody.setGravityScale(0d);
+		rigidbody.setVelocity(new Vector2(100d, 0d));
 	}
 
 	@Override

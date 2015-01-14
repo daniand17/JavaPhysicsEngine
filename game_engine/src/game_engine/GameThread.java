@@ -2,6 +2,7 @@ package game_engine;
 
 import physics.Collider;
 import physics.Rigidbody2D;
+import physics.GravityPoint;
 import utility.PerformanceAnalysis;
 
 public class GameThread implements Runnable {
@@ -79,11 +80,18 @@ public class GameThread implements Runnable {
 		// Do the physics updates for each game object
 		for (GameObject obj : ObjectManager.getAllObjects())
 			obj.physicsUpdate();
+		// Update all gravity calculations
+		for (GravityPoint gp : ObjectManager.getGravityPointObjects()) {
+			if (gp != null) {
+				// Have to use all objects instead of physics objects because
+				// rigid bodies don't have position information
+				gp.resolveGravity(ObjectManager.getAllObjects()); } 
+			}
 		// Update all the rigidbodies
-		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects())
+		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects()) {
 			if ( rb != null )
 				rb.updateRigidbodyPhysics(t, dt);
-
+		}
 		PerformanceAnalysis.startTimer(2);
 		// Resolve any collisions from this physics step
 		for (Collider obj : ObjectManager.getColliderObjects())

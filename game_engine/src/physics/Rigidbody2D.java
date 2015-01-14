@@ -72,6 +72,9 @@ public class Rigidbody2D extends Component {
 		this.setAngularDrag(angularDrag);
 	}
 
+	public void setVelocity(Vector2 velocity) {
+		this.velocity = velocity;
+	}
 	/**
 	 * Method to SET a force on the object, wiping out any other forces
 	 * currently active.
