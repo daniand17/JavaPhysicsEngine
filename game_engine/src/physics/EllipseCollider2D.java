@@ -4,6 +4,12 @@ import game_engine.Vector2;
 
 import java.awt.geom.Ellipse2D;
 
+/**
+ * This class represents an ellipse collider in the game engine.
+ * 
+ * @author andrew
+ *
+ */
 class EllipseCollider2D extends Collider {
 
 	EllipseCollider2D(Vector2 size) {

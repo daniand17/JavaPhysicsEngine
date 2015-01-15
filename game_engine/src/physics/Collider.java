@@ -13,6 +13,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.util.List;
 
+/**
+ * This is an abstract class which contains back-end code for collider behavior
+ * general to all colliders.
+ * 
+ * @author andrew
+ *
+ */
 public abstract class Collider extends Component {
 	/**
 	 * Constants which correspond to the types of colliders that can be made by
@@ -28,6 +35,8 @@ public abstract class Collider extends Component {
 	public Shape collider;
 	// Whether this collider should is a trigger instead of a physical object
 	public boolean isTrigger = false;
+	// Flag for performance reasons, if all collisions are resolved, don't
+	// resolve them twice
 	private boolean collisionsResolvedThisFrame = false;
 	// The 2 dimensional size of this collider
 	public Vector2 size;
@@ -184,7 +193,7 @@ public abstract class Collider extends Component {
 			Transform attachedTransform) {
 
 		Vector2 size = new Vector2(32, 32); // TODO make std size 1 when ortho
-												// camera is implemented
+											// camera is implemented
 		switch (type) {
 		case ELLIPSE_2D:
 			EllipseCollider2D newEllipseCol = new EllipseCollider2D(size);

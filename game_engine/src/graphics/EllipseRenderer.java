@@ -7,6 +7,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
+/**
+ * This class defines an ellipse renderer, which implements the Renderer
+ * abstract class
+ * 
+ * @author andrew
+ *
+ */
 public class EllipseRenderer extends Renderer {
 
 	private Vector2 size;

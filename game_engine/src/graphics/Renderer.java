@@ -9,16 +9,28 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
+/**
+ * This abstract class defines what a renderer is and any methods which require
+ * implementation in the inheriting classes. Contains also some back-end code
+ * that is general to all renderers such as translation and rotation.
+ * 
+ * @author andrew
+ *
+ */
 public abstract class Renderer extends Component {
 
+	// Enum containing the possible renderers available in this engine.
 	public enum Renderers {
 		SQUARE_2D, ELLIPSE_2D
 	}
 
-	protected Vector2 offset;
-	protected Shape shape;
+	protected Vector2 offset; // The offset of the renderer to account for
+								// transforms being at different locations on
+								// the object than the coordinate system of
+								// where the object is rendered at
+	protected Shape shape; // The shape of this renderer
 
-	private Vector2 size;
+	private Vector2 size; // The dimensions of this renderer
 
 	// Get the width and height dimensions of this renderer
 	public abstract Vector2 getSize();
@@ -59,6 +71,17 @@ public abstract class Renderer extends Component {
 		g2d.draw(temp);
 	}
 
+	/**
+	 * This method creates and returns a renderer to be shown on screen.
+	 * 
+	 * @param rendererType
+	 *            the type of renderer to create
+	 * @param attachedGO
+	 *            the game object to attach the renderer to
+	 * @param attachedTransform
+	 *            the transform to atttach the renderer to
+	 * @return the generated renderer with all references set
+	 */
 	public static Renderer createRenderer(Renderers rendererType, GameObject attachedGO,
 			Transform attachedTransform) {
 

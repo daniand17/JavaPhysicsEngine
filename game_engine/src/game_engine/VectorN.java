@@ -2,13 +2,17 @@ package game_engine;
 
 import utility.Utility;
 
-
-
+/**
+ * This is a class which implements the concept of an N-dimensional vector
+ * 
+ * @author Joe
+ *
+ */
 public class VectorN implements Vector<VectorN> {
 
 	// Fields
-	public int size;
-	public double[] eles;
+	public int size; // the size of the vector
+	public double[] eles; // the elements of this vector
 
 	/**
 	 * Initializes the vector with a value of 0 for all elements
@@ -55,7 +59,7 @@ public class VectorN implements Vector<VectorN> {
 
 	@Override
 	public VectorN add(VectorN otherVector) {
-		if (this.size != otherVector.size) {
+		if ( this.size != otherVector.size ) {
 			System.out.println("Inconsistent VectorN dimensions");
 			throw new InternalError();
 		}
@@ -68,7 +72,7 @@ public class VectorN implements Vector<VectorN> {
 
 	@Override
 	public VectorN sub(VectorN otherVector) {
-		if (this.size != otherVector.size) {
+		if ( this.size != otherVector.size ) {
 			System.out.println("Inconsistent VectorN dimensions");
 			throw new InternalError();
 		}
@@ -81,7 +85,7 @@ public class VectorN implements Vector<VectorN> {
 
 	@Override
 	public double dot(VectorN otherVector) {
-		if (this.size != otherVector.size) {
+		if ( this.size != otherVector.size ) {
 			System.out.println("Inconsistent VectorN dimensions");
 			throw new InternalError();
 		}

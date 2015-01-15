@@ -8,6 +8,13 @@ import physics.Collider;
 import physics.Rigidbody2D;
 import physics.GravityPoint;
 
+/**
+ * The game object class acts as a sort of hub to tie together multiple
+ * components of an object in the game.
+ * 
+ * @author andrew
+ *
+ */
 public abstract class GameObject implements IGameObject {
 
 	public String name = "GameObject";
@@ -15,9 +22,11 @@ public abstract class GameObject implements IGameObject {
 	private Transform transform = new Transform();
 	// If this object has a rigidbody, it will partake in physics updates.
 	protected Rigidbody2D rigidbody;
+	// The gravity point attached to this game object
 	protected GravityPoint gravitypoint;
 	// This object will be rendered if this is not null
 	protected Renderer renderer;
+	// The collider attached to this game object
 	protected Collider collider;
 
 	public void onCollision(Collider other) {
@@ -54,6 +63,10 @@ public abstract class GameObject implements IGameObject {
 		// implemented in an inheriting class
 	}
 
+	/**
+	 * This method is called by the renderer thread when rendering the GUI.
+	 * Should not be used to render anything other than GUI components
+	 */
 	public void onGUI(Graphics2D g2d) {
 
 	}
@@ -86,12 +99,19 @@ public abstract class GameObject implements IGameObject {
 	}
 
 	/**
+	 * Gets the transform attached to this game object
+	 * 
 	 * @return the transform
 	 */
 	public Transform getTransform() {
 		return transform;
 	}
-	
+
+	/**
+	 * Gets the gravity point attached to this game object
+	 * 
+	 * @return
+	 */
 	public GravityPoint getGravityPoint() {
 		return gravitypoint;
 	}

@@ -11,6 +11,14 @@ import objects.TestRect;
 import utility.Debug;
 import utility.PerformanceAnalysis;
 
+/**
+ * This class handles all possible physics calculations between rigidbodies and
+ * colliders. Performs numerical integration of velocity and position, collision
+ * resolution, and gravity effects.
+ * 
+ * @author Joe S., andrew
+ *
+ */
 public class Physics {
 
 	private static final double GRAVITY = 9.81d;
@@ -61,7 +69,7 @@ public class Physics {
 			Rigidbody2D rigidbody) {
 		Vector2 rot = new Vector2(theta, rigidbody.getAngularSpeed());
 		Vector2[] newState = evaluatePosition(1d, position, rigidbody.velocity, rot, rigidbody);
-		
+
 		position = newState[0];
 		rigidbody.velocity = newState[1];
 		rot.x = newState[2].x;
@@ -72,7 +80,7 @@ public class Physics {
 
 		return retVals;
 	}
-	
+
 	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, double theta,
 			Rigidbody2D rigidbody) {
 		Vector2 rot = new Vector2(theta, rigidbody.getAngularSpeed());
@@ -165,18 +173,19 @@ public class Physics {
 		pos.x += vel.x * dt * factor;
 		pos.y += vel.y * dt * factor;
 		rot.x += rot.y * dt * factor;
-		
-		Vector2 gravForce = resolvePointGravity(pos, rigidbody.getMass(), ObjectManager.getGravityPointObjects());
+
+		Vector2 gravForce = resolvePointGravity(pos, rigidbody.getMass(),
+				ObjectManager.getGravityPointObjects());
 
 		// Velocity updates
 		vel.x += dt
 				* factor
-				* ((rigidbody.force.x + gravForce.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x
-						* rigidbody.getGravityScale());
+				* ((rigidbody.force.x + gravForce.x - rigidbody.getDrag() * vel.x)
+						/ rigidbody.getMass() + gravityVector.x * rigidbody.getGravityScale());
 		vel.y += dt
 				* factor
-				* ((rigidbody.force.y + gravForce.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y
-						* rigidbody.getGravityScale());
+				* ((rigidbody.force.y + gravForce.y - rigidbody.getDrag() * vel.y)
+						/ rigidbody.getMass() + gravityVector.y * rigidbody.getGravityScale());
 		rot.y += dt * factor * (rigidbody.torque - rigidbody.getAngularDrag() * rot.y)
 				/ rigidbody.getInertia();
 
@@ -308,17 +317,23 @@ public class Physics {
 
 	static Vector2 resolvePointGravity(Vector2 pos, double mass, List<GameObject> list) {
 		Vector2 force = new Vector2();
-		for (GameObject go : list) { 
+		for (GameObject go : list) {
 			GravityPoint point = go.getGravityPoint();
 			Vector2 position = point.positionInWorldSpace().sub(pos);
 			double distance = position.norm();
-			if (distance < 1E-6d) { // This is a hack to keep the object from "attracting" itself
-				continue; }
-			if (distance < point.getMinRadius()) {
+			if ( distance < 1E-6d ) { // This is a hack to keep the object from
+										// "attracting" itself
+				continue;
+			}
+			if ( distance < point.getMinRadius() ) {
 				distance = point.getMinRadius();
 			}
-			double forceMag = point.getGravityConstant()*mass/(distance*distance);
-			force  = force.add(position.scale(forceMag/distance)); // Position will be scaled to a unit vector
+			double forceMag = point.getGravityConstant() * mass / (distance * distance);
+			force = force.add(position.scale(forceMag / distance)); // Position
+																	// will be
+																	// scaled to
+																	// a unit
+																	// vector
 		}
 		return force;
 	}

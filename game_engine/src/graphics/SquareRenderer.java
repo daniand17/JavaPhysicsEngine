@@ -7,6 +7,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * This class represents a rendered square in game, and implements the Renderer
+ * abstract class
+ * 
+ * @author andrew
+ *
+ */
 public class SquareRenderer extends Renderer {
 
 	private Vector2 size; // The size of this SquareRenderer
@@ -14,6 +21,10 @@ public class SquareRenderer extends Renderer {
 	public SquareRenderer(Vector2 size) {
 		this.name = "SquareRenderer";
 		setSize(size);
+		// Sets the offset of the square to be half the dimensions, to adjust
+		// for how Java renders squares as the top left corner, and where we'd
+		// like it to be in game, namely the transform should be the center of
+		// the square to simplify physics
 		offset = new Vector2(size.x * 0.5, size.y * 0.5);
 
 		// Create the shape that will be rendered

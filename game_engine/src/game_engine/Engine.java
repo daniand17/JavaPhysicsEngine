@@ -58,6 +58,11 @@ public class Engine {
 		// Creates the game thread that will run the game loop and update logic
 		gameThread = new GameThread();
 		graphicsThread.setupWindow();
+		// Add listeners to the graphics thread so we can get input if we lose
+		// focus and re-attain focus of the window
+		graphicsThread.addKeyListener(Input.getKeyboard());
+		graphicsThread.addMouseListener(Input.getMouse());
+		graphicsThread.addMouseMotionListener(Input.getMouse());
 		// Starts the game thread
 		new Thread(gameThread).start();
 		// Start the rendering

@@ -1,7 +1,6 @@
 package graphics;
 
 import game_engine.GameObject;
-import game_engine.Input;
 import game_engine.ObjectManager;
 
 import java.awt.Canvas;
@@ -15,7 +14,6 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
 import utility.Debug;
-import utility.PerformanceAnalysis;
 
 public class GraphicsThread extends Canvas implements Runnable {
 
@@ -31,26 +29,32 @@ public class GraphicsThread extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private BufferStrategy strategy;
+	// The background displayed
 	private Paint backgroundGradient;
+	// The graphics context
 	private Graphics2D g2d;
+	// The various rendering hints to use (anti-aliasing etc)
 	private RenderingHints renderingHints;
+	// The size of the window
 	public static Dimension SIZE;
 
 	public GraphicsThread(Dimension dims) {
 		SIZE = dims;
 	}
 
+	/**
+	 * This function should be called only by the Engine class to initialize
+	 * this thread for rendering
+	 */
 	public void setupWindow() {
 
 		setBounds(0, 0, SIZE.width, SIZE.height);
-
-		addKeyListener(Input.getKeyboard());
-		addMouseListener(Input.getMouse());
-		addMouseMotionListener(Input.getMouse());
 		// Uses a double buffer, and ignores repaint requests since we are
 		// handling the graphics
 		this.createBufferStrategy(2);
 		strategy = this.getBufferStrategy();
+		// We don't want to use the repaint function of the graphics context
+		// since we have a buffer strategy
 		this.setIgnoreRepaint(true);
 
 		// Sets the background of the game window
@@ -85,8 +89,11 @@ public class GraphicsThread extends Canvas implements Runnable {
 	 * from the game logic update loop.
 	 */
 	public void renderGraphics() {
+		// Get the current graphics context
 		g2d = (Graphics2D) strategy.getDrawGraphics();
+		// Add the rendering hints
 		g2d.setRenderingHints(renderingHints);
+		// set up the background to clear away what was just rendered
 		g2d.setPaint(backgroundGradient);
 		// Fills the rectangle corresponding to the background
 		g2d.fillRect(0, 0, SIZE.width, SIZE.height);
@@ -96,6 +103,7 @@ public class GraphicsThread extends Canvas implements Runnable {
 				ent.getRenderer().renderObject(g2d);
 			}
 		}
+
 		if ( Debug.debugGizmosEnabled() )
 			Debug.renderDebugGizmos(g2d);
 
@@ -127,13 +135,16 @@ public class GraphicsThread extends Canvas implements Runnable {
 	}
 
 	@Override
+	/**
+	 * The implmentation of the runnable interface which is the essence of the rendering thread.
+	 */
 	public void run() {
 
 		double now;
 		double after;
 		double diff;
-		double hz = 120;
-		double framesPerSec;
+		double hz = 120; // How many rendering updates we want.
+		double framesPerSec; // The desired FPS
 
 		while (true) {
 			now = System.nanoTime();
@@ -149,7 +160,6 @@ public class GraphicsThread extends Canvas implements Runnable {
 				try {
 					Thread.sleep((long) (framesPerSec - diff));
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}

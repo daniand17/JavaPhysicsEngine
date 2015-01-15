@@ -126,6 +126,11 @@ public class Quadtree {
 		return index;
 	}
 
+	/**
+	 * Inserts the object into the quadtree in the proper location
+	 * 
+	 * @param objectToInsert
+	 */
 	public void insert(Collider objectToInsert) {
 
 		int index = getIndex(objectToInsert);
@@ -155,6 +160,13 @@ public class Quadtree {
 		}
 	}
 
+	/**
+	 * This function retrieves the list of objects that are nearby to the
+	 * object.
+	 * 
+	 * @param objToCheck
+	 * @return a list of objects the object to check might collide with
+	 */
 	public List<Collider> retrieve(Collider objToCheck) {
 		retrieveList.clear();
 

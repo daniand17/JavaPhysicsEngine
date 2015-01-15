@@ -46,6 +46,12 @@ public abstract class Component {
 		this.transform = transform;
 	}
 
+	/**
+	 * Set the GameObject that this component is attached to
+	 * 
+	 * @param gameObject
+	 *            the GameObject to attach
+	 */
 	protected void setGameObject(GameObject gameObject) {
 		this.gameObject = gameObject;
 	}

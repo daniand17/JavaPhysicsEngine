@@ -4,6 +4,13 @@ import game_engine.Component;
 import game_engine.Transform;
 import game_engine.Vector2;
 
+/**
+ * This class defines what a rigidbody is and handles all physics based
+ * interactions with the rigidbody
+ * 
+ * @author andrew, Joe S.
+ *
+ */
 public class Rigidbody2D extends Component {
 
 	public Vector2 velocity; // The velocity of this Rigidbody.
@@ -75,6 +82,7 @@ public class Rigidbody2D extends Component {
 	public void setVelocity(Vector2 velocity) {
 		this.velocity = velocity;
 	}
+
 	/**
 	 * Method to SET a force on the object, wiping out any other forces
 	 * currently active.

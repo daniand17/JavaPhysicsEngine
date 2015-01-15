@@ -12,7 +12,6 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import physics.Collider;
-import physics.GravityPoint;
 import physics.Collider.Colliders;
 import physics.Rigidbody2D;
 import utility.Debug;
@@ -21,13 +20,8 @@ import utility.Debug;
  * 
  * Basic player controller class for initial testing.
  * 
- * @field debug: Currently non-functional
- * 
  * @field gain: Control gain on the force. Arbitrary value used to "feel" nice
  * 
- * @field xVec: Control direction associated with left/right movement
- * 
- * @field yVec: Control direction associated with up/down movement
  */
 public class PlayerController extends GameObject {
 
@@ -35,7 +29,7 @@ public class PlayerController extends GameObject {
 
 	@Override
 	/**
-	 * Initialize rigid body and rendered objects.
+	 * This function is called at the beginning of the game loop and is used to initialize the object.
 	 */
 	public void start() {
 		// The name of this game object
@@ -43,10 +37,9 @@ public class PlayerController extends GameObject {
 		rigidbody = new Rigidbody2D(getTransform());
 		// gravitypoint = new GravityPoint(getTransform(), 0d, 32d);
 		renderer = Renderer.createRenderer(Renderers.ELLIPSE_2D, this, getTransform());
-		
-		
+		// Create the collider
 		collider = Collider.createCollider(Colliders.ELLIPSE_2D, this, this.getTransform());
-		// Sets initial rotational characteristics		
+		// Sets initial rotational characteristics and rigidbody values
 		rigidbody.setInertia(1000d);
 		rigidbody.setDrag(0.0d);
 		rigidbody.setGravityScale(0d);
@@ -104,6 +97,9 @@ public class PlayerController extends GameObject {
 	}
 
 	@Override
+	/**
+	 * This function is called whenever the collider attached to this object collides with another collider
+	 */
 	public void onCollision(Collider other) {
 
 	}

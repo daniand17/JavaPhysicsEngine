@@ -1,9 +1,14 @@
 package game_engine;
 
-import utility.Debug;
 import utility.Utility;
 
-
+/**
+ * This class represents a vector in 2D space. Used for positional and velocity
+ * information mainly.
+ * 
+ * @author Andrew, Joe
+ *
+ */
 public class Vector2 implements Vector<Vector2> {
 
 	// Fields
@@ -108,10 +113,21 @@ public class Vector2 implements Vector<Vector2> {
 				+ Math.cos(theta) * y);
 	}
 
+	/**
+	 * This method rotates the vector by a given theta value
+	 * 
+	 * @param theta
+	 * @return
+	 */
 	public Vector2 transform(double theta) {
 		return this.rotate(-theta);
 	}
 
+	/**
+	 * Gets the angle between these two coordinates
+	 * 
+	 * @return
+	 */
 	public double angle() {
 		return Math.atan2(y, x);
 	}

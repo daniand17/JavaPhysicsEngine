@@ -3,18 +3,38 @@ package utility;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains timers for use in rough analysis of runtime performance of various
+ * portions of code by timing their execution
+ * 
+ * @author andrew
+ *
+ */
 public class PerformanceAnalysis {
 
 	private static final String NAME = "PerformanceAnalysis";
 
+	// The list of timers
 	private static List<Timer> timers = new ArrayList<Timer>();
 
+	/**
+	 * Starts the timer given the id number of the timer
+	 * 
+	 * @param number
+	 *            the id number of the timer
+	 */
 	public static void startTimer(int number) {
 
 		if ( number < timers.size() )
 			timers.get(number).startTimer();
 	}
 
+	/**
+	 * Stops the timer given by the number
+	 * 
+	 * @param timerNumber
+	 *            the id of the timer
+	 */
 	public static void stopTimer(int timerNumber) {
 
 		if ( timerNumber < timers.size() )
@@ -22,6 +42,17 @@ public class PerformanceAnalysis {
 
 	}
 
+	/**
+	 * Creates a new timer and returns the ID of that timer.
+	 * 
+	 * @param name
+	 *            the name used to identify this timer when it prints to the
+	 *            console
+	 * @param cyclesToAverage
+	 *            the number of times the timer should be started and stopped
+	 *            before printing to the console
+	 * @return the ID of the timer
+	 */
 	public static int getNewTimerNumber(String name, int cyclesToAverage) {
 		Timer timer = new Timer(name, cyclesToAverage);
 		timers.add(timer);
@@ -32,6 +63,13 @@ public class PerformanceAnalysis {
 	}
 }
 
+/**
+ * This class represents a timer and provides methods for starting and stopping,
+ * and averaging execution time between starts and stops
+ * 
+ * @author andrew
+ *
+ */
 class Timer {
 
 	private static final int NANO_TO_MS = 1000000;

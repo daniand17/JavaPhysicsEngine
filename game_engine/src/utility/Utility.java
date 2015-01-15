@@ -1,5 +1,12 @@
 package utility;
 
+/**
+ * This class contains (or will contain) various useful functions that don't
+ * really fit anywhere else.
+ * 
+ * @author andrew
+ *
+ */
 public class Utility {
 
 	/**
@@ -23,5 +30,5 @@ public class Utility {
 	 */
 	public static float roundToTenth(double num) {
 		return ((int) (num * 10)) / 10f;
-	}	
+	}
 }

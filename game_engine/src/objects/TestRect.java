@@ -9,6 +9,13 @@ import physics.Collider;
 import physics.Collider.Colliders;
 import physics.Rigidbody2D;
 
+/**
+ * This class is simply a test rectangle with a square renderer, rigidbody, and
+ * basic square collider
+ * 
+ * @author andrew
+ *
+ */
 public class TestRect extends GameObject {
 
 	boolean debug = true;

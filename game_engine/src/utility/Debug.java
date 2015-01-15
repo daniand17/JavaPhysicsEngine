@@ -14,6 +14,13 @@ import java.util.Queue;
 
 import physics.Collider;
 
+/**
+ * This class contains a set of static methods used for debugging and
+ * development in the game engine.
+ * 
+ * @author andrew
+ *
+ */
 public class Debug {
 
 	private static boolean debugGizmos = false;
@@ -30,6 +37,7 @@ public class Debug {
 
 	private static int debugLogCount;
 
+	// Rays to render on screen if debug gizmos are enabled
 	private static Queue<Ray> rays = new LinkedList<Ray>();
 
 	/**
@@ -209,6 +217,12 @@ public class Debug {
 	}
 }
 
+/**
+ * This class represents a ray that can be drawn to the screen
+ * 
+ * @author andrew
+ *
+ */
 class Ray {
 
 	public Vector2 start;

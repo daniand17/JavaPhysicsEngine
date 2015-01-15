@@ -6,31 +6,53 @@ import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The transform class represents a directed acyclic graph in its
+ * implementation. This class is used to unify multiple game objects in a given
+ * hierarchy, and provides access to locational data for those objects in the
+ * game world.
+ * 
+ * @author Andrew
+ *
+ */
 public class Transform extends Component {
 
-	private double rotation;
-	private Vector2 position;
-	private List<Transform> children;
+	private double rotation; // The rotation of this transform
+	private Vector2 position; // the position of this transform
+	private List<Transform> children; // children of this transform
 
 	public Transform() {
 		this(new Vector2(0f, 0f));
 
 	}
 
-	Transform(Vector2 pos) {
+	/**
+	 * Private constructor to initalize the fields to default values
+	 * 
+	 * @param pos
+	 */
+	private Transform(Vector2 pos) {
 		setPosition(pos);
 		rotation = 0;
 		children = new LinkedList<Transform>();
 	}
 
+	/**
+	 * This method adds a new child to this transform and returns the child for
+	 * continued processing
+	 * 
+	 * @param newChild
+	 *            the child to add
+	 * @return the added child
+	 */
 	public Transform addChild(Transform newChild) {
-		// Adds the child to the list of children
 		children.add(newChild);
-		// Returns the child in case we want to use it for other things after
-		// instantiation
 		return newChild;
 	}
 
+	/**
+	 * @return the number of children on this transform.
+	 */
 	public int getChildCount() {
 		return children.size();
 	}
@@ -78,18 +100,41 @@ public class Transform extends Component {
 		return transformVector(Vector2.up());
 	}
 
+	/**
+	 * Returns a vector which points down relative to transform space.
+	 * 
+	 * @return
+	 */
 	public Vector2 down() {
 		return transformVector(Vector2.down());
 	}
 
+	/**
+	 * Returns a vector which points to the right relative to transform space.
+	 * 
+	 * @return
+	 */
 	public Vector2 right() {
 		return transformVector(Vector2.right());
 	}
 
+	/**
+	 * Returns a vector which points left relative to transform space.
+	 * 
+	 * @return
+	 */
 	public Vector2 left() {
 		return transformVector(Vector2.left());
 	}
 
+	/**
+	 * This function takes a Vector2 and transforms it relative to the transform
+	 * coordinate system.
+	 * 
+	 * @param vec
+	 *            the Vector2 to transform.
+	 * @return the transformed vector
+	 */
 	private Vector2 transformVector(Vector2 vec) {
 		double cs = Math.cos(rotation);
 		double sn = Math.sin(rotation);

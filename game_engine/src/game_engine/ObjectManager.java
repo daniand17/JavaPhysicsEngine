@@ -9,7 +9,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import physics.Collider;
 import physics.Quadtree;
 import physics.Rigidbody2D;
-import physics.GravityPoint;
 
 public class ObjectManager {
 	private static List<GameObject> startObjects = new CopyOnWriteArrayList<GameObject>();
@@ -21,22 +20,47 @@ public class ObjectManager {
 	private static Quadtree quadtree = new Quadtree(0, new Rectangle(GraphicsThread.SIZE.width,
 			GraphicsThread.SIZE.height));
 
+	/**
+	 * Returns every single game object currently instantiated in the world
+	 * 
+	 * @return
+	 */
 	public static synchronized List<GameObject> getAllObjects() {
 		return allObjects;
 	}
 
+	/**
+	 * Returns all rigidbodies currently in the world
+	 * 
+	 * @return
+	 */
 	public static synchronized List<Rigidbody2D> getPhysicsObjects() {
 		return rigidbodies;
 	}
 
+	/**
+	 * Returns all colliders currently in the world
+	 * 
+	 * @return
+	 */
 	public static synchronized List<Collider> getColliderObjects() {
 		return colliders;
 	}
-	
+
+	/**
+	 * Returns all gravity points currently instantiated in the world
+	 * 
+	 * @return
+	 */
 	public static synchronized List<GameObject> getGravityPointObjects() {
 		return gravitypoints;
 	}
 
+	/**
+	 * Returns the quadtree containing all colliders
+	 * 
+	 * @return
+	 */
 	public static Quadtree getQuadtree() {
 		return quadtree;
 	}
@@ -72,6 +96,11 @@ public class ObjectManager {
 		return newObj;
 	}
 
+	/**
+	 * This package-access method is used to take all objects instantiated this
+	 * frame and sort them into their appropriate data structures for updating
+	 * by the game loop.
+	 */
 	static synchronized void sortObjectsByComponents() {
 
 		for (int i = 0; i < ObjectManager.startObjects.size(); i++) {
@@ -90,19 +119,22 @@ public class ObjectManager {
 			// collider
 			if ( obj.getCollider() != null )
 				colliders.add(obj.getCollider());
-			
+
 			// Add to the list of gravity objects
-			if (obj.getGravityPoint() != null)
+			if ( obj.getGravityPoint() != null )
 				gravitypoints.add(obj);
 		}
 
 		// Insert all the colliders into the quadtree
 		for (Collider col : colliders)
 			quadtree.insert(col);
-
 	}
 
-	public static synchronized void clearQuadtreeAndResetColliders() {
+	/**
+	 * This is a package access method which clears the quadtree this frame and
+	 * resets all colliders after collisions have been resolved.
+	 */
+	static synchronized void clearQuadtreeAndResetColliders() {
 		quadtree.clear();
 		for (Collider obj : colliders)
 			obj.setCollisionsResolved(false);

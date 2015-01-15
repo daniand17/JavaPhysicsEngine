@@ -10,6 +10,11 @@ import physics.Collider.Colliders;
 import physics.Rigidbody2D;
 import physics.GravityPoint;
 
+/**
+ * 
+ * @author Joe S.
+ *
+ */
 public class GravityPointObject extends GameObject {
 
 	boolean debug = true;
