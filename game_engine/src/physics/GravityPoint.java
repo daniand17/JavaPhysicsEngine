@@ -97,7 +97,7 @@ public class GravityPoint extends Component {
 	}
 
 
-
+/*
 	 public void resolveGravity(List<GameObject> list) {
 
 		if ( list.size() == 0 )
@@ -108,5 +108,5 @@ public class GravityPoint extends Component {
 			if (go.getRigidbody() != null)
 				Physics.resolvePointGravity(this, go);
 	}
-
+*/
 }

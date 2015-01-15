@@ -2,8 +2,10 @@ package physics;
 
 import game_engine.GameObject;
 import game_engine.Vector2;
+import game_engine.ObjectManager;
 
 import java.awt.geom.Area;
+import java.util.List;
 
 import objects.TestRect;
 import utility.Debug;
@@ -55,6 +57,22 @@ public class Physics {
 	 * 
 	 */
 
+	private static Vector2[] eulerIntegration(double t, double dt, Vector2 position, double theta,
+			Rigidbody2D rigidbody) {
+		Vector2 rot = new Vector2(theta, rigidbody.getAngularSpeed());
+		Vector2[] newState = evaluatePosition(1d, position, rigidbody.velocity, rot, rigidbody);
+		
+		position = newState[0];
+		rigidbody.velocity = newState[1];
+		rot.x = newState[2].x;
+		rigidbody.setAngularSpeed(newState[2].y);
+
+		// The x field of rot contains the updated rotation
+		Vector2[] retVals = { position, rot };
+
+		return retVals;
+	}
+	
 	private static Vector2[] rk4Integration(double t, double dt, Vector2 position, double theta,
 			Rigidbody2D rigidbody) {
 		Vector2 rot = new Vector2(theta, rigidbody.getAngularSpeed());
@@ -147,15 +165,17 @@ public class Physics {
 		pos.x += vel.x * dt * factor;
 		pos.y += vel.y * dt * factor;
 		rot.x += rot.y * dt * factor;
+		
+		Vector2 gravForce = resolvePointGravity(pos, rigidbody.getMass(), ObjectManager.getGravityPointObjects());
 
 		// Velocity updates
 		vel.x += dt
 				* factor
-				* ((rigidbody.force.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x
+				* ((rigidbody.force.x + gravForce.x - rigidbody.getDrag() * vel.x) / rigidbody.getMass() + gravityVector.x
 						* rigidbody.getGravityScale());
 		vel.y += dt
 				* factor
-				* ((rigidbody.force.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y
+				* ((rigidbody.force.y + gravForce.y - rigidbody.getDrag() * vel.y) / rigidbody.getMass() + gravityVector.y
 						* rigidbody.getGravityScale());
 		rot.y += dt * factor * (rigidbody.torque - rigidbody.getAngularDrag() * rot.y)
 				/ rigidbody.getInertia();
@@ -286,16 +306,21 @@ public class Physics {
 		// System.out.println(col1_rb.angularSpeed);
 	}
 
-	static void resolvePointGravity(GravityPoint point, GameObject go) {
-		Vector2 position = point.positionInWorldSpace().sub(go.getTransform().getPosition());
-		double distance = position.norm();
-		if (distance < 1E-6d) { // This is a hack to keep the object from "attracting" itself
-			return; }
-		if (distance < point.getMinRadius()) {
-			distance = point.getMinRadius();
+	static Vector2 resolvePointGravity(Vector2 pos, double mass, List<GameObject> list) {
+		Vector2 force = new Vector2();
+		for (GameObject go : list) { 
+			GravityPoint point = go.getGravityPoint();
+			Vector2 position = point.positionInWorldSpace().sub(pos);
+			double distance = position.norm();
+			if (distance < 1E-6d) { // This is a hack to keep the object from "attracting" itself
+				continue; }
+			if (distance < point.getMinRadius()) {
+				distance = point.getMinRadius();
+			}
+			double forceMag = point.getGravityConstant()*mass/(distance*distance);
+			force  = force.add(position.scale(forceMag/distance)); // Position will be scaled to a unit vector
 		}
-		double forceMag = point.getGravityConstant()*go.getRigidbody().getMass()/(distance*distance);
-		go.getRigidbody().addForce(position, forceMag); // Position will be scaled to a unit vector
+		return force;
 	}
 
 }

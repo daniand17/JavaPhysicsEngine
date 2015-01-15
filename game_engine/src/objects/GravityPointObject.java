@@ -23,8 +23,9 @@ public class GravityPointObject extends GameObject {
 		// Sets up the rigidbody and renderer for this component
 		rigidbody = new Rigidbody2D(getTransform());
 		// TODO: Eliminate "magic number" arbitrary defaults.
-		gravitypoint = new GravityPoint(getTransform(), 1000000d, 32d);
+		gravitypoint = new GravityPoint(getTransform(), 1000000d, 64d);
 		rigidbody.setDrag(0.1d);
+		rigidbody.setMass(10d);
 		renderer = Renderer.createRenderer(Renderers.SQUARE_2D, this, getTransform());
 		collider = Collider.createCollider(Colliders.RECTANGLE_2D, this, getTransform());
 		rigidbody.setGravityScale(0d);

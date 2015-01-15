@@ -16,7 +16,7 @@ public class ObjectManager {
 	private static List<GameObject> allObjects = new CopyOnWriteArrayList<GameObject>();
 	private static List<Rigidbody2D> rigidbodies = new CopyOnWriteArrayList<Rigidbody2D>();
 	private static List<Collider> colliders = new CopyOnWriteArrayList<Collider>();
-	private static List<GravityPoint> gravitypoints = new CopyOnWriteArrayList<GravityPoint>();
+	private static List<GameObject> gravitypoints = new CopyOnWriteArrayList<GameObject>();
 
 	private static Quadtree quadtree = new Quadtree(0, new Rectangle(GraphicsThread.SIZE.width,
 			GraphicsThread.SIZE.height));
@@ -33,7 +33,7 @@ public class ObjectManager {
 		return colliders;
 	}
 	
-	public static synchronized List<GravityPoint> getGravityPointObjects() {
+	public static synchronized List<GameObject> getGravityPointObjects() {
 		return gravitypoints;
 	}
 
@@ -93,7 +93,7 @@ public class ObjectManager {
 			
 			// Add to the list of gravity objects
 			if (obj.getGravityPoint() != null)
-				gravitypoints.add(obj.getGravityPoint());
+				gravitypoints.add(obj);
 		}
 
 		// Insert all the colliders into the quadtree

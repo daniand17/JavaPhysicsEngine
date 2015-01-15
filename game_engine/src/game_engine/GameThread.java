@@ -81,12 +81,14 @@ public class GameThread implements Runnable {
 		for (GameObject obj : ObjectManager.getAllObjects())
 			obj.physicsUpdate();
 		// Update all gravity calculations
+		/*
 		for (GravityPoint gp : ObjectManager.getGravityPointObjects()) {
 			if (gp != null) {
 				// Have to use all objects instead of physics objects because
 				// rigid bodies don't have position information
 				gp.resolveGravity(ObjectManager.getAllObjects()); } 
 			}
+			*/
 		// Update all the rigidbodies
 		for (Rigidbody2D rb : ObjectManager.getPhysicsObjects()) {
 			if ( rb != null )

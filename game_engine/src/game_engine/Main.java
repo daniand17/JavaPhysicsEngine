@@ -18,7 +18,8 @@ public class Main {
 		new Engine(1200, 800, "Game Engine Test");
 		// TODO: Is there a preferred way to set initial velocities on a specific object from the main script?
 		GameObject player = ObjectManager.instantiate(new PlayerController(), new Vector2(400, 300));
-		ObjectManager.instantiate(new GravityPointObject(), new Vector2(400, 400));
+		ObjectManager.instantiate(new GravityPointObject(), new Vector2(400, 500));
+		//ObjectManager.instantiate(new GravityPointObject(), new Vector2(500, 500));
 		// FIXME: Note that the method below only works every other time the program runs. wtf? (Comment out initial velocity
 		// in PlayerController to test).
 		//player.start(); // If this isn't called, nothing is attached to playerController out here
@@ -27,8 +28,8 @@ public class Main {
 /*
 		for (int i = 0; i < 5; i++) {
 			ObjectManager.instantiate(new TestRect(),
-					new Vector2(Math.random() * 1400, Math.random() * 900));
-		}
-*/
+				new Vector2(Math.random() * 1400, Math.random() * 900));
+		}*/	
+
 	}
 }

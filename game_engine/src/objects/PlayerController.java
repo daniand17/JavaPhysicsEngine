@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import physics.Collider;
+import physics.GravityPoint;
 import physics.Collider.Colliders;
 import physics.Rigidbody2D;
 import utility.Debug;
@@ -40,15 +41,16 @@ public class PlayerController extends GameObject {
 		// The name of this game object
 		this.name = "PlayerController";
 		rigidbody = new Rigidbody2D(getTransform());
+		// gravitypoint = new GravityPoint(getTransform(), 0d, 32d);
 		renderer = Renderer.createRenderer(Renderers.ELLIPSE_2D, this, getTransform());
 		
 		
 		collider = Collider.createCollider(Colliders.ELLIPSE_2D, this, this.getTransform());
 		// Sets initial rotational characteristics		
 		rigidbody.setInertia(1000d);
-		rigidbody.setDrag(0d);
+		rigidbody.setDrag(0.0d);
 		rigidbody.setGravityScale(0d);
-		rigidbody.setVelocity(new Vector2(100d, 0d));
+		rigidbody.setVelocity(new Vector2(Math.sqrt(5000d), 0d));
 	}
 
 	@Override
