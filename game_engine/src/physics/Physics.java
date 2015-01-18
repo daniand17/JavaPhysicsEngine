@@ -256,13 +256,13 @@ public class Physics {
 		// Call the appropriate math-handling method (this allows more
 		// flexibility if we add
 		// different collision types).
-		rigidBodyCollision(col1_rb, col2_rb, r1, r2, rho, v1pre, v2pre, impactPoint);
+		rigidBodyCollision2(col1_rb, col2_rb, r1, r2, rho, v1pre, v2pre, impactPoint);
 	}
 
 	private static void rigidBodyCollision(Rigidbody2D col1_rb, Rigidbody2D col2_rb, Vector2 r1,
 			Vector2 r2, Vector2 rho, Vector2 v1pre, Vector2 v2pre, Vector2 impactPoint) {
 
-		double e = 0.85d;
+		double e = 0.5d;
 		// 1) Transform the velocities to a coordinate system with the X-axis
 		// aligned on the LOC
 		double theta = rho.angle(); // Angle from x-axis to line of contact
@@ -287,11 +287,11 @@ public class Physics {
 
 		// 4) Use the velocities and the prior angular velocity to compute the
 		// new angular velocity
-		// Debug.log(NAME, "Object 1 Position: " + r1);
-		// Debug.log(NAME, "Object 2 Position: " + r2);
-		// Debug.log(NAME, "Midpoint between 2 objects: " +
-		// r1.add(rho.scale(0.5d)));
-		// Debug.log(NAME, "Reported impact Point: " + impactPoint);
+		Debug.log(NAME, "Object 1 Position: " + r1);
+		Debug.log(NAME, "Object 2 Position: " + r2);
+		Debug.log(NAME, "Midpoint between 2 objects: " +
+		r1.add(rho.scale(0.5d)));
+		Debug.log(NAME, "Reported impact Point: " + impactPoint);
 		v1pre = v1pre.rotate(-theta);
 		v2pre = v2pre.rotate(-theta); // Need these back
 		// System.out.println(rho + "," + v1pre + ", " + v1post + ", " +
@@ -304,6 +304,75 @@ public class Physics {
 		col2_rb.setAngularSpeed(col2_rb.getAngularSpeed() + col2_rb.getMass()
 				/ (2d * col2_rb.getInertia()) * (rho2.cross(v2pre.sub(v2post))));
 		// System.out.println(col1_rb.angularSpeed);
+	}
+	
+	private static void rigidBodyCollision2(Rigidbody2D colA_rb, Rigidbody2D colB_rb, Vector2 rA,
+			Vector2 rB, Vector2 rho, Vector2 vApre, Vector2 vBpre, Vector2 impactPoint) {
+		Debug.log(NAME, "Object 1 Position: " + rA);
+		Debug.log(NAME, "Object 2 Position: " + rB);
+		Debug.log(NAME, "Midpoint between 2 objects: " +
+		rA.add(rho.scale(0.5d)));
+		Debug.log(NAME, "Reported impact Point: " + impactPoint);
+		double e = 0.85d;
+		// 1) Transform the velocities to a coordinate system with the X-axis
+		// aligned on the LOC
+		double theta = rho.angle(); // Angle from x-axis to line of contact
+		vApre = vApre.rotate(theta);
+		vBpre = vBpre.rotate(theta);
+		
+		Vector2 rhoCA = impactPoint.sub(rA).rotate(theta);
+		Vector2 rhoCB = impactPoint.sub(rB).rotate(theta);
+		
+		double omegaApre = colA_rb.getAngularSpeed();
+		double omegaBpre = colB_rb.getAngularSpeed();
+		double mA = colA_rb.getMass(), IA = colA_rb.getInertia();
+		double mB = colB_rb.getMass(), IB = colB_rb.getInertia();
+		
+		double alpha1 = mA*vApre.x + mB*vBpre.x;
+		double alpha2 = IA*omegaApre - mA*rhoCA.cross(vApre) + mA*rhoCA.x*vApre.y;
+		double alpha3 = IB*omegaBpre - mB*rhoCB.cross(vBpre) + mB*rhoCB.x*vBpre.y;
+		double alpha4 = e*(vBpre.x - omegaBpre*rhoCB.y - vApre.x + omegaApre*rhoCA.y);
+		
+		double a11 = mA, a12 = mB, 
+				a21 = mA*rhoCA.y, a23 = IA,
+				a32 = mB*rhoCB.y, a34 = IB,
+				a43 = -rhoCA.y, a44 = rhoCB.y;
+
+		double vAx = (a11*(alpha2 - a12*a21*(a11*a32*(alpha2 - a21*alpha1/a11)/(a12*a21) - 
+			a34*(a11*(-1 - a12/a11)*(alpha2 - a21*alpha1/a11)/(a12*a21) + alpha4 - 
+			a12*a21*(a11*a23*(-1 - a12/a11)/(a12*a21) + a43)*(a11*a32*(alpha2 - 
+			a21*alpha1/a11)/(a12*a21) + alpha3)/(a11*a23*a32) - alpha1/a11)/
+			(a44 - a12*a21*a34*(a11*a23*(-1 - a12/a11)/(a12*a21) + a43)/(a11*a23*a32))
+			+ alpha3)/(a11*a32) - a21*alpha1/a11)/a21 + alpha1)/a11;
+		
+		double vBx = -a11*(alpha2 - a12*a21*(a11*a32*(alpha2 - a21*alpha1/a11)/(a12*a21) - 
+			a34*(a11*(-1 - a12/a11)*(alpha2 - a21*alpha1/a11)/(a12*a21) + alpha4 - 
+			a12*a21*(a11*a23*(-1 - a12/a11)/(a12*a21) + a43)*(a11*a32*(alpha2 - 
+			a21*alpha1/a11)/(a12*a21) + alpha3)/(a11*a23*a32) - alpha1/a11)/
+			(a44 - a12*a21*a34*(a11*a23*(-1 - a12/a11)/(a12*a21) + a43)/
+			(a11*a23*a32)) + alpha3)/(a11*a32) - a21*alpha1/a11)/(a12*a21);
+		
+		double omegaApost = a12*a21*(a11*a32*(alpha2 - a21*alpha1/a11)/(a12*a21) - 
+			a34*(a11*(-1 - a12/a11)*(alpha2 - a21*alpha1/a11)/(a12*a21) + 
+			alpha4 - a12*a21*(a11*a23*(-1 - a12/a11)/(a12*a21) + a43)*
+			(a11*a32*(alpha2 - a21*alpha1/a11)/(a12*a21) + alpha3)/(a11*a23*a32) - 
+			alpha1/a11)/(a44 - a12*a21*a34*(a11*a23*(-1 - a12/a11)/(a12*a21) + 
+			a43)/(a11*a23*a32)) + alpha3)/(a11*a23*a32);
+		
+		double omegaBpost = (a11*(-1 - a12/a11)*(alpha2 - a21*alpha1/a11)/(a12*a21) + alpha4 - 
+			a12*a21*(a11*a23*(-1 - a12/a11)/(a12*a21) + a43)*(a11*a32*(alpha2 - 
+			a21*alpha1/a11)/(a12*a21) + alpha3)/(a11*a23*a32) - alpha1/a11)/
+			(a44 - a12*a21*a34*(a11*a23*(-1 - a12/a11)/(a12*a21) + a43)/(a11*a23*a32));
+
+		Vector2 vApost = new Vector2(vAx, vApre.y).rotate(-theta);
+		Vector2 vBpost = new Vector2(vBx, vBpre.y).rotate(-theta);
+
+		colA_rb.velocity = vApost;
+		colB_rb.velocity = vBpost;
+
+		colA_rb.setAngularSpeed(omegaApost);
+		colB_rb.setAngularSpeed(omegaBpost);
+		//System.out.println(col1_rb.angularSpeed);
 	}
 
 	static Vector2 resolvePointGravity(Vector2 pos, double mass, List<GameObject> list) {

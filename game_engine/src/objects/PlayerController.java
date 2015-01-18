@@ -50,7 +50,7 @@ public class PlayerController extends GameObject {
 		rigidbody.setInertia(1000d);
 		rigidbody.setDrag(0.0d);
 		rigidbody.setGravityScale(0d);
-		rigidbody.setVelocity(new Vector2(Math.sqrt(5000d), 0d));
+		rigidbody.setVelocity(new Vector2(Math.sqrt(10000d), 0d));
 	}
 
 	@Override
